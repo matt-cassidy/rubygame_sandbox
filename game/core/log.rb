@@ -1,3 +1,5 @@
+require "log4r"
+
 include Log4r
 
 module Game::Core

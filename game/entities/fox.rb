@@ -1,7 +1,7 @@
 require "./game/core/player_input.rb"
 require "./game/core/entity.rb"
 require "./game/core/collision_hitbox.rb"
-require "./game/core/sprite_sheet.rb"
+require "./game/core/animation.rb"
 
 include Game::Core
 
@@ -11,11 +11,11 @@ module Game::Entites
     
     attr_reader :hitbox
     
-    def initialize(px, py)
+    def initialize(px, py, actor)
       super px, py
       @input = PlayerInput.new
-      @sprite = SpriteSheet.new "./resource/img/pic_walk.png", [5, 20, 5, 20], 3, 2, 4, 4
-      @hitbox = CollisionHitbox.new @sprite.sprite_rect
+      @animation = Animation.new actor
+      @hitbox = CollisionHitbox.new @animation.sprite_rect
       @hitbox.enable_collision
     end
   
@@ -26,22 +26,22 @@ module Game::Entites
        
       
       if @input.key_pressed?( :down )   
-        @sprite.update_row 3
+        @animation.change :walk_down
       end
       if @input.key_pressed?( :up )   
-        @sprite.update_row 1
+        @animation.change :walk_up
       end
       if @input.key_pressed?( :right )   
-        @sprite.update_row 2
+        @animation.change :walk_right
       end
       if @input.key_pressed?( :left )   
-        @sprite.update_row 4
+        @animation.change :walk_left
       end
     end
     
     def draw(screen)
-      @sprite.animate
-      @sprite.draw screen, @px, @py
+      @animation.animate
+      @animation.draw screen, @px, @py
     end
     
     def move

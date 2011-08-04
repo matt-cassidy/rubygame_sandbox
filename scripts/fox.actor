@@ -1,22 +1,15 @@
 def_actor fox: 
 {
-  sprite_sheet: 
+  sprite: 
   {
-    
-    walk: 
+    path: "./resource/img/pic_walk.png",
+    size: [48,72],
+    animations:
     {
-      path: "./resource/img/pic_walk.png",
-      frames: [4,4],
-      time: [5, 20, 5, 20],
-      row: { up: 1, right: 2, down: 3, left: 4 }
-    },
-    
-    stand: 
-    {
-      path: "./resource/img/pic_stand.png",
-      frames: [1,4],
-      time: [5, 5, 5, 5],
-      row: { up: 1 }
+    	walk_up: { frames: 4, time: [5, 20, 5, 20] },
+    	walk_right: { frames: 4, time: [5, 20, 5, 20] },
+    	walk_down: { frames: 4, time: [5, 20, 5, 20] },
+    	walk_left: { frames: 4, time: [5, 20, 5, 20] },
     }
     
   }

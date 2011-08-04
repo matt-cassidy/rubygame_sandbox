@@ -3,7 +3,7 @@ require "game/core/collision_tree"
 require "game/core/scene_manager"
 require "game/core/collision_node"
 require "game/core/collision_tree"
-require "game/entities/fox"
+require "game/core/script_manager"
 
 include Rubygame
 include Rubygame::Events
@@ -32,6 +32,8 @@ module Game::Core
       
       parent_collision_node = CollisionNode.new Rect.new(0, 0, 640, 480), 5
       collision_tree = CollisionTree.new parent_collision_node
+      
+      ScriptManager.load_scripts_from "./scripts"
       
       resource_dir = "./../Resource"
       Surface.autoload_dirs << File.join(resource_dir, "img")  
