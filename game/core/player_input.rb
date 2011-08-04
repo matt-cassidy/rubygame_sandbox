@@ -12,9 +12,7 @@ module Game::Core
     end
   
     def fetch
-      @queue.fetch_sdl_events
       @queue.each { |event| handle( event ) }  
-      create_event_hooks     
     end
     
     def create_event_hooks

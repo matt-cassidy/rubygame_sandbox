@@ -25,8 +25,8 @@ module Game::Core
     
     def create_reels(actor)
       @reels = Hash.new
-      actor[:sprite][:animations].each_with_index do |(name,anim),index|
-        reel = AnimationReel.new name, actor[:sprite][:size], anim[:frames], index, anim[:time]
+      actor[:sprite][:animations].each do |name,anim|
+        reel = AnimationReel.new name, actor[:sprite][:size], anim[:frames], anim[:index], anim[:time]
         @reels[name] = reel
       end
       @current_reel = @reels[@reels.keys[0]]

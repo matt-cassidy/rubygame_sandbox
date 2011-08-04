@@ -15,6 +15,7 @@ module Game::Core
     
     def tick
       @seconds = @clock.tick.seconds
+      puts @clock.framerate
       update
       draw
     end

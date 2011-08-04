@@ -19,7 +19,7 @@ module Game::Core
       frame_h = frame_size[1]
       @current_frame_index = -1
       
-      @row_h = (frame_h * (row_index + 1)) - (frame_h / 2)
+      @row_h = (frame_h * (row_index)) - (frame_h / 2)
       
       #loop for the number of frames in this animation and grab the center of each frame
       count = 1

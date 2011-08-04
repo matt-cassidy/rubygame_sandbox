@@ -7,10 +7,14 @@ module Game::Core
     attr_reader :collidable
     attr_reader :rect 
     
-    def initialize(rect)
-      @rect = rect
+    def initialize()
+      @rect = nil
       @colliding_with = []
-      @collidable = false
+      @collidable = true
+    end
+    
+    def create_rect(x,y,w,h)
+      @rect = Rubygame::Rect.new [x, y], [w, h]
     end
     
     def clear_colliding_objects
@@ -28,6 +32,7 @@ module Game::Core
     end
     
     def collidable?
+      return false if @rect.nil?
       @collidable
     end
     
@@ -41,6 +46,10 @@ module Game::Core
     
     def disable_collision
       @collidable = false
+    end
+    
+    def center(x, y)
+      @rect.center = [x, y]
     end
     
   end

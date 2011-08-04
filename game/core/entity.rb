@@ -1,14 +1,17 @@
 require "./game/core/game_object.rb"
+require "./game/core/collision_hitbox.rb"
 
 module Game::Core
 
   class Entity < GameObject
     
     attr_reader :entity_id
-     
+    attr_reader :hitbox
+    
     def initialize(px, py)
       super px, py
       @events = []
+      @hitbox = CollisionHitbox.new
     end
   
     def update(seconds)
@@ -22,6 +25,11 @@ module Game::Core
       @events.delete_if {|e| e.is_finished}
     end
     
+    def move(x,y)
+      @px = @px + x
+      @py = @py + y
+      @hitbox.center @px, @py
+    end
   end
 
 end
