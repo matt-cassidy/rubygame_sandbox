@@ -21,6 +21,7 @@ module Game::Core
       @sprite_sheet = Surface.load(actor[:sprite][:path])
       @sprite = Surface.new(actor[:sprite][:size])
       @sprite_rect = Rect.new(@current_reel.position, actor[:sprite][:size])
+      @sprite_rect.center = @current_reel.position
     end
     
     def create_reels(actor)
