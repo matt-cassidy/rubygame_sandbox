@@ -13,6 +13,7 @@ module Game::Entites
       @input = PlayerInput.new
       @animation = Animation.new actor
       @hitbox.create_rect(px, py, actor[:hitbox][0], actor[:hitbox][1])
+      @hitbox.make_visible
     end
   
     def update(seconds)
@@ -23,6 +24,7 @@ module Game::Entites
     end
     
     def draw(screen)
+      @hitbox.draw screen
       @animation.draw screen, @px, @py
     end
     
@@ -60,7 +62,7 @@ module Game::Entites
     
     def handle_collisions
       if @hitbox.colliding? 
-        puts "s"
+        
       end
     end
   

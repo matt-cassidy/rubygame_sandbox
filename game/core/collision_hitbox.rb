@@ -15,6 +15,13 @@ module Game::Core
     
     def create_rect(x,y,w,h)
       @rect = Rubygame::Rect.new [x, y], [w, h]
+      center x, y
+    end
+    
+    def make_visible
+      @image = Surface.new([@rect.w, @rect.h])
+      @image.set_alpha 50
+      @image.fill([100, 100, 100])
     end
     
     def clear_colliding_objects
@@ -37,7 +44,15 @@ module Game::Core
     end
     
     def collision_detected?(hitbox)
-      @rect.collide_rect? hitbox.rect
+      colliding = @rect.collide_rect? hitbox.rect
+      if visible? then
+        if colliding then
+          @image.fill([178,34,34])
+        else
+          @image.fill([100, 100, 100])
+        end
+      end
+      return colliding
     end
     
     def enable_collision
@@ -50,6 +65,15 @@ module Game::Core
     
     def center(x, y)
       @rect.center = [x, y]
+    end
+    
+    def draw(screen)
+      return if not visible?
+      @image.blit screen, @rect
+    end
+    
+    def visible?
+      @image.nil? == false
     end
     
   end

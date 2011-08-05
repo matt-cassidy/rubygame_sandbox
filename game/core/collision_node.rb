@@ -80,9 +80,9 @@ module Game::Core
     def update(objects)
       get_objects_inside_this_node objects
       return if not contains_objects?
-        
+      
       if not top_node? && objects.size > 1
-        child_nodes.each { |node| node.update @objects }
+        child_nodes.each { |node| node.update @objects_in_this_node }
       else
         check_for_collisions_in_this_node  
       end

@@ -10,6 +10,7 @@ module Game::Entites
       super px, py
       @image = Surface.load(actor[:sprite][:path])
       @hitbox.create_rect(px, py, @image.w, @image.h)
+      @hitbox.make_visible
       @angle = 2*Math::PI * rand
     end
     
@@ -18,7 +19,8 @@ module Game::Entites
     end
     
     def draw(screen)
-      @image.blit(screen, [@px, @py])
+      @hitbox.draw screen
+      @image.blit(screen, @hitbox.rect)
     end
     
     def handle_movement(seconds)
