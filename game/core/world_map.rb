@@ -23,8 +23,11 @@ module Game::Core
     def get_tile(tx, ty, cx, cy)
       x = (tx + TILE_WIDTH / 2 + cx - SCREEN_WIDTH / 2) / TILE_WIDTH
       y = (ty + TILE_HEIGHT / 2 + cy - SCREEN_HEIGHT / 2) / TILE_HEIGHT
-      #puts "xy=#{x},#{y}"
+      
       tile_no = @area[x][y]
+      
+      #puts "xy=#{x},#{y} => #{tile_no}"
+      
       return 0 if tile_no.nil?
       return tile_no
     end
@@ -67,13 +70,14 @@ module Game::Core
             @tiles.blit @background, [tx, ty], @rect_tile
             j = j + 1
         end
-        
+        j = 0
         i = i + 1
       end
 
     end
     
     def draw(screen, cx, cy)
+      #puts "start------------------------"
       blit_tiles cx, cy
       @background.blit screen, [0, 0]
     end
