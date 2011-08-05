@@ -1,27 +1,25 @@
+require "./game/core/game_object.rb"
+
 module Game::Core
 
-  class TextBox
-    attr_accessor :x, :y
-    
-    def initialize(x, y, text)
-      @x = x
-      @y = y
-      @text = Text.new(@x+5, @y+5, text, 16)
-      @width = @text.width + 10
-      @height = @text.height + 10
-      @surface = Rubygame::Surface.new([@width, @height])
-      @background_color = [0, 0, 255]
-      super(@x, @y, @surface)
+  class TextBox < GameObject
+
+    def initialize(px, py)
+      super px, py
+      @font = TTF.new "./resource/ttf/pirulen.ttf", 10
+      @smooth = true
+      @color = [ 255, 255, 255] 
+      @text_surface = @font.render_utf8 " ", @smooth, @color
+      @rect = @text_surface.make_rect
+      @rect.center = [px,py]
     end
     
-    def update
-      draw(surface)
+    def text=(value)
+      @text_surface = @font.render_utf8 value, @smooth, @color
     end
     
     def draw(screen)
-      @surface.fill(@background_color)
-      @surface.blit(screen, [@x, @y], @surface.make_rect)
-      @text.draw(screen)
+      @text_surface.blit screen, @rect 
     end
     
   end

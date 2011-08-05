@@ -12,6 +12,7 @@ include Rubygame::EventTriggers
 
 module Game::Core
   
+  #way too much stuff in here... need to refactor
   class SceneManagerFactory
     
     def self.create
@@ -34,6 +35,8 @@ module Game::Core
       collision_tree = CollisionTree.new parent_collision_node
       
       ScriptManager.load_scripts_from "./scripts"
+      
+      TTF.setup
       
       resource_dir = "./../Resource"
       Surface.autoload_dirs << File.join(resource_dir, "img")  

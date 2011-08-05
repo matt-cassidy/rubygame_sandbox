@@ -5,7 +5,6 @@ module Game::Core
 
   class Entity < GameObject
     
-    attr_reader :entity_id
     attr_reader :hitbox
     
     def initialize(px, py)

@@ -1,4 +1,5 @@
 require "./game/core/script_manager.rb"
+require "./game/core/text_box.rb"
 
 module Game::Core
   
@@ -11,11 +12,13 @@ module Game::Core
       @entity_factory = entity_factory
       @collision_tree = collision_tree
       @seconds = 0
+      
+      @framerate_text = TextBox.new 10, 10
     end
     
     def tick
       @seconds = @clock.tick.seconds
-      #puts @clock.framerate
+      @framerate_text.text = "frame rate: #{@clock.framerate.to_int}"
       update
       draw
     end
@@ -30,13 +33,14 @@ module Game::Core
     
     def draw
       @screen.fill(:black)
+      @framerate_text.draw @screen
       @entities.each { |id,e| e.draw @screen }
       @screen.flip 
     end
     
     def add(name, px, py)
       entity = @entity_factory.create name, px, py
-      @entities[entity.gobject_id] = entity
+      @entities[entity.goid] = entity
       @collision_tree.objects << entity
     end
       
