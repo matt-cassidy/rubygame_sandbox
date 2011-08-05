@@ -36,8 +36,8 @@ module Game::Core
     def draw
       @screen.fill(:black)
       @world.draw @screen, 320, 240
-      @framerate_text.draw @screen
       @entities.each { |id,e| e.draw @screen }
+      @framerate_text.draw @screen
       @screen.flip 
     end
     

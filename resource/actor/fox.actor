@@ -8,10 +8,10 @@ def_actor fox:
 		size: [48,72],
 		animations:
     	{
-    		walk_up: { index: 1, frames: 4, time: [5, 20, 5, 20] },
-    		walk_right: { index: 2, frames: 4, time: [5, 20, 5, 20] },
-    		walk_down: { index: 3, frames: 4, time: [5, 20, 5, 20] },
-    		walk_left: { index: 4, frames: 4, time: [5, 20, 5, 20] },
+    		walk_up: { index: 1, frames: 4, time: [5, 10, 5, 10] },
+    		walk_right: { index: 2, frames: 4, time: [5, 10, 5, 10] },
+    		walk_down: { index: 3, frames: 4, time: [5, 10, 5, 10] },
+    		walk_left: { index: 4, frames: 4, time: [5, 10, 5, 10] },
     	}
     
   	}
