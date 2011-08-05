@@ -37,7 +37,7 @@ module Game::Core
       
       def file_output
         file_format = Log4r::PatternFormatter.new(:pattern => "[ %d ] %l\t %m")
-        log_file = File.dirname(__FILE__) + '/../game.log'
+        log_file = File.dirname(__FILE__) + '/../../game.log'
         Log4r::FileOutputter.new('fileOutputter', :filename => log_file, :trunc => false, :formatter=>file_format)
       end  
     end  
