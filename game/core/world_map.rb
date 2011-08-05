@@ -18,6 +18,8 @@ module Game::Core
       @rect_tile = Rubygame::Rect.new 0, 0, TILE_WIDTH, TILE_HEIGHT 
       @tiles_width = SCREEN_WIDTH / TILE_WIDTH
       @tiles_height = SCREEN_HEIGHT / TILE_HEIGHT
+      @last_cx = -1
+      @last_cy = -1
     end
     
     def get_tile(tx, ty, cx, cy)
@@ -73,12 +75,20 @@ module Game::Core
         j = 0
         i = i + 1
       end
-
+      @last_cx = cx
+      @last_cy = cy
+    end
+    
+    def camera_moved?(cx, cy)
+      return true if @last_cx != cx or @last_cy != cy
+      return false
     end
     
     def draw(screen, cx, cy)
-      #puts "start------------------------"
-      blit_tiles cx, cy
+      #dont re-blit if the camera hasnt moved... blit_tiles is expensive
+      if camera_moved? cx, cy then
+        blit_tiles cx, cy
+      end
       @background.blit screen, [0, 0]
     end
     
