@@ -1,6 +1,6 @@
 def_actor fox: 
 {
-	hitbox: [48,72],
+	hitbox: [38,55],
 
 	sprite: 
 	{
