@@ -5,7 +5,7 @@ module Game::Core
     include Rubygame::EventHandler::HasEventHandler
     
     def initialize
-      @queue = EventQueue.new
+      @queue = Rubygame::EventQueue.new
       @queue.enable_new_style_events
       @keys = [] # Keys being pressed
       create_event_hooks
@@ -17,9 +17,9 @@ module Game::Core
     
     def create_event_hooks
       hooks = {
-        KeyPressed => :key_pressed,
-        KeyReleased => :key_released,
-        QuitEvent => :close,
+        Rubygame::Events::KeyPressed => :key_pressed,
+        Rubygame::Events::KeyReleased => :key_released,
+        Rubygame::QuitEvent => :close,
         :q => :close,
         }
       make_magic_hooks hooks

@@ -8,7 +8,7 @@ module Game::Entites
     
     def initialize(px, py, actor)
       super px, py
-      @image = Surface.load(actor[:sprite][:path])
+      @image = Rubygame::Surface.load(actor[:sprite][:path])
       @hitbox.create_rect(px, py, @image.w, @image.h)
       @hitbox.make_visible
       @angle = 2*Math::PI * rand

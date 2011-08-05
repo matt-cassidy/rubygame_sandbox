@@ -19,7 +19,7 @@ module Game::Core
     end
     
     def make_visible
-      @image = Surface.new([@rect.w, @rect.h])
+      @image = Rubygame::Surface.new([@rect.w, @rect.h])
       @image.set_alpha 50
       @image.fill([100, 100, 100])
     end

@@ -6,7 +6,7 @@ module Game::Core
 
     def initialize(px, py)
       super px, py
-      @font = TTF.new "./resource/ttf/pirulen.ttf", 10
+      @font = Rubygame::TTF.new "./resource/ttf/pirulen.ttf", 10
       @smooth = true
       @color = [ 255, 255, 255] 
       @text_surface = @font.render_utf8 " ", @smooth, @color

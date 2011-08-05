@@ -1,9 +1,6 @@
 require "rubygame"
 require "./game/core/animation_reel.rb"
 
-include Rubygame
-
-
 module Game::Core
 
   class Animation
@@ -18,9 +15,9 @@ module Game::Core
     def initialize(actor)
       create_reels actor
       @frame_time_counter = 0
-      @sprite_sheet = Surface.load(actor[:sprite][:path])
-      @sprite = Surface.new(actor[:sprite][:size])
-      @sprite_rect = Rect.new(@current_reel.position, actor[:sprite][:size])
+      @sprite_sheet = Rubygame::Surface.load(actor[:sprite][:path])
+      @sprite = Rubygame::Surface.new(actor[:sprite][:size])
+      @sprite_rect = Rubygame::Rect.new(@current_reel.position, actor[:sprite][:size])
       @sprite_rect.center = @current_reel.position
     end
     
