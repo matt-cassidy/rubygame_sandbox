@@ -1,0 +1,10 @@
+def_actor planet: 
+{
+	hitbox: [32,32],
+
+	sprite: 
+	{
+		path: "./resource/img/planet_ff.png",
+    	size: [32,32]    
+  	}
+} 

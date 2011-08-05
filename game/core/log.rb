@@ -39,7 +39,7 @@ module Game::Core
     
     def self.add_file_out
       file_format = PatternFormatter.new(:pattern => "[ %d ] %l\t %m")
-      log_file = File.dirname(__FILE__) + '/../game.log'
+      log_file = "./game.log"
       @@log.add FileOutputter.new('fileOutputter', :filename => log_file, :trunc => false, :formatter=>file_format)
     end
     

@@ -6,24 +6,26 @@ module Game::Entites
 
   class Planet < Entity
     
-    def initialize(px, py, w, h)
-      super px, py, w, h
-      @image = Resources.load :surface, "planet"
-      @rect = @image.make_rect
+    def initialize(px, py, actor)
+      super px, py
+      @image = Surface.load(actor[:sprite][:path])
+      @hitbox.create_rect(px, py, @image.w, @image.h)
       @angle = 2*Math::PI * rand
     end
     
     def update(seconds)
-      move seconds
+      handle_movement seconds
     end
     
-    def move(seconds)
+    def draw(screen)
+      @image.blit(screen, [@px, @py])
+    end
+    
+    def handle_movement(seconds)
       @angle = ( @angle + 2*Math::PI / 4 * seconds) % ( 2*Math::PI)
       direction = [Math.sin(@angle), Math.cos(@angle)]
       if(direction[0] != 0 || direction[1] != 0)
-        @x = @x + direction[0]
-        @y = @y + direction[1] 
-        @rect.center = [@x, @y]
+        move direction[0], direction[1] 
       end
     end
       

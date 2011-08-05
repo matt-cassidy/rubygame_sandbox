@@ -44,6 +44,8 @@ module Game::Core
       
       #test objects
       sm.add "Fox", 100, 100
+      #sm.add "Planet", 200, 200
+      
       
       return sm
     end

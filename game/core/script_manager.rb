@@ -10,7 +10,7 @@ module Game::Core
     end
     
     def self.load_scripts_from(scripts_dir)
-      Log.info "Loading script"
+      Log.info "Loading scripts"
       Dir[File.join(".", scripts_dir, "*.actor")].each do |file|
         Log.info "   #{file}"
         instance_eval File.open(file).read
