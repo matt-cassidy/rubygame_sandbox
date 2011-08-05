@@ -1,5 +1,6 @@
 require "./game/core/script_manager.rb"
 require "./game/core/text_box.rb"
+require "./game/core/world_map.rb"
 
 module Game::Core
   
@@ -14,6 +15,7 @@ module Game::Core
       @seconds = 0
       
       @framerate_text = TextBox.new 10, 10
+      @world = WorldMap.new
     end
     
     def tick
@@ -33,6 +35,7 @@ module Game::Core
     
     def draw
       @screen.fill(:black)
+      @world.draw @screen, 320, 240
       @framerate_text.draw @screen
       @entities.each { |id,e| e.draw @screen }
       @screen.flip 

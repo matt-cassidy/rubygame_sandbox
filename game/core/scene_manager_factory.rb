@@ -30,7 +30,7 @@ module Game::Core
       parent_collision_node = CollisionNode.new Rubygame::Rect.new(0, 0, 640, 480), 5
       collision_tree = CollisionTree.new parent_collision_node
       
-      ScriptManager.load_scripts_from "./scripts"
+      ScriptManager.load_scripts_from "./resource/actor"
       
       Rubygame::TTF.setup
       

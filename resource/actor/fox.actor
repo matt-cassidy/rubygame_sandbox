@@ -5,8 +5,8 @@ def_actor fox:
 	sprite: 
 	{
 		path: "./resource/img/pic_walk.png",
-    	size: [48,72],
-    	animations:
+		size: [48,72],
+		animations:
     	{
     		walk_up: { index: 1, frames: 4, time: [5, 20, 5, 20] },
     		walk_right: { index: 2, frames: 4, time: [5, 20, 5, 20] },
