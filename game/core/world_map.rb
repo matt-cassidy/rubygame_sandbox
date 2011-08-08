@@ -23,9 +23,10 @@ module Game::Core
     end
     
     def get_tile(tx, ty, cx, cy)
-      x = (tx + TILE_WIDTH / 2 + cx - SCREEN_WIDTH / 2) / TILE_WIDTH
-      y = (ty + TILE_HEIGHT / 2 + cy - SCREEN_HEIGHT / 2) / TILE_HEIGHT
+      y = (tx + TILE_WIDTH / 2 + cx - SCREEN_WIDTH / 2) / TILE_WIDTH
+      x = (ty + TILE_HEIGHT / 2 + cy - SCREEN_HEIGHT / 2) / TILE_HEIGHT
       
+      #Log.info "X:#{x} Y:#{y}"
       tile_no = @area[x][y]
       
       #puts "xy=#{x},#{y} => #{tile_no}"
@@ -59,14 +60,16 @@ module Game::Core
     end
     
     def blit_tiles(cx, cy)
+      #Create the Screen from left to right, top to bottom
       i, j = 0, 0
       
-      
-      @tiles_width.to_int.times do
+      #Log.info "cx: #{cx} cy #{cy}"
+      @tiles_height.to_int.times do
         
-        @tiles_height.to_int.times do
-            tx = i * TILE_WIDTH - cx % TILE_WIDTH
-            ty = j * TILE_HEIGHT - cy % TILE_HEIGHT
+        @tiles_width.to_int.times do
+            #Log.info "ty: #{i * TILE_WIDTH - cx % TILE_WIDTH}  tx: #{j * TILE_HEIGHT - cy % TILE_HEIGHT}" 
+            ty = i * TILE_WIDTH - cx % TILE_WIDTH
+            tx = j * TILE_HEIGHT - cy % TILE_HEIGHT
             tile_num = get_tile tx, ty, cx, cy
             get_blit_rect tile_num, tx, ty, @rect_tile
             @tiles.blit @background, [tx, ty], @rect_tile
@@ -80,13 +83,18 @@ module Game::Core
     end
     
     def camera_moved?(cx, cy)
-      return true if @last_cx != cx or @last_cy != cy
+      #Log.debug "last_cx #{@last_cx},last_cy #{@last_cy}"
+      if @last_cx != cx or @last_cy != cy then
+        return true
+      end
       return false
     end
     
     def draw(screen, cx, cy)
+      
       #dont re-blit if the camera hasnt moved... blit_tiles is expensive
       if camera_moved? cx, cy then
+        Log.info "Camera moved"
         blit_tiles cx, cy
       end
       @background.blit screen, [0, 0]
