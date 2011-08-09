@@ -1,4 +1,5 @@
 require "./game/core/game_object.rb"
+require "./game/core/text_box.rb"
 require "./game/core/collision_hitbox.rb"
 
 module Game::Core
@@ -7,10 +8,12 @@ module Game::Core
     
     attr_reader :hitbox
     
-    def initialize(px, py)
+    def initialize(px, py,is_player = false)
       super px, py
       @events = []
       @hitbox = CollisionHitbox.new
+      @player =  is_player
+      @location_text = TextBox.new px, py - 50
     end
   
     def update(seconds)
@@ -28,6 +31,17 @@ module Game::Core
       @px = @px + x
       @py = @py + y
       @hitbox.center @px, @py
+
+      @location_text.text = "xy=>#{'%.0f' % @px},#{'%.0f' % @py}"
+      @location_text.update(@px,@py)
+    end
+
+    def screen_location
+      return [@px,@py]
+    end
+
+    def is_player?
+      return @player
     end
   end
 

@@ -26,7 +26,7 @@ module Game::Core
       y = (tx + TILE_WIDTH / 2 + cx - SCREEN_WIDTH / 2) / TILE_WIDTH
       x = (ty + TILE_HEIGHT / 2 + cy - SCREEN_HEIGHT / 2) / TILE_HEIGHT
       
-      #Log.info "X:#{x} Y:#{y}"
+
       tile_no = @area[x][y]
       
       #puts "xy=#{x},#{y} => #{tile_no}"
@@ -49,14 +49,17 @@ module Game::Core
             rect.top = rect.top - ty
             ty = 0
         end
-        
-        if tx + TILE_WIDTH > SCREEN_WIDTH then 
+
+        if tx + TILE_WIDTH > SCREEN_WIDTH then
           rect.right = rect.right + (SCREEN_WIDTH - (tx + TILE_WIDTH))
+
         end
-        if ty + TILE_HEIGHT > SCREEN_HEIGHT then 
+        if ty + TILE_HEIGHT > SCREEN_HEIGHT then
           rect.bottom = rect.bottom + (SCREEN_HEIGHT - (ty + TILE_HEIGHT))
+
         end
-   
+
+
     end
     
     def blit_tiles(cx, cy)
@@ -83,7 +86,7 @@ module Game::Core
     end
     
     def camera_moved?(cx, cy)
-      #Log.debug "last_cx #{@last_cx},last_cy #{@last_cy}"
+      #puts "last_cx #{@last_cx},last_cy #{@last_cy}"
       if @last_cx != cx or @last_cy != cy then
         return true
       end
@@ -91,10 +94,10 @@ module Game::Core
     end
     
     def draw(screen, cx, cy)
-      
+
       #dont re-blit if the camera hasnt moved... blit_tiles is expensive
       if camera_moved? cx, cy then
-        Log.info "Camera moved"
+        #puts "Camera moved xy=>#{cx},#{cy}"
         blit_tiles cx, cy
       end
       @background.blit screen, [0, 0]

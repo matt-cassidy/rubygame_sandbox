@@ -21,7 +21,10 @@ module Game::Core
     def draw(screen)
       @text_surface.blit screen, @rect 
     end
-    
+
+    def update(px,py)
+      @rect.center = [px,py]
+    end
   end
 
 end

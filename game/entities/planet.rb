@@ -6,8 +6,8 @@ module Game::Entites
 
   class Planet < Entity
     
-    def initialize(px, py, actor)
-      super px, py
+    def initialize(px, py, actor,is_player = false)
+      super px, py,is_player
       @image = Rubygame::Surface.load(actor[:sprite][:path])
       @hitbox.create_rect(px, py, @image.w, @image.h)
       @hitbox.make_visible
@@ -21,6 +21,7 @@ module Game::Entites
     def draw(screen)
       @hitbox.draw screen
       @image.blit(screen, @hitbox.rect)
+      @location_text.draw screen
     end
     
     def handle_movement(seconds)

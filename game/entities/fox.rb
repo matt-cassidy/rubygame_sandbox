@@ -8,8 +8,8 @@ module Game::Entites
 
   class Fox < Entity
     
-    def initialize(px, py, actor)
-      super px, py
+    def initialize(px, py, actor,is_player = false)
+      super px, py, is_player
       @input = PlayerInput.new
       @animation = Animation.new actor
       @hitbox.create_rect(px, py, actor[:hitbox][0], actor[:hitbox][1])
@@ -26,6 +26,7 @@ module Game::Entites
     def draw(screen)
       @hitbox.draw screen
       @animation.draw screen, @px, @py
+      @location_text.draw screen
     end
     
     def handle_movement

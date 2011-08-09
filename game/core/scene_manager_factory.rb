@@ -5,6 +5,7 @@ require "game/core/scene_manager"
 require "game/core/collision_node"
 require "game/core/collision_tree"
 require "game/core/script_manager"
+require "game/core/camera"
 
 module Game::Core
   
@@ -38,11 +39,12 @@ module Game::Core
       Rubygame::Surface.autoload_dirs << File.join(resource_dir, "img")  
       Rubygame::Sound.autoload_dirs   << File.join(resource_dir, "sfx")
       Rubygame::Music.autoload_dirs   << File.join(resource_dir, "music")
-      
+
+
       sm = SceneManager.new screen, clock, entity_factory, collision_tree
       
       #test objects
-      sm.add "Fox", 100, 100
+      sm.add "Fox", 320, 240,true
       sm.add "Planet", 200, 200
       
       
