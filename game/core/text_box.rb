@@ -3,23 +3,23 @@ require "./game/core/game_object.rb"
 module Game::Core
 
   class TextBox < GameObject
-
-    def initialize(px, py)
-      super px, py
-      @font = Rubygame::TTF.new "./resource/ttf/pirulen.ttf", 12
+    
+    attr_accessor :color
+    attr_accessor :position
+    attr_accessor :text
+    
+    def initialize(pos, text, font_size, color)
+      super pos
+      @font = Rubygame::TTF.new "./resource/ttf/pirulen.ttf", font_size
       @smooth = true
-      @color = [ 255, 255, 255] 
-      @text_surface = @font.render_utf8 " ", @smooth, @color
-      @rect = @text_surface.make_rect
-      @rect.center = [px,py]
+      @color = color
+      @surface = nil
+      @text = text
     end
     
-    def text=(value)
-      @text_surface = @font.render_utf8 value, @smooth, @color
-    end
-    
-    def draw(screen)
-      @text_surface.blit screen, @rect 
+    def draw(surface)
+      @surface = @font.render_utf8 @text, @smooth, @color
+      @surface.blit surface, pos
     end
     
   end

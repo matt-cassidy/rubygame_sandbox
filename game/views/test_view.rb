@@ -17,7 +17,8 @@ module Game::Views
       parent_collision_node = Game::Core::CollisionNode.new Rubygame::Rect.new(0, 0, 640, 480), 5
       @collision_tree = Game::Core::CollisionTree.new parent_collision_node
 
-      @framerate_text = Game::Core::TextBox.new 10, 10
+      #os, text, font_size, color
+      @framerate_text = Game::Core::TextBox.new [10, 10], "framerate", 14, [255,255,255]
       @world = Game::Core::WorldMap.new
 
       create_entity "Fox", 100, 100
@@ -44,7 +45,7 @@ module Game::Views
       Game::Core::Log.debug "Adding '#{name}' at #{px},#{py}"
       actor = Game::Core::ScriptManager.actors["#{name.downcase}"]
       require "./game/entities/#{name.downcase}.rb"
-      entity = Game::Entities.const_get(name).new px, py, actor
+      entity = Game::Entities.const_get(name).new [px, py], actor
       @entities[entity.goid] = entity
       @collision_tree.objects << entity
     end

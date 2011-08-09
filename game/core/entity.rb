@@ -7,8 +7,8 @@ module Game::Core
     
     attr_reader :hitbox
     
-    def initialize(px, py)
-      super px, py
+    def initialize(pos)
+      super pos
       @events = []
       @hitbox = CollisionHitbox.new
     end
@@ -24,10 +24,11 @@ module Game::Core
       @events.delete_if {|e| e.is_finished}
     end
     
-    def move(x,y)
-      @px = @px + x
-      @py = @py + y
-      @hitbox.center @px, @py
+    def move(pos)
+      @pos[0] = @pos[0] + pos[0]
+      @pos[1]  = @pos[1] + pos[1]
+      
+      @hitbox.center @pos[0], @pos[1]
     end
   end
 
