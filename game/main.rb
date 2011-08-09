@@ -11,10 +11,11 @@ $:.unshift GAME_ROOT
 module Game
   class << self
     def run      
-      @scene_manager = Game::Core::SceneManagerFactory.create
+      view_manager = Game::Core::ViewManager.new
       catch(:quit) do
         loop do
-          @scene_manager.tick
+          view_manager.update
+          view_manager.draw
         end
       end
       Rubygame.quit

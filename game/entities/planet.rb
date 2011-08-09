@@ -2,7 +2,7 @@ require "./game/core/entity.rb"
 
 include Game::Core
 
-module Game::Entites
+module Game::Entities
 
   class Planet < Entity
     
