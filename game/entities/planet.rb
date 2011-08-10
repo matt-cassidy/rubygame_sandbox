@@ -7,9 +7,8 @@ module Game::Entities
   class Planet < Entity
     
     def initialize(pos)
-      actor = Game::Core::ScriptManager.actors["planet"]
-      @image = Rubygame::Surface.load(actor[:sprite][:path])
-      super pos, [@image.w, @image.h]
+      super pos, "planet"
+      @image = Rubygame::Surface.load(@actor[:sprite][:path])
       @hitbox.make_visible
       @angle = 2*Math::PI * rand
     end

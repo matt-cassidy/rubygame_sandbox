@@ -5,8 +5,8 @@ module Game::Entities
   class PlayerPaddle < Game::Core::Entity
     
     def initialize(pos)
+      super pos, "player_paddle"
       @image = Rubygame::Surface.new [50,150]
-      super pos, [@image.w, @image.h]
       @hitbox.make_visible
       @ball_reset = true
       @dir = [0,0]

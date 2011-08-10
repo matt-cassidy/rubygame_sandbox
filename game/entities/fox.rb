@@ -7,10 +7,9 @@ module Game::Entities
   class Fox < Game::Core::Entity
     
     def initialize(pos)
-      actor = Game::Core::ScriptManager.actors["fox"]
-      super pos, actor[:hitbox]
+      super pos, "fox"
       @input = Game::Core::PlayerInput
-      @animation = Game::Core::Animation.new actor
+      @animation = Game::Core::Animation.make @actor
       @hitbox.make_visible
     end
   
@@ -22,7 +21,7 @@ module Game::Entities
     
     def draw(screen)
       @hitbox.draw screen
-      @animation.draw screen, @pos[0], @pos[1]
+      @animation.draw screen, @pos
     end
     
     def handle_movement
