@@ -15,7 +15,6 @@ module Game
       catch(:quit) do
         loop do
           view_manager.update
-          view_manager.draw
         end
       end
       Rubygame.quit

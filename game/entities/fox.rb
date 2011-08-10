@@ -10,14 +10,13 @@ module Game::Entities
     
     def initialize(pos, actor)
       super pos
-      @input = PlayerInput.new
+      @input = PlayerInput
       @animation = Animation.new actor
       @hitbox.create_rect(pos[0], pos[1], actor[:hitbox][0], actor[:hitbox][1])
       @hitbox.make_visible
     end
   
     def update(seconds)
-      @input.fetch
       handle_movement
       handle_animation
       handle_collisions
