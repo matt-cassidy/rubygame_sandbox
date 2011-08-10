@@ -26,6 +26,13 @@ module Game::Entities
       @animation.draw screen, @pos
     end
     
+    def move(pos)
+      puts "Moved Start xy=>#{pos}"
+      changed
+      notify_observers(self,[-pos[0],-pos[1]])
+      puts "Moved End"
+    end
+    
     def handle_movement
       x, y = 0,0
       x -= 1 if @input.key_pressed?( :left )

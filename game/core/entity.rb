@@ -1,9 +1,11 @@
 require "./game/core/game_object.rb"
 require "./game/core/script_manager.rb"
+require "observer"
 
 module Game::Core
 
   class Entity < GameObject
+    include Observable
     
     def initialize(pos, size)
       super pos, size
