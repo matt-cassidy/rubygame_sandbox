@@ -1,9 +1,9 @@
 require "game/views/hud_view.rb"
-require "game/views/view_mgmt_modal_view.rb"
+require "game/views/modal_view.rb"
 
 module Game::Views
 
-  class ViewMgmtView < Game::Core::View
+  class ViewTestView < Game::Core::View
     
     def initialize
       super
@@ -22,7 +22,7 @@ module Game::Views
       
       @hud = HudView.new
       
-      @modal_dialog = ViewMgmtModalView.new
+      @modal_dialog = ModalView.new
       add_view @modal_dialog
     end
     

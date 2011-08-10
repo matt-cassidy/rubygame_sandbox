@@ -1,5 +1,5 @@
 require "game/views/test_view.rb"
-require "game/views/view_mgmt_view.rb"
+require "game/views/view_test_view.rb"
 require "game/core/player_input.rb"
 
 module Game::Views
@@ -16,7 +16,6 @@ module Game::Views
       @menu.add_item "View Management", method(:menu_view_mgmt_selected)
       @menu.add_item "Exit", method(:menu_exit_selected)
       @menu.select_by_index 0
-      
       @input = Game::Core::PlayerInput
     end
     
@@ -29,21 +28,21 @@ module Game::Views
     end
     
     def menu_game_logic_selected
-      test = TestView.new
-      test.show
-      @parent.add_view test
-      close
+      show_view TestView.new
     end
     
     def menu_view_mgmt_selected
-      viewmgmt = ViewMgmtView.new
-      viewmgmt.show
-      @parent.add_view viewmgmt
-      close
+      show_view ViewTestView.new
     end
     
     def menu_exit_selected
       quit
+    end
+    
+    def show_view(view)
+      view.show
+      @parent.add_view view
+      close
     end
     
   end

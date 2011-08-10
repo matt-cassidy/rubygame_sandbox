@@ -1,8 +1,7 @@
-require "game/views/hud_view.rb"
 
 module Game::Views
 
-  class ViewMgmtModalView < Game::Core::View
+  class ModalView < Game::Core::View
     
     def initialize
       super

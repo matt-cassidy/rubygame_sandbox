@@ -8,7 +8,6 @@ module Game::Views
     
     def loading
       @surface = Rubygame::Surface.load("./resource/img/hud_bk.png")
-      
     end
     
     def update(seconds, clock)
