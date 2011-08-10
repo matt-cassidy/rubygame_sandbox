@@ -8,15 +8,15 @@ module Game::Entities
 
   class Fox < Entity
     
-    def initialize(px, py, actor,is_player = false)
-      super px, py, is_player
+    def initialize(pos, actor)
+      super pos
       @input = PlayerInput.new
       @animation = Animation.new actor
-      @hitbox.create_rect(px, py, actor[:hitbox][0], actor[:hitbox][1])
+      @hitbox.create_rect(pos[0], pos[1], actor[:hitbox][0], actor[:hitbox][1])
       @hitbox.make_visible
     end
   
-    def update_events(seconds)
+    def update(seconds)
       @input.fetch
       handle_movement
       handle_animation
@@ -25,8 +25,7 @@ module Game::Entities
 
     def draw(screen)
       @hitbox.draw screen
-      @animation.draw screen, @px, @py
-      @location_text.draw screen
+      @animation.draw screen, @pos[0], @pos[1]
     end
     
     def handle_movement
@@ -36,11 +35,17 @@ module Game::Entities
       y -= 1 if @input.key_pressed?( :up ) # up is down in screen coordinates
       y += 1 if @input.key_pressed?( :down )
       if(x != 0 || y != 0)
-        puts "Fox moved"
-        move x, y
+        move [x, y]
       end
     end
-    
+
+    def move(pos)
+      puts "Moved Start xy=>#{pos}"
+      changed
+      notify_observers(self,[-pos[0],-pos[1]])
+      puts "Moved End"
+    end
+
     def handle_animation
       #this needs to be streamlined somehow... animations should be implicit via state
       moving = false

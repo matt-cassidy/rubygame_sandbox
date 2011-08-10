@@ -3,13 +3,11 @@ require "./game/core/goid.rb"
 module Game::Core
 
   class GameObject
-    attr_reader :px
-    attr_reader :py
+    attr_reader :pos
     attr_reader :goid
      
-    def initialize(px, py)
-      @px = px
-      @py = py
+    def initialize(pos)
+      @pos = pos
       @goid = GOID.next
     end
     
@@ -17,7 +15,7 @@ module Game::Core
       #implement in sub class  
     end
     
-    def draw(screen)
+    def draw(surface)
       #implement in sub class
     end
     

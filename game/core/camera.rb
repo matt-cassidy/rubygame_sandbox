@@ -5,12 +5,12 @@ require "observer"
 
 module Game::Core
 
-  class Camera < GameObject
+  class Camera
     include Observable
 
     BOUNDARY_BOX_WIDTH  =64
     BOUNDARY_BOX_HEIGHT = 64
-    def initialize(world,start_cx,start_cy,view_width=640,view_height=480,actor=nil)
+    def initialize(world,start_cx,start_cy,view_width=640,view_height=480,entity=nil)
         @input = PlayerInput.new
 
         @view_width=view_width
@@ -23,7 +23,7 @@ module Game::Core
         @map_cx = start_cx
         @map_cy = start_cy
 
-        @actor = actor
+        @entity = entity
       end
 
       def get_off_set
@@ -43,41 +43,22 @@ module Game::Core
         @view_height = view_height
       end
 
-      #change the actor
-      def set_actor(actor)
-        @actor = actor
-        follow_actor
+      #change the entity, listen to changes from this entity
+      def set_actor(entity)
+        @entity = entity
+        @entity.add_observer(self)
       end
 
-      #move position to the actor
-      def follow_actor
-        @input.fetch
-        if @actor.nil? == false then
-          update_position(@actor.hitbox.rect.centerx,@actor.hitbox.rect.centery)
-        else
-          update_position(0,0)
-        end
+      #since the actor will indicate move away, camera must follow
+      def update(who,pos)
+        #puts "Camera updates callback who #{who}"
+        move([-pos[0],-pos[1]])
+        #puts "Camera updates callback end"
       end
 
-      #move the camera to a position
-      #this would be used to follow say a path
-      def update_position(cx,cy)
-
-            x, y = 0,0
-            x -= 1 if @input.key_pressed?( :a )
-            x += 1 if @input.key_pressed?( :d )
-            y -= 1 if @input.key_pressed?( :w ) # up is down in screen coordinates
-            y += 1 if @input.key_pressed?( :s )
-            if(x != 0 || y != 0)
-                 move x,y
-                 changed
-                 notify_observers(x,y)
-            end
-      end
-
-      def move(x,y)
-          new_x = @map_cx + x
-          new_y = @map_cy + y
+      def move(pos)
+          new_x = @map_cx + pos[0]
+          new_y = @map_cy + pos[1]
 
           #puts "new_x #{new_x} left+w #{@world.left + @view_width/2} right+width #{@world.right + @view_width/2}"
           if (new_x >= (@world.left + @view_width /2) and new_x <= (@world.right + @view_width/2)) then
@@ -88,31 +69,12 @@ module Game::Core
           if (new_y <= (@world.bottom - @view_height /2) and new_y >= (@world.top + @view_height/2))then
               @map_cy = new_y
           end
+
+          #alert observers that a changed occurred
+          changed
+          #use the inverse to tell all to move the "away" from the camera
+          notify_observers(self,[-pos[0],-pos[1]])
       end
-
-      def draw(screen)
-        offset = get_off_set
-        placeholderC = TextBox.new @viewport.centerx, @viewport.centery
-        placeholderC.text = "offset xy #{offset[0]},#{offset[1]}"
-        placeholderC.draw screen
-
-        placeholderTL = TextBox.new @viewport.x, @viewport.y
-        placeholderTL.text = "TL"
-        placeholderTL.draw screen
-
-        placeholderTR = TextBox.new @viewport.x + @viewport.w, @viewport.y
-        placeholderTR.text = "TR"
-        placeholderTR.draw screen
-
-        placeholderBL = TextBox.new @viewport.x, @viewport.y + @viewport.h
-        placeholderBL.text = "BL"
-        placeholderBL.draw screen
-
-        placeholderBR = TextBox.new @viewport.x + @viewport.w, @viewport.y + @viewport.h
-        placeholderBR.text = "BR"
-        placeholderBR.draw screen
-      end
-
   end
 
 

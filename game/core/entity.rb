@@ -1,21 +1,21 @@
 require "./game/core/game_object.rb"
 require "./game/core/text_box.rb"
 require "./game/core/collision_hitbox.rb"
+require "observer"
 
 module Game::Core
 
   class Entity < GameObject
+    include Observable
     attr_reader :hitbox
     
-    def initialize(px, py,is_player = false)
-      super px, py
+    def initialize(pos)
+      super pos
       @events = []
       @hitbox = CollisionHitbox.new
-      @player =  is_player
-      @location_text = TextBox.new px, py - 50
     end
-  
-    def update_events(seconds)
+
+    def update(seconds)
       #implement in sub class 
     end
 
@@ -25,22 +25,17 @@ module Game::Core
       end
       @events.delete_if {|e| e.is_finished}
     end
-    
-    def move(x,y)
-      @px = @px + x
-      @py = @py + y
-      @hitbox.center @px, @py
 
-      @location_text.text = "xy=>#{'%.0f' % @px},#{'%.0f' % @py}"
-      @location_text.update(@px,@py)
-    end
 
-    def screen_location
-      return [@px,@py]
-    end
+    def move(pos)
+      #player objects should override this method
 
-    def is_player?
-      return @player
+      @pos[0] = @pos[0] + pos[0]
+      @pos[1]  = @pos[1] + pos[1]
+      
+      @hitbox.center @pos[0], @pos[1]
+      changed
+      notify_observers(self,pos)
     end
 
   end

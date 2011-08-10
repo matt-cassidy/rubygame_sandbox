@@ -16,12 +16,11 @@ module Game::Core
     end
     
     def create_event_hooks
-      hooks = {
+      hooks = 
+      {
         Rubygame::Events::KeyPressed => :key_pressed,
         Rubygame::Events::KeyReleased => :key_released,
-        Rubygame::QuitEvent => :close,
-        :q => :close,
-        }
+      }
       make_magic_hooks hooks
     end
     
@@ -31,10 +30,6 @@ module Game::Core
    
     def key_released( event )
       @keys -= [event.key]
-    end
-    
-    def close
-      throw :quit
     end
     
     def key_pressed?(key)

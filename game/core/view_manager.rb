@@ -8,6 +8,7 @@ module Game::Core
       Log.info "Initializing view manager..."
 
       @views = []
+      @views_closing = []
 
       resolution = [640,480]
       Log.info "Creating screen #{resolution}"
@@ -34,7 +35,15 @@ module Game::Core
 
     def update
       seconds = @clock.tick.seconds
-      @views.each { |view| view.update seconds, @clock }
+      close_views
+      @views.each do |view| 
+        if not view.loaded? then
+          Log.info "loading view #{view.class}"
+          view.loading 
+          view.loaded = true
+        end
+        view.update_screen seconds, @clock
+      end
     end
 
     def draw
@@ -42,14 +51,23 @@ module Game::Core
       @screen.flip
     end
 
+    def close_views
+      return if @views_closing.empty?
+      @views_closing.each do |view|
+        Log.info "closing view #{view.class}"
+        view.closing
+        @views.delete view
+      end
+      @views_closing.clear
+    end
+    
     def add_view(view)
-      puts "setting view manager #{view}"
       view.view_manager = self
       @views << view
     end
 
     def remove_view(view)
-      @views.delete view
+      @views_closing << view
     end
 
 

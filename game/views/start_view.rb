@@ -1,4 +1,4 @@
-require "game/views/test_view"
+require "game/views/menu_view"
 
 module Game::Views
 
@@ -7,10 +7,10 @@ module Game::Views
     def initialize
       super
     end
-
-    def update(seconds, clock)
-      @view_manager.add_view TestView.new
-      @view_manager.remove_view self
+    
+    def loading
+      @view_manager.add_view MenuView.new
+      close
     end
 
   end
