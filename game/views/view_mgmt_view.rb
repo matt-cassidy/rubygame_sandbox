@@ -16,7 +16,7 @@ module Game::Views
       @menu.add_item "Hide Hud", method(:menu_hide_hud_selected)
       @menu.add_item "Close Hud", method(:menu_close_hud_selected)
       @menu.add_item "Show Modal View", method(:menu_show_modal_selected)
-      @menu.add_item "Fake Exit", method(:menu_fake_exit_selected)
+      @menu.add_item "Cancel Exit Event", method(:menu_fake_exit_selected)
       @menu.add_item "Exit", method(:menu_exit_selected)
       @menu.select_by_index 0
       
@@ -47,7 +47,7 @@ module Game::Views
     end
     
     def menu_close_hud_selected
-      remove_view @hud
+      @hud.close
     end
     
     def menu_exit_selected
