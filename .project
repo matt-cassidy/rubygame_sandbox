@@ -10,7 +10,7 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
-	</buildSpec> 
+	</buildSpec>
 	<natures>
 		<nature>com.aptana.ruby.core.rubynature</nature>
 	</natures>

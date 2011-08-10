@@ -23,8 +23,8 @@ module Game::Core
     end
     
     def get_tile(tx, ty, cx, cy)
-      y = (tx + TILE_WIDTH / 2 + cx - SCREEN_WIDTH / 2) / TILE_WIDTH
-      x = (ty + TILE_HEIGHT / 2 + cy - SCREEN_HEIGHT / 2) / TILE_HEIGHT
+      y = (tx + (TILE_WIDTH / 2) + cx - SCREEN_WIDTH / 2) / TILE_WIDTH
+      x = (ty + (TILE_HEIGHT / 2) + cy - SCREEN_HEIGHT / 2) / TILE_HEIGHT
       
 
       tile_no = @area[x][y]
@@ -65,22 +65,28 @@ module Game::Core
     def blit_tiles(cx, cy)
       #Create the Screen from left to right, top to bottom
       i, j = 0, 0
-      
-      #Log.info "cx: #{cx} cy #{cy}"
+
+      point = full_size
+      puts "Bilt Tiles"
       @tiles_height.to_int.times do
         
         @tiles_width.to_int.times do
-            #Log.info "ty: #{i * TILE_WIDTH - cx % TILE_WIDTH}  tx: #{j * TILE_HEIGHT - cy % TILE_HEIGHT}" 
             ty = i * TILE_WIDTH - cx % TILE_WIDTH
             tx = j * TILE_HEIGHT - cy % TILE_HEIGHT
+
+
+
             tile_num = get_tile tx, ty, cx, cy
             get_blit_rect tile_num, tx, ty, @rect_tile
             @tiles.blit @background, [tx, ty], @rect_tile
+            puts "i #{i} j#{j} tilenum #{tile_num} tx: #{tx} ty #{ty}"
+
             j = j + 1
         end
         j = 0
         i = i + 1
       end
+
       @last_cx = cx
       @last_cy = cy
     end
@@ -99,10 +105,15 @@ module Game::Core
       if camera_moved? cx, cy then
         #puts "Camera moved xy=>#{cx},#{cy}"
         blit_tiles cx, cy
+        #@tiles.x = cx
+        #@tiles.y = cy
       end
       @background.blit screen, [0, 0]
     end
-    
+
+    def full_size
+      return Hash["width",@area.length * TILE_WIDTH,"height",@area[0].length * TILE_HEIGHT]
+    end
   end
   
 end

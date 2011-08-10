@@ -1,11 +1,11 @@
 require "./game/core/game_object.rb"
 require "./game/core/text_box.rb"
 require "./game/core/collision_hitbox.rb"
-
+require "observer"
 module Game::Core
 
   class Entity < GameObject
-    
+    include Observable
     attr_reader :hitbox
     
     def initialize(px, py,is_player = false)

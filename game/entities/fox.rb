@@ -4,7 +4,7 @@ require "./game/core/animation.rb"
 
 include Game::Core
 
-module Game::Entites
+module Game::Entities
 
   class Fox < Entity
     
