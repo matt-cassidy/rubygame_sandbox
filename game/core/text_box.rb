@@ -9,7 +9,7 @@ module Game::Core
     attr_accessor :text
     
     def initialize(pos, text, font_size, color)
-      super pos
+      super pos, [50, 50]
       @font = Rubygame::TTF.new "./resource/ttf/pirulen.ttf", font_size
       @smooth = true
       @color = color

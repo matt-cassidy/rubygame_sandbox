@@ -8,8 +8,9 @@ module Game::Core
   class Camera
     include Observable
 
-    BOUNDARY_BOX_WIDTH  =64
+    BOUNDARY_BOX_WIDTH  = 64
     BOUNDARY_BOX_HEIGHT = 64
+    
     def initialize(world,start_cx,start_cy,view_width=640,view_height=480,entity=nil)
         @input = PlayerInput.new
 
@@ -46,14 +47,12 @@ module Game::Core
       #change the entity, listen to changes from this entity
       def set_actor(entity)
         @entity = entity
-        @entity.add_observer(self)
+        #@entity.add_observer(self,:follow_entity)
       end
 
       #since the actor will indicate move away, camera must follow
-      def update(who,pos)
-        #puts "Camera updates callback who #{who}"
+      def follow_entity(who,pos)
         move([-pos[0],-pos[1]])
-        #puts "Camera updates callback end"
       end
 
       def move(pos)

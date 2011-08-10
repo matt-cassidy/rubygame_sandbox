@@ -1,23 +1,21 @@
 require "./game/core/player_input.rb"
-require "./game/core/entity.rb"
+require "./game/core/game_object.rb"
 require "./game/core/animation.rb"
-
-include Game::Core
 
 module Game::Entities
 
-  class Fox < Entity
+  class Fox < Game::Core::Entity
     
-    def initialize(pos, actor)
-      super pos
-      @input = PlayerInput.new
-      @animation = Animation.new actor
-      @hitbox.create_rect(pos[0], pos[1], actor[:hitbox][0], actor[:hitbox][1])
+    def initialize(pos)
+      @actor = load_script "fox"
+      
+      super pos, @actor[:hitbox]
+      @input = Game::Core::PlayerInput
+      @animation = Game::Core::Animation.make @actor
       @hitbox.make_visible
     end
   
-    def update(seconds)
-      @input.fetch
+    def update(clock)
       handle_movement
       handle_animation
       handle_collisions
@@ -25,9 +23,9 @@ module Game::Entities
 
     def draw(screen)
       @hitbox.draw screen
-      @animation.draw screen, @pos[0], @pos[1]
+      @animation.draw screen, @pos
     end
-    
+
     def handle_movement
       x, y = 0,0
       x -= 1 if @input.key_pressed?( :left )
@@ -35,15 +33,13 @@ module Game::Entities
       y -= 1 if @input.key_pressed?( :up ) # up is down in screen coordinates
       y += 1 if @input.key_pressed?( :down )
       if(x != 0 || y != 0)
-        move [x, y]
+        shift [x, y]
       end
     end
 
-    def move(pos)
-      puts "Moved Start xy=>#{pos}"
+    def shift(pos)
       changed
       notify_observers(self,[-pos[0],-pos[1]])
-      puts "Moved End"
     end
 
     def handle_animation

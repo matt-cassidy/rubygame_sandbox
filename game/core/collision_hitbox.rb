@@ -7,15 +7,12 @@ module Game::Core
     attr_reader :collidable
     attr_reader :rect 
     
-    def initialize()
+    def initialize(pos, size)
       @rect = nil
       @colliding_with = []
       @collidable = true
-    end
-    
-    def create_rect(x,y,w,h)
-      @rect = Rubygame::Rect.new [x, y], [w, h]
-      center x, y
+      @rect = Rubygame::Rect.new(pos, size)
+      center [pos[0],pos[1]]
     end
     
     def make_visible
@@ -45,6 +42,11 @@ module Game::Core
     
     def collision_detected?(hitbox)
       colliding = @rect.collide_rect? hitbox.rect
+      color_rect colliding
+      return colliding
+    end
+    
+    def color_rect(colliding)
       if visible? then
         if colliding then
           @image.fill([178,34,34])
@@ -52,7 +54,6 @@ module Game::Core
           @image.fill([100, 100, 100])
         end
       end
-      return colliding
     end
     
     def enable_collision
@@ -63,8 +64,8 @@ module Game::Core
       @collidable = false
     end
     
-    def center(x, y)
-      @rect.center = [x, y]
+    def center(pos)
+      @rect.center = pos
     end
     
     def draw(screen)

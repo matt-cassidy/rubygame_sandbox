@@ -1,4 +1,5 @@
 require "game/views/start_view.rb"
+require "game/core/game_clock"
 
 module Game::Core
 
@@ -7,9 +8,6 @@ module Game::Core
     def initialize
       Log.info "Initializing view manager..."
 
-      @views = []
-      @views_closing = []
-
       resolution = [640,480]
       Log.info "Creating screen #{resolution}"
       @screen = Rubygame::Screen.new resolution, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
@@ -17,10 +15,14 @@ module Game::Core
 
       fps = 60
       Log.info "Clocking game at #{fps} fps"
-      @clock = Rubygame::Clock.new
-      @clock.target_framerate = fps
-      @clock.enable_tick_events
+      rgclock = Rubygame::Clock.new
+      rgclock.target_framerate = fps
+      rgclock.enable_tick_events
 
+      @clock = GameClock.new rgclock 
+      
+      PlayerInput.setup
+      
       ScriptManager.load_scripts_from "./resource/actor"
 
       Rubygame::TTF.setup
@@ -29,48 +31,53 @@ module Game::Core
       Rubygame::Surface.autoload_dirs << File.join(resource_dir, "img")
       Rubygame::Sound.autoload_dirs   << File.join(resource_dir, "sfx")
       Rubygame::Music.autoload_dirs   << File.join(resource_dir, "music")
-
-      add_view Game::Views::StartView.new
+      
+      @master_view = Game::Views::StartView.new
+      @master_view.show
     end
 
     def update
-      seconds = @clock.tick.seconds
-      close_views
-      @views.each do |view| 
-        if not view.loaded? then
-          Log.info "loading view #{view.class}"
-          view.loading 
-          view.loaded = true
-        end
-        view.update_screen seconds, @clock
-      end
-    end
-
-    def draw
-      @views.each { |view| view.draw @screen }
+      @clock.tick
+      @screen.fill :black
+      PlayerInput.fetch
+      process_view @master_view
       @screen.flip
     end
-
-    def close_views
-      return if @views_closing.empty?
-      @views_closing.each do |view|
-        Log.info "closing view #{view.class}"
-        view.closing
-        @views.delete view
+    
+    def process_view(view)
+      return if not view.visible?
+      update_view view
+      draw_view view
+      view.children.each do |child| 
+        process_view child
       end
-      @views_closing.clear
     end
     
-    def add_view(view)
-      view.view_manager = self
-      @views << view
+    def update_view(view)
+      load_view view
+      return if view.frozen?
+      check_quit_request view
+      view.update @clock
     end
-
-    def remove_view(view)
-      @views_closing << view
+    
+    def check_quit_request(view)
+      if view.quit_requested? then
+        Log.info "Quit requested by #{view.class}"
+        @master_view.close
+      end
     end
-
-
+    
+    def load_view(view)
+      return if view.loaded?
+      Log.info "Loading view #{view.class}"
+      view.loading 
+      view.loaded = true
+    end
+    
+    def draw_view(view)
+      view.draw @screen
+    end
+    
   end
 
 
