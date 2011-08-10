@@ -15,6 +15,7 @@ module Game::Core
       @loaded = false
       @visible = false
       @freeze = false
+      @quit_requested = false
     end
     
     def loading
