@@ -5,6 +5,7 @@ module Game::Core
 
   class GameObject
     
+    attr_reader :events
     attr_reader :pos
     attr_reader :size
     attr_reader :goid
@@ -14,6 +15,7 @@ module Game::Core
       @pos = pos
       @size = size
       @goid = GOID.next
+      @events = []
       @hitbox = CollisionHitbox.new pos, size
     end
     
@@ -35,6 +37,13 @@ module Game::Core
       @pos[1]  = @pos[1] + pos[1]
       @hitbox.center [@pos[0], @pos[1]]
     end
+    
+    def cool_down_events(seconds)
+      @events.each { |e| e.cool_down seconds } 
+      @events.delete_if {|e| e.is_finished}
+    end
+    
+
     
   end
 

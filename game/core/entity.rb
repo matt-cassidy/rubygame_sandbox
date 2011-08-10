@@ -5,25 +5,16 @@ module Game::Core
 
   class Entity < GameObject
     
-    attr_reader :events
-    attr_reader :actor
-    
-    def initialize(pos, script_name)
-      load_script script_name
-      super pos, @actor[:hitbox]
-      @events = []
-    end
-    
-    def cool_down_events(seconds)
-      @events.each { |e| e.cool_down seconds } 
-      @events.delete_if {|e| e.is_finished}
+    def initialize(pos, size)
+      super pos, size
     end
     
     def load_script(script_name)
-      @actor = ScriptManager.actors[script_name]
-      if @actor.nil?
-        Log.error "Script '#{script_name}' not found!"
+      script = ScriptManager.actors[script_name]
+      if script.nil? then 
+        Log.error "Script '#{script_name}' does not exist"
       end
+      return script
     end
   
   end

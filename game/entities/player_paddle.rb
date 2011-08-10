@@ -7,7 +7,9 @@ module Game::Entities
     MOVE_SPEED = 5.0
     
     def initialize(pos)
-      super pos, "player_paddle"
+      @actor = load_script "paddle"
+      
+      super pos, @actor[:hitbox]
       @image = Rubygame::Surface.new [35,150]
       @image.fill :white
       @hitbox.make_visible

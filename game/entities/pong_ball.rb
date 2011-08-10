@@ -5,7 +5,9 @@ module Game::Entities
   class PongBall < Game::Core::Entity
     
     def initialize(pos)
-      super pos, "pong_ball"
+      @actor = load_script "pong_ball"
+      
+      super pos, @actor[:hitbox]
       @image = Rubygame::Surface.load(@actor[:sprite][:path])
       @hitbox.make_visible
       @debugtxt = Game::Core::TextBox.new pos, "x,y", 8, :white

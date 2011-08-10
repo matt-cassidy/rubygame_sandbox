@@ -1,4 +1,4 @@
-def_actor player_paddle: 
+def_actor paddle: 
 {
   hitbox: [32,32],
 

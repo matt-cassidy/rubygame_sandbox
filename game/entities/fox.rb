@@ -1,5 +1,5 @@
 require "./game/core/player_input.rb"
-require "./game/core/entity.rb"
+require "./game/core/game_object.rb"
 require "./game/core/animation.rb"
 
 module Game::Entities
@@ -7,7 +7,9 @@ module Game::Entities
   class Fox < Game::Core::Entity
     
     def initialize(pos)
-      super pos, "fox"
+      @actor = load_script "fox"
+      
+      super pos, @actor[:hitbox]
       @input = Game::Core::PlayerInput
       @animation = Game::Core::Animation.make @actor
       @hitbox.make_visible
