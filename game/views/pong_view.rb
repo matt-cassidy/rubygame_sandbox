@@ -1,5 +1,6 @@
 require "game/entities/pong_ball.rb"
 require "game/entities/player_paddle.rb"
+require "game/entities/com_paddle.rb"
 
 module Game::Views
   
@@ -10,8 +11,17 @@ module Game::Views
     end
     
     def loading
+      @entities = []
+      
       @ball = Game::Entities::PongBall.new [280,200]
+      @entities << @ball
+      
       @player = Game::Entities::PlayerPaddle.new [10, 10]
+      @entities << @player
+      
+      @com = Game::Entities::ComPaddle.new [600, 10]
+      @entities << @com
+      
       @input = Game::Core::PlayerInput
       @paused = false
     end
@@ -19,12 +29,11 @@ module Game::Views
     def update(clock)
       handle_pause
       handle_quit
-      update_ball clock
-      
+      update_entities clock
     end
     
     def draw(surface)
-      @ball.draw surface
+      @entities.each { |e| e.draw surface }
     end
     
     def handle_pause
@@ -39,10 +48,9 @@ module Game::Views
       end
     end
     
-    def update_ball(clock)
-      if not @paused then 
-        @ball.update clock
-      end
+    def update_entities(clock)
+      return if @paused 
+      @entities.each { |e| e.update clock }
     end
     
   end

@@ -20,9 +20,9 @@ module Game::Core
     end
     
     def load_script(script_name)
-      @actor = ScriptManager.actors[script]
+      @actor = ScriptManager.actors[script_name]
       if @actor.nil?
-        Log.error "Script '#{script}' not found!"
+        Log.error "Script '#{script_name}' not found!"
       end
     end
   
