@@ -30,8 +30,8 @@ module Game::Core
       @input = Game::Core::PlayerInput
     end
     
-    def update(seconds)
-      @timer.cool_down seconds
+    def update(clock)
+      @timer.cool_down clock.seconds
       if(@input.key_pressed?( :return )) 
         trigger
       elsif(@input.key_pressed?( :down )) 

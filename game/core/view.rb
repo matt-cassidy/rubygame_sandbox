@@ -22,7 +22,7 @@ module Game::Core
       #implement in sub class
     end
     
-    def update(seconds, clock)
+    def update(clock)
       #implement in sub class
     end
 

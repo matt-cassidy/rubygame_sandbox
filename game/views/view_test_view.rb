@@ -26,8 +26,8 @@ module Game::Views
       add_view @modal_dialog
     end
     
-    def update(seconds, clock)
-      @menu.update seconds
+    def update(clock)
+      @menu.update clock
     end
     
     def draw(surface)

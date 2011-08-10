@@ -16,8 +16,8 @@ module Game::Views
       @background.fill :red
     end
     
-    def update(seconds, clock)
-      @menu.update seconds
+    def update(clock)
+      @menu.update clock
     end
     
     def draw(surface)

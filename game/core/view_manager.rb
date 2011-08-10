@@ -1,4 +1,5 @@
 require "game/views/start_view.rb"
+require "game/core/game_clock"
 
 module Game::Core
 
@@ -14,11 +15,11 @@ module Game::Core
 
       fps = 60
       Log.info "Clocking game at #{fps} fps"
-      @clock = Rubygame::Clock.new
-      @clock.target_framerate = fps
-      @clock.enable_tick_events
+      rgclock = Rubygame::Clock.new
+      rgclock.target_framerate = fps
+      rgclock.enable_tick_events
 
-      @seconds = 0
+      @clock = GameClock.new rgclock 
       
       PlayerInput.setup
       
@@ -36,9 +37,9 @@ module Game::Core
     end
 
     def update
+      @clock.tick
       @screen.fill :black
       PlayerInput.fetch
-      @seconds = @clock.tick.seconds
       process_view @master_view
       @screen.flip
     end
@@ -56,7 +57,7 @@ module Game::Core
       load_view view
       return if view.frozen?
       check_quit_request view
-      view.update @seconds, @clock
+      view.update @clock
     end
     
     def check_quit_request(view)

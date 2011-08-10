@@ -16,7 +16,7 @@ module Game::Entities
       @hitbox.make_visible
     end
   
-    def update(seconds)
+    def update(clock)
       handle_movement
       handle_animation
       handle_collisions

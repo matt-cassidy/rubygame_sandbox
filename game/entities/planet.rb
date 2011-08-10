@@ -14,8 +14,8 @@ module Game::Entities
       @angle = 2*Math::PI * rand
     end
     
-    def update(seconds)
-      handle_movement seconds
+    def update(clock)
+      handle_movement clock.seconds
     end
     
     def draw(screen)
