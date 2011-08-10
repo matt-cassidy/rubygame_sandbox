@@ -25,12 +25,12 @@ module Game::Views
       create_entity "Planet", 200, 200
     end
 
-    def update(seconds, clock)
+    def update(clock)
       @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
       @collision_tree.update
       @entities.each do |id,e|
-        e.cool_down_events seconds
-        e.update seconds
+        e.cool_down_events clock.seconds
+        e.update clock
       end
     end
 
@@ -43,9 +43,8 @@ module Game::Views
 
     def create_entity(name, px, py)
       Game::Core::Log.debug "Adding '#{name}' at #{px},#{py}"
-      actor = Game::Core::ScriptManager.actors["#{name.downcase}"]
       require "./game/entities/#{name.downcase}.rb"
-      entity = Game::Entities.const_get(name).new [px, py], actor
+      entity = Game::Entities.const_get(name).new [px, py]
       @entities[entity.goid] = entity
       @collision_tree.objects << entity
     end

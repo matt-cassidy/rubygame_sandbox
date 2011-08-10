@@ -6,10 +6,10 @@ module Game::Entities
 
   class Planet < Entity
     
-    def initialize(pos, actor)
-      super pos
+    def initialize(pos)
+      actor = Game::Core::ScriptManager.actors["planet"]
       @image = Rubygame::Surface.load(actor[:sprite][:path])
-      @hitbox.create_rect(pos[0], pos[1], @image.w, @image.h)
+      super pos, [@image.w, @image.h]
       @hitbox.make_visible
       @angle = 2*Math::PI * rand
     end
@@ -27,7 +27,7 @@ module Game::Entities
       @angle = ( @angle + 2*Math::PI / 4 * seconds) % ( 2*Math::PI)
       direction = [Math.sin(@angle), Math.cos(@angle)]
       if(direction[0] != 0 || direction[1] != 0)
-        move direction
+        shift direction
       end
     end
       

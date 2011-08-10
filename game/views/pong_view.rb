@@ -1,4 +1,5 @@
 require "game/entities/pong_ball.rb"
+require "game/entities/player_paddle.rb"
 
 module Game::Views
   
@@ -9,15 +10,16 @@ module Game::Views
     end
     
     def loading
-      actor = Game::Core::ScriptManager.actors["pong_ball"]
-      @ball = Game::Entities::PongBall.new [20,20], actor
+      @ball = Game::Entities::PongBall.new [280,200]
+      @player = Game::Entities::PlayerPaddle.new [10, 10]
       @input = Game::Core::PlayerInput
       @paused = false
     end
     
     def update(clock)
-      
-      
+      handle_pause
+      handle_quit
+      update_ball clock
       
     end
     
@@ -37,9 +39,9 @@ module Game::Views
       end
     end
     
-    def update_ball(seconds, clock)
+    def update_ball(clock)
       if not @paused then 
-        @ball.update seconds, clock
+        @ball.update clock
       end
     end
     

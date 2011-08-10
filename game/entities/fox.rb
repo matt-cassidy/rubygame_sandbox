@@ -2,17 +2,15 @@ require "./game/core/player_input.rb"
 require "./game/core/entity.rb"
 require "./game/core/animation.rb"
 
-include Game::Core
-
 module Game::Entities
 
-  class Fox < Entity
+  class Fox < Game::Core::Entity
     
-    def initialize(pos, actor)
-      super pos
-      @input = PlayerInput
-      @animation = Animation.new actor
-      @hitbox.create_rect(pos[0], pos[1], actor[:hitbox][0], actor[:hitbox][1])
+    def initialize(pos)
+      actor = Game::Core::ScriptManager.actors["fox"]
+      super pos, actor[:hitbox]
+      @input = Game::Core::PlayerInput
+      @animation = Game::Core::Animation.new actor
       @hitbox.make_visible
     end
   
@@ -34,7 +32,7 @@ module Game::Entities
       y -= 1 if @input.key_pressed?( :up ) # up is down in screen coordinates
       y += 1 if @input.key_pressed?( :down )
       if(x != 0 || y != 0)
-        move [x, y]
+        shift [x, y]
       end
     end
     

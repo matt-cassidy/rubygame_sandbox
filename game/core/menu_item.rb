@@ -9,7 +9,7 @@ module Game::Core
     attr_reader :rect
     
     def initialize(pos, rect_size, text, font_size, font_color, click_callback)
-      super pos
+      super pos, rect_size
       @selected = false
       @textbox = Game::Core::TextBox.new pos, text, font_size, font_color
       @textbox.text = text

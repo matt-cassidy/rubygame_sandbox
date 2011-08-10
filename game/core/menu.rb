@@ -17,7 +17,7 @@ module Game::Core
     attr_reader :disabled
     
     def initialize(pos, menu_size, item_height, font_color, font_size)
-      super pos
+      super pos, menu_size
       @timer = Timer.new
       @font_color = font_color
       @font_size = font_size
