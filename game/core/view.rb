@@ -1,3 +1,5 @@
+require "observer"
+
 module Game::Core
 
   class View

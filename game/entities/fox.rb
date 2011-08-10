@@ -16,13 +16,13 @@ module Game::Entities
       @hitbox.make_visible
     end
   
-    def update(seconds)
+    def update_events(seconds)
       @input.fetch
       handle_movement
       handle_animation
       handle_collisions
     end
-    
+
     def draw(screen)
       @hitbox.draw screen
       @animation.draw screen, @px, @py
@@ -36,6 +36,7 @@ module Game::Entities
       y -= 1 if @input.key_pressed?( :up ) # up is down in screen coordinates
       y += 1 if @input.key_pressed?( :down )
       if(x != 0 || y != 0)
+        puts "Fox moved"
         move x, y
       end
     end

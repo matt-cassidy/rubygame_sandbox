@@ -12,7 +12,7 @@ module Game::Views
 
     def initialize
       super
-
+      puts "init - Test View"
       @entities = Hash.new
       @cameras = Hash.new
       parent_collision_node = Game::Core::CollisionNode.new Rubygame::Rect.new(0, 0, 640, 480), 5
@@ -20,9 +20,12 @@ module Game::Views
 
       @framerate_text = Game::Core::TextBox.new 10, 10
       @world = Game::Core::WorldMap.new
+
       @main_camera = Game::Core::Camera::new @world.full_size,320,240
-      create_entity "Fox", 320, 240
-      #create_entity "Planet", 200, 200
+      @main_camera.add_observer(self)
+
+      #create_entity "Fox", 320, 240
+      create_entity "Planet", 200, 200
     end
 
     def update(seconds, clock)
@@ -30,20 +33,24 @@ module Game::Views
       @collision_tree.update
       @entities.each do |id,e|
         e.cool_down_events seconds
-        e.update seconds
+        e.update_events seconds
       end
-      @main_camera.update_position
+      @main_camera.follow_actor
+
     end
 
     def draw(screen)
       screen.fill(:black)
+
+      #retrieve the center point where the camera would be over on the map
       point = @main_camera.get_position
 
-      @world.draw screen, point["cx"],point["cy"]
+      @world.draw screen, point[0],point[1]
+      #@world.draw screen, 320,240
       @entities.each { |id,e| e.draw screen }
       @framerate_text.draw screen
       @main_camera.draw screen
-
+      screen.update
     end
 
     def create_entity(name, px, py)

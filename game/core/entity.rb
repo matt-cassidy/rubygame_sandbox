@@ -1,11 +1,10 @@
 require "./game/core/game_object.rb"
 require "./game/core/text_box.rb"
 require "./game/core/collision_hitbox.rb"
-require "observer"
+
 module Game::Core
 
   class Entity < GameObject
-    include Observable
     attr_reader :hitbox
     
     def initialize(px, py,is_player = false)
@@ -16,7 +15,7 @@ module Game::Core
       @location_text = TextBox.new px, py - 50
     end
   
-    def update(seconds)
+    def update_events(seconds)
       #implement in sub class 
     end
 
@@ -43,6 +42,7 @@ module Game::Core
     def is_player?
       return @player
     end
+
   end
 
 end

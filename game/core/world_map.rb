@@ -25,7 +25,6 @@ module Game::Core
     def get_tile(tx, ty, cx, cy)
       y = (tx + (TILE_WIDTH / 2) + cx - SCREEN_WIDTH / 2) / TILE_WIDTH
       x = (ty + (TILE_HEIGHT / 2) + cy - SCREEN_HEIGHT / 2) / TILE_HEIGHT
-      
 
       tile_no = @area[x][y]
       
@@ -56,7 +55,6 @@ module Game::Core
         end
         if ty + TILE_HEIGHT > SCREEN_HEIGHT then
           rect.bottom = rect.bottom + (SCREEN_HEIGHT - (ty + TILE_HEIGHT))
-
         end
 
 
@@ -67,19 +65,17 @@ module Game::Core
       i, j = 0, 0
 
       point = full_size
-      puts "Bilt Tiles"
+      #puts "Bilt Tiles"
       @tiles_height.to_int.times do
         
         @tiles_width.to_int.times do
             ty = i * TILE_WIDTH - cx % TILE_WIDTH
             tx = j * TILE_HEIGHT - cy % TILE_HEIGHT
 
-
-
             tile_num = get_tile tx, ty, cx, cy
             get_blit_rect tile_num, tx, ty, @rect_tile
             @tiles.blit @background, [tx, ty], @rect_tile
-            puts "i #{i} j#{j} tilenum #{tile_num} tx: #{tx} ty #{ty}"
+            #puts "i #{i} j#{j} tilenum #{tile_num} tx: #{tx} ty #{ty}"
 
             j = j + 1
         end
@@ -112,7 +108,7 @@ module Game::Core
     end
 
     def full_size
-      return Hash["width",@area.length * TILE_WIDTH,"height",@area[0].length * TILE_HEIGHT]
+      return [@area.length * TILE_WIDTH,@area[0].length * TILE_HEIGHT]
     end
   end
   
