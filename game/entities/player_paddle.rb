@@ -23,8 +23,8 @@ module Game::Entities
     end
     
     def draw(surface)
-      @hitbox.draw surface
-      @image.blit surface, pos
+      @hitbox.draw surface, screen_pos
+      @image.blit surface, screen_pos
     end
     
     def handle_movement

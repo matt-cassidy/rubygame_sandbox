@@ -23,16 +23,16 @@ module Game::Entities
     end
     
     def draw(surface)
-      @hitbox.draw surface
-      @image.blit surface, pos
+      @hitbox.draw surface, screen_pos
+      @image.blit surface, screen_pos
     end
    
     def move_toward_ball
       if @view.ball.pos[1] > @pos[1] then
-        @destination = [@pos[0], @pos[1] - MOVE_SPEED]
+        move [-@pos[0], -@pos[1] - MOVE_SPEED]
       end
       if @view.ball.pos[1] < @pos[1] then
-        @destination = [@pos[0], @pos[1] + MOVE_SPEED]
+        move [@pos[0], @pos[1] + MOVE_SPEED]
       end
     end
       

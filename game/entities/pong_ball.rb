@@ -22,11 +22,11 @@ module Game::Entities
       handle_collisions
       handle_screen_boundry
       @debugtxt.text = "x=#{pos[0]},y=#{pos[1]}"
-      @debugtxt.destination = @pos
+      @debugtxt.move @pos
     end
     
     def draw(surface)
-      @hitbox.draw surface
+      @hitbox.draw surface, screen_pos
       @image.blit surface, @hitbox.rect
       @debugtxt.draw surface
     end

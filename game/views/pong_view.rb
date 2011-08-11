@@ -34,7 +34,7 @@ module Game::Views
     end
     
     def draw(surface)
-      @entities.each { |e| e.do_draw surface }
+      @entities.each { |id,e| e.do_draw surface }
     end
     
     def handle_pause
