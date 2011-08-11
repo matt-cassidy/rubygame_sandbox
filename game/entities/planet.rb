@@ -16,7 +16,8 @@ module Game::Entities
     end
     
     def update(clock)
-      handle_movement clock.seconds
+      #handle_movement clock.seconds
+      shift [0,0]
     end
     
     def draw(screen)

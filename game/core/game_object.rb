@@ -5,6 +5,7 @@ module Game::Core
 
   class GameObject
     
+    attr_accessor :view
     attr_reader :events
     attr_reader :pos
     attr_reader :size
@@ -19,7 +20,7 @@ module Game::Core
       @hitbox = CollisionHitbox.new pos, size
     end
     
-    def update  
+    def update(clock)
       #implement in sub class  
     end
     
@@ -28,14 +29,25 @@ module Game::Core
     end
     
     def move(pos)
+      #@view.camera.offset(pos)
       @pos = pos
       @hitbox.center @pos
+      
     end
     
     def shift(pos)
-      @pos[0] = @pos[0] + pos[0]
-      @pos[1]  = @pos[1] + pos[1]
-      @hitbox.center [@pos[0], @pos[1]]
+      
+      if self == @view.camera.target then
+        puts "shift #{pos}"
+        @view.camera.focus pos
+        
+      else
+        
+        @pos[0] = @pos[0] + pos[0] - @view.camera.offset[0]
+        @pos[1]  = @pos[1] + pos[1] - @view.camera.offset[1]
+        @hitbox.center [@pos[0], @pos[1]]
+      end
+
     end
     
     def cool_down_events(seconds)
