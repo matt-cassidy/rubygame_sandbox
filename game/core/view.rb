@@ -3,15 +3,20 @@ module Game::Core
   class View
 
     attr_accessor :parent
-    attr_accessor :children
+    attr_reader :entities
+    attr_reader :children
     attr_accessor :loaded
-    attr_accessor :visible
-    attr_accessor :freeze
-    attr_accessor :quit_requested
+    attr_reader :visible
+    attr_reader :freeze
+    attr_reader :quit_requested
+    attr_reader :camera
+    attr_reader :entities
     
     def initialize
       @parent = nil
       @children = []
+      @camera = Camera.new [640,480]
+      @entities = Hash.new
       @loaded = false
       @visible = false
       @freeze = false
@@ -82,6 +87,15 @@ module Game::Core
     def remove_view(view)
       view.parent = nil
       @children.delete view
+    end
+    
+    def add_entity(entity)
+      entity.view = self
+      @entities[entity.goid] = entity
+    end
+    
+    def remove_entity(goid)
+      @entities.delete goid
     end
     
     def quit_requested?

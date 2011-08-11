@@ -58,6 +58,7 @@ module Game::Core
       return if view.frozen?
       check_quit_request view
       view.update @clock
+      view.camera.reset
     end
     
     def check_quit_request(view)

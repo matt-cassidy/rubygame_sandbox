@@ -37,11 +37,6 @@ module Game::Entities
       end
     end
 
-    def shift(pos)
-      changed
-      notify_observers(self,[-pos[0],-pos[1]])
-    end
-
     def handle_animation
       #this needs to be streamlined somehow... animations should be implicit via state
       moving = false

@@ -33,7 +33,7 @@ module Game::Core
         tile_no = 4
       end
       
-      puts "xy=#{x},#{y} => #{tile_no}"
+      #puts "xy=#{x},#{y} => #{tile_no}"
       
       return 0 if tile_no.nil?
       return tile_no

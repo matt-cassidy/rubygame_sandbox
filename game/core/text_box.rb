@@ -22,9 +22,6 @@ module Game::Core
       @surface.blit surface, pos
     end
 
-    def update(pos)
-      @rect.center = pos
-    end
   end
 
 end
