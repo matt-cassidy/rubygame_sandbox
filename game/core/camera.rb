@@ -3,8 +3,7 @@ require "game/core/viewport.rb"
 module Game::Core
 
   class Camera
-    include Observable
-
+    
     BOUNDARY_BOX_WIDTH  = 64
     BOUNDARY_BOX_HEIGHT = 64
     

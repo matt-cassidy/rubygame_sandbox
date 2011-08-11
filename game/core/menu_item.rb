@@ -1,8 +1,8 @@
-require "game/core/text_box.rb"
+require "game/core/entity.rb"
 
 module Game::Core
   
-  class MenuItem < Game::Core::GameObject
+  class MenuItem < Entity
     
     attr_reader :selected
     attr_reader :textbox
