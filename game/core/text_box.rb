@@ -21,7 +21,10 @@ module Game::Core
       @surface = @font.render_utf8 @text, @smooth, @color
       @surface.blit surface, pos
     end
-    
+
+    def update(pos)
+      @rect.center = pos
+    end
   end
 
 end

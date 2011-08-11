@@ -21,7 +21,7 @@ module Game::Views
 
       @framerate_text = Game::Core::TextBox.new [10, 10], "framerate", 14, [255,255,255]
       @world = Game::Core::WorldMap.new
-      
+
       @main_camera = Game::Core::Camera::new @world.full_size, 320,240
 
       create_entity "Fox", 320, 240
@@ -30,15 +30,15 @@ module Game::Views
       create_entity "Planet", 150, 320
     end
     
-    def update(who,pos)
-      puts "test view update callback#{who}"
+    def follow_entity(who,pos)
+
       @entities.each do |id,e|
         #move the entity as long as it was not the one who caused the change
         if (e != who)then
-          e.move pos
+          e.shift pos
         end
       end
-      puts "test view update callback end"
+
     end
     
     def update(clock)
@@ -66,14 +66,14 @@ module Game::Views
       entity = Game::Entities.const_get(name).new [px, py]
       @entities[entity.goid] = entity
       @collision_tree.objects << entity
-      
+
       #temp main player
       if name == "Fox" then
          puts "Test View create entity Fox"
         @main_camera.set_actor(entity)
-        entity.add_observer(self)
+        entity.add_observer(self,:follow_entity)
       end
-      
+
     end
 
   end

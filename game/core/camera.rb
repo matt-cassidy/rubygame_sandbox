@@ -17,9 +17,9 @@ module Game::Core
         @view_width=view_width
         @view_height=view_height
 
-        @viewport = Rubygame::Rect.new(0,0, view_width, view_height)
+        @viewport = Rubygame::Rect.new(0,0, @view_width, @view_height)
         @world = Rubygame::Rect.new(0,0, world[0], world[1])
-        puts world
+        puts "wt =#{@world.top} wb= #{@world.bottom} wl=#{@world.left} wr=#{@world.right}"
 
         @map_cx = start_cx
         @map_cy = start_cy
@@ -47,26 +47,24 @@ module Game::Core
       #change the entity, listen to changes from this entity
       def set_actor(entity)
         @entity = entity
-        @entity.add_observer(self)
+        @entity.add_observer(self,:follow_entity)
       end
 
       #since the actor will indicate move away, camera must follow
-      def update(who,pos)
-        #puts "Camera updates callback who #{who}"
+      def follow_entity(who,pos)
         move([-pos[0],-pos[1]])
-        #puts "Camera updates callback end"
       end
 
       def move(pos)
           new_x = @map_cx + pos[0]
           new_y = @map_cy + pos[1]
 
-          #puts "new_x #{new_x} left+w #{@world.left + @view_width/2} right+width #{@world.right + @view_width/2}"
-          if (new_x >= (@world.left + @view_width /2) and new_x <= (@world.right + @view_width/2)) then
+          #puts "new_x #{new_x} left+w #{@world.left + @view_width/2} right+width #{@world.right - @view_width/2}"
+          if (new_x >= (@world.left + @view_width /2) and new_x <= (@world.right - @view_width/2)) then
               @map_cx = new_x
           end
 
-          #puts "new_y #{new_y} left+w #{@world.bottom - @view_height /2} right+width #{@world.top + @view_height}"
+          #puts "new_y #{new_y} bot-h #{@world.bottom - @view_height /2} top-h #{@world.top + @view_height}"
           if (new_y <= (@world.bottom - @view_height /2) and new_y >= (@world.top + @view_height/2))then
               @map_cy = new_y
           end

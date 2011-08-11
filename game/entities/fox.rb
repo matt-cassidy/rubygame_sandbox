@@ -20,19 +20,12 @@ module Game::Entities
       handle_animation
       handle_collisions
     end
-    
+
     def draw(screen)
       @hitbox.draw screen
       @animation.draw screen, @pos
     end
-    
-    def move(pos)
-      puts "Moved Start xy=>#{pos}"
-      changed
-      notify_observers(self,[-pos[0],-pos[1]])
-      puts "Moved End"
-    end
-    
+
     def handle_movement
       x, y = 0,0
       x -= 1 if @input.key_pressed?( :left )
@@ -43,7 +36,12 @@ module Game::Entities
         shift [x, y]
       end
     end
-    
+
+    def shift(pos)
+      changed
+      notify_observers(self,[-pos[0],-pos[1]])
+    end
+
     def handle_animation
       #this needs to be streamlined somehow... animations should be implicit via state
       moving = false
