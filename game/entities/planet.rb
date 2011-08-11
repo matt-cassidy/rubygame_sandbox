@@ -6,18 +6,22 @@ module Game::Entities
 
   class Planet < Entity
     
-    def initialize(pos)
+    def initialize(pos,animate = true)
       @actor = load_script "planet"
       
       super pos, @actor[:hitbox]
       @image = Rubygame::Surface.load(@actor[:sprite][:path])
       @hitbox.make_visible
       @angle = 2*Math::PI * rand
+      @animate = animate
     end
     
     def update(clock)
-      #handle_movement clock.seconds
-      shift [0,0]
+      if @animate == true then
+        handle_movement clock.seconds
+      else
+        shift [0,0]
+      end
     end
     
     def draw(screen)

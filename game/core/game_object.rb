@@ -11,6 +11,7 @@ module Game::Core
     attr_reader :size
     attr_reader :goid
     attr_reader :hitbox
+    attr_reader :destination
     
     def initialize(pos, size)
       @pos = pos
@@ -18,6 +19,7 @@ module Game::Core
       @goid = GOID.next
       @events = []
       @hitbox = CollisionHitbox.new pos, size
+      @destination = @pos
     end
     
     def update(clock)
@@ -28,24 +30,21 @@ module Game::Core
       #implement in sub class
     end
     
-    def move(pos)
-      #@view.camera.offset(pos)
-      @pos = pos
-      @hitbox.center @pos
+    def move()
+      @pos = @destination
+      @hitbox.center [@pos[0],@pos[1]]
       
     end
     
     def shift(pos)
       
       if self == @view.camera.target then
-        puts "shift #{pos}"
+        #puts "shift #{pos}"
         @view.camera.focus pos
         
       else
-        
-        @pos[0] = @pos[0] + pos[0] - @view.camera.offset[0]
-        @pos[1]  = @pos[1] + pos[1] - @view.camera.offset[1]
-        @hitbox.center [@pos[0], @pos[1]]
+        @destination[0] = @pos[0] + pos[0] - @view.camera.offset[0]
+        @destination[1]  = @pos[1] + pos[1] - @view.camera.offset[1]
       end
 
     end

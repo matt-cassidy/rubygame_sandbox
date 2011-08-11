@@ -33,11 +33,15 @@ module Game::Views
       planet1 = Game::Entities::Planet.new [100,100]
       add_entity planet1
       @collision_tree.objects << planet1
-      
+
       planet2 = Game::Entities::Planet.new [2000,200]
       add_entity planet2
       @collision_tree.objects << planet2
-      
+
+      planet3 = Game::Entities::Planet.new [100,100], false
+      add_entity planet3
+      @collision_tree.objects << planet3
+
       marker = Game::Core::TextBox.new [100, 100], "100,100", 14, [255,255,255]
       add_entity marker
       
@@ -58,6 +62,7 @@ module Game::Views
         next if e == @camera.target #dont update camera target twice
         e.cool_down_events clock.seconds
         e.update clock
+        e.move #move the entity to the destined position
       end
       
     end
