@@ -70,9 +70,8 @@ module Game::Views
     def draw(surface)
       
       #retrieve the center point where the camera would be over on the map
-      camera = @camera.pos
 
-      @world.draw surface, camera[0], camera[1]
+      @world.draw surface, @camera.pos
       
       @entities.each { |id,e| e.draw surface }
       

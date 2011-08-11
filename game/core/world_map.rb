@@ -6,8 +6,8 @@ module Game::Core
     
     attr_reader :area
     
-    SCREEN_WIDTH = 640
-    SCREEN_HEIGHT = 480
+    SCREEN_WIDTH = 672
+    SCREEN_HEIGHT = 504
     TILE_WIDTH = 64
     TILE_HEIGHT = 64
 
@@ -18,13 +18,12 @@ module Game::Core
       @rect_tile = Rubygame::Rect.new 0, 0, TILE_WIDTH, TILE_HEIGHT 
       @tiles_width = SCREEN_WIDTH / TILE_WIDTH
       @tiles_height = SCREEN_HEIGHT / TILE_HEIGHT
-      @last_cx = -1
-      @last_cy = -1
+      @last_camera = [-1,-1]
     end
     
-    def get_tile(tx, ty, cx, cy)
-      y = (tx + (TILE_WIDTH / 2) + cx - SCREEN_WIDTH / 2) / TILE_WIDTH
-      x = (ty + (TILE_HEIGHT / 2) + cy - SCREEN_HEIGHT / 2) / TILE_HEIGHT
+    def get_tile(tx, ty, camera_pos)
+      y = (tx + (TILE_WIDTH / 2) + camera_pos[0] - SCREEN_WIDTH / 2) / TILE_WIDTH
+      x = (ty + (TILE_HEIGHT / 2) + camera_pos[1] - SCREEN_HEIGHT / 2) / TILE_HEIGHT
 
       #puts "xy=#{x},#{y}"
       begin
@@ -65,22 +64,19 @@ module Game::Core
 
     end
     
-    def blit_tiles(cx, cy)
+    def blit_tiles(camera_pos)
       #Create the Screen from left to right, top to bottom
       i, j = 0, 0
 
-      point = full_size
-      #puts "Bilt Tiles"
       @tiles_height.to_int.times do
         
         @tiles_width.to_int.times do
-            ty = i * TILE_WIDTH - cx % TILE_WIDTH
-            tx = j * TILE_HEIGHT - cy % TILE_HEIGHT
+            ty = i * TILE_WIDTH - camera_pos[0] % TILE_WIDTH
+            tx = j * TILE_HEIGHT - camera_pos[1] % TILE_HEIGHT
 
-            tile_num = get_tile tx, ty, cx, cy
+            tile_num = get_tile tx, ty, camera_pos
             get_blit_rect tile_num, tx, ty, @rect_tile
             @tiles.blit @background, [tx, ty], @rect_tile
-            #puts "i #{i} j#{j} tilenum #{tile_num} tx: #{tx} ty #{ty}"
 
             j = j + 1
         end
@@ -88,29 +84,25 @@ module Game::Core
         i = i + 1
       end
 
-      @last_cx = cx
-      @last_cy = cy
+      #avoids getting the same pointer to the object
+      @last_camera = [camera_pos[0],camera_pos[1]]
     end
     
-    def camera_moved?(cx, cy)
-      #puts "last_cx #{@last_cx},last_cy #{@last_cy}"
-      if @last_cx != cx or @last_cy != cy then
+    def camera_moved?(camera_pos)
+      if @last_camera[0] != camera_pos[0] or @last_camera[1] != camera_pos[1] then
         return true
       end
       return false
     end
     
-    def draw(screen, cx, cy)
+    def draw(screen, camera_pos)
 
       #dont re-blit if the camera hasnt moved... blit_tiles is expensive
-      if camera_moved? cx, cy then
-        #puts "Camera moved xy=>#{cx},#{cy}"
-        blit_tiles cx, cy
-        #@tiles.x = cx
-        #@tiles.y = cy
+      if camera_moved? camera_pos then
+        blit_tiles camera_pos
       end
       @background.blit screen, [0, 0]
-      screen.flip
+
     end
 
     def full_size
