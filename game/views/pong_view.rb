@@ -6,21 +6,22 @@ module Game::Views
   
   class PongView < Game::Core::View
     
+    attr_reader :ball
+    
     def initialize
       super
     end
     
     def loading
-      @entities = []
-      
+
       @ball = Game::Entities::PongBall.new [280,200]
-      @entities << @ball
+      add_entity @ball
       
-      @player = Game::Entities::PlayerPaddle.new [10, 10]
-      @entities << @player
+      player = Game::Entities::PlayerPaddle.new [10, 10]
+      add_entity player
       
-      @com = Game::Entities::ComPaddle.new [600, 10]
-      @entities << @com
+      com = Game::Entities::ComPaddle.new [600, 10]
+      add_entity com
       
       @input = Game::Core::PlayerInput
       @paused = false
@@ -50,7 +51,7 @@ module Game::Views
     
     def update_entities(clock)
       return if @paused 
-      @entities.each { |e| e.update clock }
+      @entities.each { |id,e| e.update clock }
     end
     
   end

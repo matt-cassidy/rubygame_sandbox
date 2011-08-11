@@ -56,13 +56,12 @@ module Game::Views
       @collision_tree.update
       
       #update camera position by updating the entity it's following
-      @camera.target.update clock 
+      @camera.update clock 
       
       @entities.each do |id,e|
         next if e == @camera.target #dont update camera target twice
         e.cool_down_events clock.seconds
         e.update clock
-        e.move #move the entity to the destined position
       end
       
     end

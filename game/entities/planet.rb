@@ -25,8 +25,8 @@ module Game::Entities
     end
     
     def draw(screen)
-      @hitbox.draw screen
-      @image.blit(screen, @hitbox.rect)
+      @hitbox.draw screen, screen_pos
+      @image.blit screen, screen_pos
     end
     
     def handle_movement(seconds)

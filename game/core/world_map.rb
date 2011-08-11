@@ -110,7 +110,6 @@ module Game::Core
         #@tiles.y = cy
       end
       @background.blit screen, [0, 0]
-      screen.flip
     end
 
     def full_size
