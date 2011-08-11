@@ -26,9 +26,14 @@ module Game::Core
       y = (tx + (TILE_WIDTH / 2) + cx - SCREEN_WIDTH / 2) / TILE_WIDTH
       x = (ty + (TILE_HEIGHT / 2) + cy - SCREEN_HEIGHT / 2) / TILE_HEIGHT
 
-      tile_no = @area[x][y]
+      #puts "xy=#{x},#{y}"
+      begin
+        tile_no = @area[x][y]
+      rescue
+        tile_no = 4
+      end
       
-      #puts "xy=#{x},#{y} => #{tile_no}"
+      puts "xy=#{x},#{y} => #{tile_no}"
       
       return 0 if tile_no.nil?
       return tile_no
@@ -105,6 +110,7 @@ module Game::Core
         #@tiles.y = cy
       end
       @background.blit screen, [0, 0]
+      screen.flip
     end
 
     def full_size

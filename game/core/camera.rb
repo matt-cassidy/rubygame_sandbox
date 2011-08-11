@@ -18,7 +18,7 @@ module Game::Core
         @view_height=view_height
 
         @viewport = Rubygame::Rect.new(0,0, @view_width, @view_height)
-        @world = Rubygame::Rect.new(0,0, world[0], world[1])
+        #@world = Rubygame::Rect.new(0,0, world[0], world[1])
         puts "wt =#{@world.top} wb= #{@world.bottom} wl=#{@world.left} wr=#{@world.right}"
 
         @map_cx = start_cx
@@ -56,18 +56,9 @@ module Game::Core
       end
 
       def move(pos)
-          new_x = @map_cx + pos[0]
-          new_y = @map_cy + pos[1]
+          @map_cx = @map_cx + pos[0]
+          @map_cy = @map_cy + pos[1]
 
-          #puts "new_x #{new_x} left+w #{@world.left + @view_width/2} right+width #{@world.right - @view_width/2}"
-          if (new_x >= (@world.left + @view_width /2) and new_x <= (@world.right - @view_width/2)) then
-              @map_cx = new_x
-          end
-
-          #puts "new_y #{new_y} bot-h #{@world.bottom - @view_height /2} top-h #{@world.top + @view_height}"
-          if (new_y <= (@world.bottom - @view_height /2) and new_y >= (@world.top + @view_height/2))then
-              @map_cy = new_y
-          end
 
           #alert observers that a changed occurred
           changed
