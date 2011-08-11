@@ -23,8 +23,8 @@ module Game::Core
         {
           Rubygame::Events::KeyPressed => :key_pressed,
           Rubygame::Events::KeyReleased => :key_released,
-          Rubygame::Events::QuitRequested => :set_request_quit, 
-          :escape => :set_request_quit,
+          Rubygame::Events::QuitRequested => :set_request_quit,
+          :escape => :set_request_quit
         }
         make_magic_hooks hooks
       end

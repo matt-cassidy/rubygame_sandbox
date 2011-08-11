@@ -12,7 +12,7 @@ module Game::Views
       super
     end
     
-    def loading
+    def load
 
       @ball = Game::Entities::PongBall.new [280,200]
       add_entity @ball
@@ -25,33 +25,6 @@ module Game::Views
       
       @input = Game::Core::PlayerInput
       @paused = false
-    end
-    
-    def update(clock)
-      handle_pause
-      handle_quit
-      update_entities clock
-    end
-    
-    def draw(surface)
-      @entities.each { |id,e| e.do_draw surface }
-    end
-    
-    def handle_pause
-      if @input.key_pressed?( :space ) then
-        @paused = !@paused
-      end
-    end
-    
-    def handle_quit
-      if @input.key_pressed?( :escape ) then
-        quit
-      end
-    end
-    
-    def update_entities(clock)
-      return if @paused 
-      @entities.each { |id,e| e.do_update clock }
     end
     
   end

@@ -11,7 +11,7 @@ module Game::Views
       super
     end
     
-    def loading
+    def load
       @input = Game::Core::PlayerInput    
       
       player = Game::Entities::CameraTarget.new [300,300]
@@ -30,23 +30,6 @@ module Game::Views
       
     end
     
-    def update(clock)
-      handle_quit
-      @entities.each { |id,e| e.do_update clock }
-      
-    end
-
-    def draw(surface)
-      @entities.each { |id,e| e.do_draw surface }
-      
-    end
-
-    def handle_quit
-      if @input.quit_requested? then
-        quit
-      end
-    end
-
   end
 
 end

@@ -6,14 +6,10 @@ module Game::Views
       super
     end
     
-    def loading
+    def load
       @surface = Rubygame::Surface.load("./resource/img/hud_bk.png")
     end
     
-    def update(clock)
-      
-    end
-   
     def draw(surface)
       @surface.blit surface, [0,408]
     end

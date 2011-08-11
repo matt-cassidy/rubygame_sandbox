@@ -15,7 +15,7 @@ module Game::Views
       super
     end
     
-    def loading
+    def load
       parent_collision_node = Game::Core::CollisionNode.new Rubygame::Rect.new(0, 0, 640, 480), 5
       @collision_tree = Game::Core::CollisionTree.new parent_collision_node
 
@@ -49,17 +49,8 @@ module Game::Views
     end
     
     def update(clock)
-      
-      handle_quit
-      
       @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
-      
       @collision_tree.update
-      
-      @entities.each do |id,e|
-        e.do_update clock
-      end
-      
     end
 
     def draw(surface)
@@ -69,17 +60,10 @@ module Game::Views
 
       @world.draw surface, camera[0], camera[1]
       
-      @entities.each { |id,e| e.do_draw surface }
-      
       @framerate_text.draw surface
       
     end
 
-    def handle_quit
-      if @input.quit_requested? then
-        quit
-      end
-    end
 
   end
 

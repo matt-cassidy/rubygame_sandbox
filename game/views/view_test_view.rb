@@ -9,7 +9,7 @@ module Game::Views
       super
     end
     
-    def loading
+    def load
       @menu = Game::Core::Menu.new [0, 0], [300, 200], 25, [255,255,255], 14
       @menu.add_item "Add Hud", method(:menu_add_hud_selected)
       @menu.add_item "Show Hud", method(:menu_show_hud_selected)

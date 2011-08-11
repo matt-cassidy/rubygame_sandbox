@@ -5,7 +5,7 @@ module Game::Core
     attr_accessor :parent
     attr_reader :entities
     attr_reader :children
-    attr_accessor :loaded
+    attr_reader :loaded
     attr_reader :visible
     attr_reader :freeze
     attr_reader :quit_requested
@@ -25,32 +25,44 @@ module Game::Core
       add_entity @camera.viewport
     end
     
-    def loading
+    def do_load
+      load
+      @loaded = true
+    end
+    
+    def load
       #implement in sub class
+    end
+    
+    def do_update(clock)
+      update clock
+      @entities.each { |id,e| e.do_update clock }
     end
     
     def update(clock)
       #implement in sub class
     end
 
-    def draw(screen)
+    def do_draw(surface)
+      draw surface
+      @entities.each { |id,e| e.do_draw surface }
+    end
+    
+    def draw(surface)
       #implement in sub class
     end
 
-    def closing
-      #implement in sub class
-    end
-    
     def close
-      cancel = closing
-      return if cancel == true
-      if @parent.nil? then
-        Log.info "Quitting game"
-        throw :quit
-      else
+      cancel_close = closing
+      return if cancel_close == true
+      if not @parent.nil? then
         Log.info "Closing view #{self.class}"
         @parent.children.delete self  
       end
+    end
+    
+    def closing
+      #implement in sub class
     end
     
     def loaded?

@@ -13,7 +13,7 @@ module Game::Views
       super
     end
     
-    def loading
+    def load
       @menu = Game::Core::Menu.new [0, 0], [300, 200], 25, [255,255,255], 14
       @menu.add_item "Game Logic", method(:menu_game_logic_selected)
       @menu.add_item "Test Camera", method(:menu_test_camera_selected)

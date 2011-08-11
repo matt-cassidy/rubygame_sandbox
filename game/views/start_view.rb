@@ -8,16 +8,23 @@ module Game::Views
       super
     end
     
-    def loading
+    def load
       menu = MenuView.new
       menu.show
       add_view menu
       @input = Game::Core::PlayerInput
     end
     
+    def update(clock)
+      if @input.quit_requested? then
+        quit
+      end
+    end
+    
     def closing
       #handle quit confirm and clean up here
-      return false#dont cancel the quit event
+      Log.info "Quitting game"
+      throw :quit
     end
 
   end

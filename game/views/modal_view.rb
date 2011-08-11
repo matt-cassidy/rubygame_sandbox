@@ -7,7 +7,7 @@ module Game::Views
       super
     end
     
-    def loading
+    def load
       @menu = Game::Core::Menu.new [100, 100], [100, 50], 25, [255,255,255], 14
       @menu.add_item "Ok", method(:menu_nothing_selected)
       @menu.add_item "Close", method(:menu_close_selected)

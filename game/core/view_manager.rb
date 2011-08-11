@@ -57,7 +57,7 @@ module Game::Core
       load_view view
       return if view.frozen?
       check_quit_request view
-      view.update @clock
+      view.do_update @clock
     end
     
     def check_quit_request(view)
@@ -70,12 +70,11 @@ module Game::Core
     def load_view(view)
       return if view.loaded?
       Log.info "Loading view #{view.class}"
-      view.loading 
-      view.loaded = true
+      view.do_load 
     end
     
     def draw_view(view)
-      view.draw @screen
+      view.do_draw @screen
     end
     
   end
