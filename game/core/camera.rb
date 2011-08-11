@@ -14,7 +14,8 @@ module Game::Core
     attr_reader :pos
     attr_reader :target
     attr_reader :offset
-    
+    attr_accessor :size
+
     def initialize(camera_size)
       
         x = camera_size[0] / 2

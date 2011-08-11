@@ -32,11 +32,12 @@ module Game::Views
       
       planet1 = Game::Entities::Planet.new [100,100]
       add_entity planet1
+
       @collision_tree.objects << planet1
 
       planet2 = Game::Entities::Planet.new [2000,200]
       add_entity planet2
-      @collision_tree.objects << planet2
+
 
       planet3 = Game::Entities::Planet.new [100,100], false
       add_entity planet3
