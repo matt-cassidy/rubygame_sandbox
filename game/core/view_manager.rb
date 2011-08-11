@@ -57,7 +57,6 @@ module Game::Core
       load_view view
       return if view.frozen?
       check_quit_request view
-      #view.camera.reset
       view.update @clock
     end
     

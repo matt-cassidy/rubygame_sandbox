@@ -31,23 +31,13 @@ module Game::Views
     end
     
     def update(clock)
-      
       handle_quit
-      
-      #updating the camera will automatically update the entity it's following
-      @camera.update clock
-      
-      @entities.each do |id,e|
-        next if e == @camera.target #dont update camera target twice
-        e.cool_down_events clock.seconds
-        e.update clock
-      end
+      @entities.each { |id,e| e.do_update clock }
       
     end
 
     def draw(surface)
-      
-      @entities.each { |id,e| e.draw surface }
+      @entities.each { |id,e| e.do_draw surface }
       
     end
 

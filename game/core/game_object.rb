@@ -6,12 +6,12 @@ module Game::Core
   class GameObject
     
     attr_accessor :view
+    attr_reader :updated
     attr_reader :events
     attr_reader :pos
     attr_reader :size
     attr_reader :goid
     attr_reader :hitbox
-    attr_reader :destination
     
     def initialize(pos, size)
       @pos = pos
@@ -19,6 +19,7 @@ module Game::Core
       @goid = GOID.next
       @events = []
       @hitbox = CollisionHitbox.new pos, size
+      @updated = false
     end
     
     def update(clock)
@@ -27,6 +28,18 @@ module Game::Core
     
     def draw(surface)
       #implement in sub class
+    end
+    
+    def do_update(clock)
+      return if @updated == true
+      cool_down_events clock.seconds
+      update clock
+      @updated = true
+    end
+    
+    def do_draw(surface)
+      draw surface
+      @updated = false
     end
     
     def move(pos)

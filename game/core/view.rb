@@ -21,6 +21,8 @@ module Game::Core
       @visible = false
       @freeze = false
       @quit_requested = false
+      
+      add_entity @camera.viewport
     end
     
     def loading

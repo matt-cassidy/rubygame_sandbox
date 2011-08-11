@@ -55,7 +55,8 @@ module Game::Core
     end
     
     def draw(screen, pos)
-      @sprite_sheet.blit(screen, [pos[0]-@sprite.w/2, pos[1]-@sprite.h/2], @sprite_rect)
+      #@sprite_sheet.blit(screen, [pos[0]-@sprite.w/2, pos[1]-@sprite.h/2], @sprite_rect)
+      @sprite_sheet.blit(screen, pos, @sprite_rect)
     end
     
   end

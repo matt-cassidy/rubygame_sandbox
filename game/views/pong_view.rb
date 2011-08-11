@@ -34,7 +34,7 @@ module Game::Views
     end
     
     def draw(surface)
-      @entities.each { |e| e.draw surface }
+      @entities.each { |e| e.do_draw surface }
     end
     
     def handle_pause
@@ -51,7 +51,7 @@ module Game::Views
     
     def update_entities(clock)
       return if @paused 
-      @entities.each { |id,e| e.update clock }
+      @entities.each { |id,e| e.do_update clock }
     end
     
   end

@@ -27,7 +27,6 @@ module Game::Views
       
       player = Game::Entities::Fox.new [320,240]
       add_entity player
-      @camera.follow player
       @collision_tree.objects << player
       
       planet1 = Game::Entities::Planet.new [100,100]
@@ -45,6 +44,8 @@ module Game::Views
       marker = Game::Core::TextBox.new [100, 100], "100,100", 14, [255,255,255]
       add_entity marker
       
+      @camera.follow player
+      
     end
     
     def update(clock)
@@ -55,13 +56,8 @@ module Game::Views
       
       @collision_tree.update
       
-      #update camera position by updating the entity it's following
-      @camera.update clock 
-      
       @entities.each do |id,e|
-        next if e == @camera.target #dont update camera target twice
-        e.cool_down_events clock.seconds
-        e.update clock
+        e.do_update clock
       end
       
     end
@@ -73,7 +69,7 @@ module Game::Views
 
       @world.draw surface, camera[0], camera[1]
       
-      @entities.each { |id,e| e.draw surface }
+      @entities.each { |id,e| e.do_draw surface }
       
       @framerate_text.draw surface
       
