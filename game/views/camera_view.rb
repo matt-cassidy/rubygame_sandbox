@@ -12,6 +12,9 @@ module Game::Views
     end
     
     def load
+      @framerate_text = Game::Entities::TextBox.new self, [10, 10], 14
+      add_entity @framerate_text
+      
       player = Game::Entities::CameraTarget.new self, [300,300]
       add_entity player
       
@@ -26,6 +29,7 @@ module Game::Views
     end
     
     def update
+      @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
       @entities.each { |id,e| e.update }
     end
     

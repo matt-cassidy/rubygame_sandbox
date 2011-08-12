@@ -14,7 +14,7 @@ module Game::Views
     end
     
     def load
-      @menu = Game::Entities::Menu.new self, [0, 0], [300, 200], 25, [255,255,255], 14
+      @menu = Game::Entities::Menu.new self, [50, 50], [300, 200], 25, [255,255,255], 14
       @menu.add_item "Game Logic", method(:menu_game_logic_selected)
       @menu.add_item "Test Camera", method(:menu_test_camera_selected)
       @menu.add_item "Pong!", method(:menu_pong_selected)

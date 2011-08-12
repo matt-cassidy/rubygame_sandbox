@@ -7,7 +7,7 @@ module Game::Core
     attr_accessor :smooth
     attr_accessor :font_size
     
-    def initialize(name, size)
+    def initialize(name, size=10)
       @smooth = true
       @color = :white
       @surface = nil
@@ -24,6 +24,10 @@ module Game::Core
     def blit(surface, pos)
       @surface = @font.render_utf8 @text, @smooth, @color
       @surface.blit surface, pos
+    end
+    
+    def get_surf
+      @font.render_utf8 @text, @smooth, @color
     end
 
   end

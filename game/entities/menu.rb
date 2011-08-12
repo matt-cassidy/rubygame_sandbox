@@ -28,12 +28,14 @@ module Game::Entities
       @buffer = Rubygame::Surface.new menu_size
       @selected_item = nil
       @input = Game::Core::PlayerInput
+      
+      @debug = Game::Core::Font.new "pirulen"
+      @debug.text ="bla------------------"
     end
     
     def update
       @timer.cool_down @view.clock.seconds
       if(@input.key_pressed?( :return )) 
-        puts "ssssss"
         trigger
       elsif(@input.key_pressed?( :down )) 
         select_next       
@@ -81,14 +83,12 @@ module Game::Entities
     end
     
     def draw
-      @buffer.fill(:black)
       @items.each do |item| 
         index = @items.index item
         y = index * @item_size[1] + pos[1]
         #puts y
-        item.blit @buffer, [pos[0], y]
+        item.blit surface, [pos[0], y]
       end
-      @buffer.blit surface, pos
     end
     
     def add_item(text, callback)

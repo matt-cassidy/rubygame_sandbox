@@ -4,19 +4,18 @@ module Game::Views
   class ModalView < Game::Core::View
     
     def initialize(parent)
-      super parent
+      super parent, [150, 100], [300, 200]
     end
     
     def load
-      @menu = Game::Entities::Menu.new self, [300, 300], [100, 50], 25, [255,255,255], 14
+      @menu = Game::Entities::Menu.new self, [50, 50], [100, 50], 25, [255,255,255], 14
       @menu.add_item "Ok", method(:menu_ok_selected)
       @menu.add_item "Close", method(:menu_close_selected)
       add_entity @menu
       
       @menu.select_by_index 0
       
-      @background = Rubygame::Surface.new [300, 200]
-      @background.fill :red
+      
       
     end
     
@@ -25,7 +24,7 @@ module Game::Views
     end
     
     def draw
-      @background.blit surface, [250, 250]
+      surface.fill :red
       @entities.each { |id,e| e.draw }
     end
     

@@ -7,15 +7,14 @@ module Game::Core
     
     attr_reader :clock
     attr_reader :screen
-    attr_reader :resolution
     
     def initialize
       Log.info "Initializing view manager..."
 
-      @resolution = [640,480]
+      resolution = [640,480]
       
       Log.info "Creating screen #{@resolution}"
-      @screen = Rubygame::Screen.new @resolution, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
+      @screen = Rubygame::Screen.new resolution, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
       @screen.title = "Sandbox"
 
       fps = 60
@@ -58,8 +57,10 @@ module Game::Core
           quit? view
           load view
           view.update
+          view.clear
+          view.draw
         end
-        view.draw
+        view.surface.blit @screen, view.pos
       end
       view.children.each do |child| 
         refresh child

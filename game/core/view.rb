@@ -14,23 +14,23 @@ module Game::Core
     attr_reader :entities
     attr_reader :input
     attr_reader :surface
+    attr_reader :size
+    attr_reader :pos
     
-    def initialize(parent_view)
+    def initialize(parent_view, pos=[0,0], size=[640,480])
       @parent = parent_view
       @children = []
-      @camera = Camera.new self, [640,480]
       @entities = Hash.new
       @loaded = false
       @visible = false
       @active = false
       @input = Game::Core::PlayerInput
       @quit_requested = false
-      @surface = Rubygame::Surface.new [640,480]
+      @size = size
+      @pos = pos
+      @camera = Camera.new self, size
+      @surface = Rubygame::Surface.new size, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
       add_entity @camera.viewport
-    end
-    
-    def surface
-      @@view_manager.screen
     end
     
     def view_manager=(view_manager)
@@ -48,7 +48,11 @@ module Game::Core
     def draw
       #implement in sub class
     end
-
+    
+    def clear
+      @surface.fill :black  
+    end
+    
     def close
       cancel_close = closing
       return if cancel_close == true
