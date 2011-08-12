@@ -28,10 +28,6 @@ module Game::Core
       @quit_requested = false
       @size = size
       @pos = pos
-      @camera = Camera.new self, size
-      @surface = Rubygame::Surface.new size, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
-      @collision_tree = Game::Core::CollisionTree.make size, 5
-      add_entity @camera.viewport
     end
     
     def view_manager=(view_manager)
@@ -39,26 +35,35 @@ module Game::Core
     end
     
     def load
-      #implement in sub class
+      @camera = Camera.new self, size
+      @surface = Rubygame::Surface.new size, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
+      @collision_tree = Game::Core::CollisionTree.make size, 5
+      add_entity @camera.viewport
+      @loaded = true
+      loading
     end
     
-    def _update
-      @collision_tree.update
-      update
-      @entities.each { |id,e| e._update }
+    def loading
+      #implement in sub class
     end
     
     def update
+      @collision_tree.update
+      updating
+      @entities.each { |id,e| e.update }
+    end
+    
+    def updating
       #implement in sub class
     end
     
-    def draw
+    def drawing
       #implement in sub class
     end    
 
-    def _draw
-      draw
-      @entities.each { |id,e| e._draw }
+    def draw
+      drawing
+      @entities.each { |id,e| e.draw }
     end
     
     def clear

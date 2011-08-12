@@ -12,7 +12,7 @@ module Game::Views
       super parent
     end
     
-    def load
+    def loading
 
       @ball = Game::Entities::PongBall.new self, [280,200]
       add_entity @ball

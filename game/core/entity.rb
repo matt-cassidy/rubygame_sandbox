@@ -25,32 +25,26 @@ module Game::Core
       @updated = false
     end
     
-    def load
-      #implement in sub class 
-    end
-    
-    def update
+    def updating
       #implement in sub class  
     end
     
-    def draw
+    def drawing
       #implement in sub class
     end
     
-    def unload
-      #implement in sub class
-    end
-    
-    def _update
+    def update
       return if @updated == true
       cool_down_events
-      update
-      update_screen_pos
+      updating
+      @spos =  @view.camera.get_screen_pos self
+      @hitbox.rect.x = @spos[0]
+      @hitbox.rect.y = @spos[1]
       @updated = true
     end
     
-    def _draw
-      draw
+    def draw
+      drawing
       @updated = false
     end
     
@@ -71,12 +65,6 @@ module Game::Core
     def cool_down_events
       @events.each { |e| e.cool_down @view.clock.seconds } 
       @events.delete_if {|e| e.is_finished}
-    end
-    
-    def update_screen_pos
-      @spos =  @view.camera.get_screen_pos self
-      @hitbox.rect.x = @spos[0]
-      @hitbox.rect.y = @spos[1]
     end
     
     def surface

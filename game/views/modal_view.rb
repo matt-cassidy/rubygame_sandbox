@@ -7,7 +7,7 @@ module Game::Views
       super parent, [150, 100], [300, 200]
     end
     
-    def load
+    def loading
       @menu = Game::Entities::Menu.new self, [50, 50], [100, 50], 25, [255,255,255], 14
       @menu.add_item "Ok", method(:menu_ok_selected)
       @menu.add_item "Close", method(:menu_close_selected)
@@ -16,7 +16,7 @@ module Game::Views
       @menu.select_by_index 0
     end
     
-    def draw
+    def drawing
       surface.fill :red
     end
     

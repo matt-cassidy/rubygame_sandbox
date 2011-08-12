@@ -10,7 +10,7 @@ module Game::Views
       super parent
     end
     
-    def load
+    def loading
       
       rect1 = Game::Entities::Rectzilla.new self, [200,200], [50,50]
       add_entity rect1

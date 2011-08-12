@@ -56,9 +56,9 @@ module Game::Core
         if view.active? then
           quit? view
           load view
-          view._update
+          view.update
           view.clear
-          view._draw
+          view.draw
         end
         view.surface.blit @screen, view.pos
       end

@@ -15,7 +15,7 @@ module Game::Entities
       @angle = 2*Math::PI * rand
     end
     
-    def update
+    def updating
       if @animate == true then
         handle_movement
       else
@@ -23,7 +23,7 @@ module Game::Entities
       end
     end
     
-    def draw
+    def drawing
       blit @hitbox
       blit @image
     end

@@ -9,7 +9,7 @@ module Game::Entities
     MOVE_SPEED = 1
     
     def initialize(view, pos)
-      super view, pos, [20,20]
+      super view, pos, [10,10]
       @input = Game::Core::PlayerInput
       @hitbox.make_visible
       @image = Rubygame::Surface.new [10,10]
@@ -17,12 +17,12 @@ module Game::Entities
       @debugtxt = Game::Core::Font.new "pirulen", 10
     end
   
-    def update
+    def updating
       handle_movement
       @debugtxt.text = "x=#{pos[0]},y=#{pos[1]}"
     end
 
-    def draw
+    def drawing
       blit @image
       blit @debugtxt
     end

@@ -6,11 +6,11 @@ module Game::Views
       super parent, [0,parent.surface.h-100], [640,100]
     end
     
-    def load
+    def loading
       @hud = Rubygame::Surface.load("./resource/img/hud_bk.png")
     end
     
-    def draw
+    def drawing
       surface.fill :red
       @hud.blit surface, [0,0]
     end

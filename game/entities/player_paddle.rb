@@ -17,13 +17,13 @@ module Game::Entities
       @input = Game::Core::PlayerInput
     end
   
-    def update
+    def updating
       handle_movement
     end
     
-    def draw
-      @hitbox.blit surface, screen_pos
-      @image.blit surface, screen_pos
+    def drawing
+      blit @hitbox
+      blit @image
     end
     
     def handle_movement

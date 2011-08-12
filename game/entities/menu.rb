@@ -33,7 +33,7 @@ module Game::Entities
       @debug.text ="bla------------------"
     end
     
-    def update
+    def updating
       @timer.cool_down @view.clock.seconds
       if(@input.key_pressed?( :return )) 
         trigger
@@ -82,12 +82,11 @@ module Game::Entities
       @timer.wait_for MENU_TRIGGER_SPEED
     end
     
-    def draw
+    def drawing
       @items.each do |item| 
         index = @items.index item
         y = index * @item_size[1] + pos[1]
-        #puts y
-        item.blit surface, [pos[0], y]
+        blit item, [pos[0], y]
       end
     end
     

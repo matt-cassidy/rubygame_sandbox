@@ -8,7 +8,7 @@ module Game::Views
       super nil
     end
     
-    def load
+    def loading
       menu = MenuView.new self
       menu.show
       add_view menu

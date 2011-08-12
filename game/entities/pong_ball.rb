@@ -15,7 +15,7 @@ module Game::Entities
       @vel = [0,0]
     end
 
-    def update
+    def updating
       handle_reset
       handle_movement
       handle_collisions
@@ -23,10 +23,10 @@ module Game::Entities
       @debugtxt.text = "x=#{pos[0]},y=#{pos[1]}"
     end
     
-    def draw
-      @hitbox.blit surface, screen_pos
-      @image.blit surface, @hitbox.rect
-      @debugtxt.blit surface, screen_pos
+    def drawing
+      blit @hitbox
+      blit @image
+      blit @debugtxt
     end
     
     def handle_reset

@@ -9,7 +9,7 @@ module Game::Views
       super parent
     end
     
-    def load
+    def loading
       @menu = Game::Entities::Menu.new self, [50, 50], [300, 200], 25, [255,255,255], 14
       add_entity @menu
       

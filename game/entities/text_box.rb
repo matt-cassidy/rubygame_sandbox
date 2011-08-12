@@ -17,11 +17,11 @@ module Game::Entities
       @font.text = text
     end
     
-    def draw
-      if @absolute then
-        @font.blit surface, pos
+    def drawing
+      if not @absolute then
+        blit @font
       else
-        @font.blit surface, screen_pos
+        blit @font, pos
       end
     end
 

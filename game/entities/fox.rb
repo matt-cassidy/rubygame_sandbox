@@ -14,13 +14,13 @@ module Game::Entities
       @hitbox.make_visible
     end
     
-    def update
+    def updating
       handle_movement
       handle_animation
       handle_collisions
     end
 
-    def draw
+    def drawing
       blit @hitbox 
       blit @animation
     end

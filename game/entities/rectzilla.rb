@@ -15,12 +15,12 @@ module Game::Entities
       @virtpos = Game::Core::Font.new "pirulen", 10
     end
     
-    def update
+    def updating
       #@screenpos.text = "x=#{spos[0]},y=#{spos[1]}"
       #@virtpos.text = "x=#{pos[0]},y=#{pos[1]}"
     end
     
-    def draw
+    def drawing
       blit @image
       blit @hitbox
       #blit @screenpos, spos, [-5,0]

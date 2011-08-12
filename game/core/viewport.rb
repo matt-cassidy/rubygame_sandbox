@@ -11,9 +11,9 @@ module Game::Core
       @hitbox.disable_collision
     end
     
-    def update
+    def updating
       if following_target? then
-        @target._update
+        @target.update
         move @target.pos
         @view.camera.update
       end

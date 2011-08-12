@@ -11,7 +11,7 @@ module Game::Views
       super parent
     end
     
-    def load
+    def loading
       @framerate_text = Game::Entities::TextBox.new self, [10, 10], 14
       add_entity @framerate_text
       
@@ -28,9 +28,8 @@ module Game::Views
       
     end
     
-    def update
+    def updating
       @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
-      @entities.each { |id,e| e._update }
     end
 
     
