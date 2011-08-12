@@ -9,23 +9,26 @@ module Game::Entities
     
     def initialize(pos)
       super pos, [10,10]
+    end
+    
+    def load
       @input = Game::Core::PlayerInput
       @hitbox.make_visible
       @image = Rubygame::Surface.new [10,10]
       @image.fill :white
       @debugtxt = Game::Core::TextBox.new pos, "x,y", 8, :white
+      @debugtxt.view = @view
     end
   
-    def update(clock)
-      @debugtxt.view = @view
+    def update
       handle_movement
       @debugtxt.text = "x=#{pos[0]},y=#{pos[1]}"
       @debugtxt.move screen_pos
     end
 
-    def draw(screen)
-      @image.blit screen, screen_pos
-      @debugtxt.draw screen
+    def draw
+      @image.blit @view.surface, screen_pos
+      @debugtxt.draw
     end
 
     def handle_movement

@@ -8,8 +8,10 @@ module Game::Entities
     
     def initialize(pos)
       @actor = load_script "paddle"
-      
       super pos, @actor[:hitbox]
+    end
+    
+    def load
       @image = Rubygame::Surface.new [35,150]
       @image.fill :white
       @hitbox.make_visible
@@ -17,14 +19,14 @@ module Game::Entities
       @dir = [0,0]
       @input = Game::Core::PlayerInput
     end
-  
-    def update(clock)
+    
+    def update
       move_toward_ball
     end
     
-    def draw(surface)
-      @hitbox.draw surface, screen_pos
-      @image.blit surface, screen_pos
+    def draw
+      @hitbox.draw @view.surface, screen_pos
+      @image.blit @view.surface, screen_pos
     end
    
     def move_toward_ball

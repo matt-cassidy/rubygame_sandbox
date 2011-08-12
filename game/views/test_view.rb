@@ -20,6 +20,7 @@ module Game::Views
       @collision_tree = Game::Core::CollisionTree.new parent_collision_node
 
       @framerate_text = Game::Core::TextBox.new [10, 10], "framerate", 14, [255,255,255]
+      add_entity @framerate_text
       
       @world = Game::Core::WorldMap.new
       
@@ -48,19 +49,18 @@ module Game::Views
       
     end
     
-    def update(clock)
+    def update
       @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
       @collision_tree.update
     end
 
-    def draw(surface)
+    def draw
       
       #retrieve the center point where the camera would be over on the map
       camera = @camera.pos
 
       @world.draw surface, camera[0], camera[1]
       
-      @framerate_text.draw surface
       
     end
 

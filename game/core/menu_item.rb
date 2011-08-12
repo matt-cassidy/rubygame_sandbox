@@ -19,6 +19,10 @@ module Game::Core
       @click_callback = click_callback
     end
     
+    def load
+      @textbox.view = @view
+    end
+    
     def select
       @selected = true
       @image.set_alpha 255
@@ -33,9 +37,9 @@ module Game::Core
       @textbox.text = value
     end
     
-    def draw(surface)
-      @image.blit surface, pos
-      @textbox.draw surface
+    def draw
+      @image.blit @view.surface, pos
+      @textbox.draw
     end
     
     def trigger

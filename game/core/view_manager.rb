@@ -4,7 +4,10 @@ require "game/core/game_clock"
 module Game::Core
 
   class ViewManager
-
+    
+    attr_reader :clock
+    attr_reader :screen
+    
     def initialize
       Log.info "Initializing view manager..."
 
@@ -33,6 +36,7 @@ module Game::Core
       Rubygame::Music.autoload_dirs   << File.join(resource_dir, "music")
       
       @master_view = Game::Views::StartView.new
+      @master_view.view_manager = self
       @master_view.show
     end
 
@@ -57,7 +61,7 @@ module Game::Core
       load_view view
       return if view.frozen?
       check_quit_request view
-      view.do_update @clock
+      view.do_update
     end
     
     def check_quit_request(view)
@@ -74,7 +78,7 @@ module Game::Core
     end
     
     def draw_view(view)
-      view.do_draw @screen
+      view.do_draw
     end
     
   end

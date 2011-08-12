@@ -30,8 +30,8 @@ module Game::Core
       @input = Game::Core::PlayerInput
     end
     
-    def update(clock)
-      @timer.cool_down clock.seconds
+    def update
+      @timer.cool_down @view.clock.seconds
       if(@input.key_pressed?( :return )) 
         trigger
       elsif(@input.key_pressed?( :down )) 
@@ -79,15 +79,17 @@ module Game::Core
       @timer.wait_for MENU_TRIGGER_SPEED
     end
     
-    def draw(surface)
+    def draw
       @buffer.fill(:black)
-      @menu_items.each {|item| item.draw @buffer }
-      @buffer.blit surface, pos
+      @menu_items.each {|item| item.draw }
+      #@buffer.blit @view.surface, pos
     end
     
     def add_item(text, block)
       item_y = @item_height * (@menu_items.size)
       item = MenuItem.new [0, item_y], @item_size, text, @font_size, @font_color, block
+      item.view = @view
+      item.load
       @menu_items << item
       if @selected_item.nil? then
         @selected_item = item

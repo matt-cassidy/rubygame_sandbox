@@ -23,23 +23,31 @@ module Game::Core
       @updated = false
     end
     
-    def update(clock)
+    def load
+      #implement in sub class 
+    end
+    
+    def update
       #implement in sub class  
     end
     
-    def draw(surface)
+    def draw
       #implement in sub class
     end
     
-    def do_update(clock)
+    def unload
+      #implement in sub class
+    end
+    
+    def do_update
       return if @updated == true
-      cool_down_events clock.seconds
-      update clock
+      cool_down_events
+      update
       @updated = true
     end
     
-    def do_draw(surface)
-      draw surface
+    def do_draw
+      draw
       @updated = false
     end
     
@@ -54,8 +62,8 @@ module Game::Core
       move [x,y]
     end
     
-    def cool_down_events(seconds)
-      @events.each { |e| e.cool_down seconds } 
+    def cool_down_events
+      @events.each { |e| e.cool_down @view.clock.seconds } 
       @events.delete_if {|e| e.is_finished}
     end
     

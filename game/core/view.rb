@@ -2,6 +2,7 @@ module Game::Core
 
   class View
 
+    @@view_manager
     attr_accessor :parent
     attr_reader :entities
     attr_reader :children
@@ -11,9 +12,9 @@ module Game::Core
     attr_reader :quit_requested
     attr_reader :camera
     attr_reader :entities
+    attr_reader :surface
     
     def initialize
-      @parent = nil
       @children = []
       @camera = Camera.new [640,480]
       @entities = Hash.new
@@ -21,11 +22,15 @@ module Game::Core
       @visible = false
       @freeze = false
       @quit_requested = false
-      
-      add_entity @camera.viewport
+      #@surface = Rubygame::Surface.new [640,480]
+    end
+    
+    def view_manager=(view_manager)
+      @@view_manager = view_manager
     end
     
     def do_load
+      add_entity @camera.viewport
       load
       @loaded = true
     end
@@ -34,21 +39,25 @@ module Game::Core
       #implement in sub class
     end
     
-    def do_update(clock)
-      update clock
-      @entities.each { |id,e| e.do_update clock }
+    def do_update
+      update
+      @entities.each { |id,e| e.do_update }
     end
     
-    def update(clock)
+    def update
       #implement in sub class
     end
 
-    def do_draw(surface)
-      draw surface
-      @entities.each { |id,e| e.do_draw surface }
+    def do_draw
+      draw
+      @entities.each { |id,e| e.do_draw }
     end
     
-    def draw(surface)
+    def surface
+      @@view_manager.screen
+    end
+    
+    def draw
       #implement in sub class
     end
 
@@ -106,10 +115,13 @@ module Game::Core
     def add_entity(entity)
       entity.view = self
       @entities[entity.goid] = entity
+      entity.load
     end
     
     def remove_entity(goid)
+      entity = @entities[goid]
       @entities.delete goid
+      entity.unload
     end
     
     def quit_requested?
@@ -122,6 +134,10 @@ module Game::Core
     
     def cancel_quit
       quit_requested = false
+    end
+    
+    def clock
+      @@view_manager.clock
     end
 
   end

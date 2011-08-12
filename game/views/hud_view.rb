@@ -10,7 +10,7 @@ module Game::Views
       @surface = Rubygame::Surface.load("./resource/img/hud_bk.png")
     end
     
-    def draw(surface)
+    def draw
       @surface.blit surface, [0,408]
     end
     

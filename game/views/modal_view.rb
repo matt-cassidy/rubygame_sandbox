@@ -9,19 +9,17 @@ module Game::Views
     
     def load
       @menu = Game::Core::Menu.new [100, 100], [100, 50], 25, [255,255,255], 14
+      add_entity @menu
+      
       @menu.add_item "Ok", method(:menu_nothing_selected)
       @menu.add_item "Close", method(:menu_close_selected)
       @menu.select_by_index 0
       @background = Rubygame::Surface.new [300, 200]
       @background.fill :red
+      
     end
     
-    def update(clock)
-      @menu.update clock
-    end
-    
-    def draw(surface)
-      @menu.draw @background
+    def draw
       @background.blit surface, [250, 250]
     end
     

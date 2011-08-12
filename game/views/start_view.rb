@@ -15,7 +15,7 @@ module Game::Views
       @input = Game::Core::PlayerInput
     end
     
-    def update(clock)
+    def update
       if @input.quit_requested? then
         quit
       end
