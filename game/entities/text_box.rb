@@ -1,8 +1,8 @@
 require "./game/core/entity.rb"
 
-module Game::Core
-
-  class TextBox < Entity
+module Game::Entities
+  
+  class TextBox < Game::Core::Entity
     
     attr_accessor :color
     attr_accessor :position

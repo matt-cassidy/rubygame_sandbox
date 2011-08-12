@@ -1,8 +1,9 @@
 require "game/core/entity.rb"
+require "game/entities/text_box.rb"
 
-module Game::Core
+module Game::Entities
   
-  class MenuItem < Entity
+  class MenuItem < Game::Core::Entity
     
     attr_reader :selected
     attr_reader :textbox
@@ -11,7 +12,7 @@ module Game::Core
     def initialize(pos, rect_size, text, font_size, font_color, click_callback)
       super pos, rect_size
       @selected = false
-      @textbox = Game::Core::TextBox.new pos, text, font_size, font_color
+      @textbox = TextBox.new pos, text, font_size, font_color
       @textbox.text = text
       @image = Rubygame::Surface.new(rect_size)
       @image.fill([100, 100, 100])

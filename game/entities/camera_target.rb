@@ -1,5 +1,6 @@
 require "./game/core/player_input.rb"
 require "./game/core/entity.rb"
+require "./game/entities/text_box.rb"
 
 module Game::Entities
 
@@ -16,7 +17,7 @@ module Game::Entities
       @hitbox.make_visible
       @image = Rubygame::Surface.new [10,10]
       @image.fill :white
-      @debugtxt = Game::Core::TextBox.new pos, "x,y", 8, :white
+      @debugtxt = TextBox.new pos, "x,y", 8, :white
       @debugtxt.view = @view
     end
   

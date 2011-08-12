@@ -1,9 +1,9 @@
 require "game/core/timer"
-require "game/core/menu_item"
+require "game/entities/menu_item"
 
-module Game::Core
+module Game::Entities
   
-  class Menu < Entity
+  class Menu < Game::Core::Entity
     
     MENU_SELECT_SPEED = 0.2 #make sure player cannot change selection than x times per sec
     MENU_TRIGGER_SPEED = 0.5 #make sure player cannot trigger more than x times per sec

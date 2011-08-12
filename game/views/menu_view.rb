@@ -3,7 +3,7 @@ require "game/views/view_test_view.rb"
 require "game/views/pong_view.rb"
 require "game/views/camera_view.rb"
 require "game/core/player_input.rb"
-
+require "game/entities/menu.rb"
 
 module Game::Views
 
@@ -14,7 +14,7 @@ module Game::Views
     end
     
     def load
-      @menu = Game::Core::Menu.new [0, 0], [300, 200], 25, [255,255,255], 14
+      @menu = Game::Entities::Menu.new [0, 0], [300, 200], 25, [255,255,255], 14
       add_entity @menu
       
       @menu.add_item "Game Logic", method(:menu_game_logic_selected)

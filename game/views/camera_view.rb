@@ -1,5 +1,5 @@
 require "game/core/view"
-require "game/core/text_box.rb"
+require "game/entities/text_box.rb"
 require "game/entities/camera_target.rb"
 require "game/entities/planet.rb"
 

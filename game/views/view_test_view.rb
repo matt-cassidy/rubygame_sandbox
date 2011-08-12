@@ -10,7 +10,7 @@ module Game::Views
     end
     
     def load
-      @menu = Game::Core::Menu.new [0, 0], [300, 200], 25, [255,255,255], 14
+      @menu = Game::Entities::Menu.new [0, 0], [300, 200], 25, [255,255,255], 14
       add_entity @menu
       
       @menu.add_item "Show Hud", method(:menu_show_hud_selected)
