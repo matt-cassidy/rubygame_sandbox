@@ -27,13 +27,6 @@ module Game::Views
       @paused = false
     end
     
-    def update
-      @entities.each { |id,e| e.update }
-    end
-    
-    def draw
-      @entities.each { |id,e| e.draw }
-    end
     
   end
   

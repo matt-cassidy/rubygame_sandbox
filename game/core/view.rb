@@ -13,6 +13,7 @@ module Game::Core
     attr_reader :camera
     attr_reader :entities
     attr_reader :input
+    attr_reader :collision_tree
     attr_reader :surface
     attr_reader :size
     attr_reader :pos
@@ -24,12 +25,12 @@ module Game::Core
       @loaded = false
       @visible = false
       @active = false
-      @input = Game::Core::PlayerInput
       @quit_requested = false
       @size = size
       @pos = pos
       @camera = Camera.new self, size
       @surface = Rubygame::Surface.new size, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
+      @collision_tree = Game::Core::CollisionTree.make size, 5
       add_entity @camera.viewport
     end
     
@@ -41,12 +42,23 @@ module Game::Core
       #implement in sub class
     end
     
+    def _update
+      @collision_tree.update
+      update
+      @entities.each { |id,e| e._update }
+    end
+    
     def update
       #implement in sub class
     end
-
+    
     def draw
       #implement in sub class
+    end    
+
+    def _draw
+      draw
+      @entities.each { |id,e| e._draw }
     end
     
     def clear
@@ -109,16 +121,19 @@ module Game::Core
     end
     
     def add_entity(entity)
+      @collision_tree.objects << entity
       @entities[entity.entity_id] = entity
     end
     
     def remove_entity(entity_id)
-      @entities.delete entity_id
+      entity = @entities[entity_id]
+      @entities.delete entity
+      @collision_tree.objects.delete entity 
     end
     
     def quit_requested?
       return true if @quit_requested
-      if @input.quit_requested? then
+      if PlayerInput.quit_requested? then
         return true
       end
     end

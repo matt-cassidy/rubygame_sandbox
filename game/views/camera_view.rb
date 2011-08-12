@@ -30,12 +30,9 @@ module Game::Views
     
     def update
       @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
-      @entities.each { |id,e| e.update }
+      @entities.each { |id,e| e._update }
     end
-    
-    def draw
-      @entities.each { |id,e| e.draw }
-    end
+
     
   end
 

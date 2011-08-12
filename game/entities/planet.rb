@@ -24,8 +24,8 @@ module Game::Entities
     end
     
     def draw
-      @hitbox.draw surface, screen_pos
-      @image.blit surface, screen_pos
+      blit @hitbox
+      blit @image
     end
     
     def handle_movement

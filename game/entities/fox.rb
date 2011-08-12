@@ -14,10 +14,6 @@ module Game::Entities
       @hitbox.make_visible
     end
     
-    def load
-      
-    end
-  
     def update
       handle_movement
       handle_animation
@@ -25,8 +21,8 @@ module Game::Entities
     end
 
     def draw
-      @hitbox.draw surface, screen_pos
-      @animation.draw surface, screen_pos
+      blit @hitbox 
+      blit @animation
     end
 
     def handle_movement

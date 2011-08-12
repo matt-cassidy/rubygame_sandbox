@@ -1,3 +1,4 @@
+require "game/core/collision_node"
 
 module Game::Core
 
@@ -11,6 +12,12 @@ module Game::Core
       @colliding_objects = []
       @objects = []
       @parent_node = parent_node
+    end
+    
+    def self.make(size, depth)
+      top = CollisionNode.new Rubygame::Rect.new(0, 0, size[0], size[1]), depth
+      tree = CollisionTree.new top
+      return tree
     end
     
     def update

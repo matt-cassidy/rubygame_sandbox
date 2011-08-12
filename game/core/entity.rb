@@ -10,6 +10,7 @@ module Game::Core
     attr_reader :updated
     attr_reader :events
     attr_reader :pos
+    attr_reader :spos
     attr_reader :size
     attr_reader :entity_id
     attr_reader :hitbox
@@ -40,26 +41,30 @@ module Game::Core
       #implement in sub class
     end
     
-    def do_update
+    def _update
       return if @updated == true
       cool_down_events
       update
+      update_screen_pos
       @updated = true
     end
     
-    def do_draw
+    def _draw
       draw
       @updated = false
     end
     
+    def blit(surf, xy=spos, offset=[0,0])
+      surf.blit surface, [xy[0] + offset[0], xy[1] + offset[1]]
+    end
+    
     def move(pos)
       @pos = pos
-      @hitbox.center [pos[0],pos[1]]
     end
     
     def shift(pos)
-      x = @pos[0] += pos[0]
-      y = @pos[1] += pos[1]
+      x = @pos[0] + pos[0]
+      y = @pos[1] + pos[1]
       move [x,y]
     end
     
@@ -68,8 +73,10 @@ module Game::Core
       @events.delete_if {|e| e.is_finished}
     end
     
-    def screen_pos
-      return @view.camera.get_screen_pos self
+    def update_screen_pos
+      @spos =  @view.camera.get_screen_pos self
+      @hitbox.rect.x = @spos[0]
+      @hitbox.rect.y = @spos[1]
     end
     
     def surface

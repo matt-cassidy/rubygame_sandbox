@@ -27,14 +27,6 @@ module Game::Views
       add_view @dialog
     end
     
-    def update
-      @entities.each { |id,e| e.update }
-    end
-    
-    def draw
-      @entities.each { |id,e| e.draw }
-    end
-    
     def menu_show_hud_selected
       @hud.show
     end

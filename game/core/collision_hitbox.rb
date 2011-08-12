@@ -5,13 +5,13 @@ module Game::Core
   
     attr_reader :colliding_with
     attr_reader :collidable
-    attr_reader :rect 
+    attr_reader :rect
     
     def initialize(pos, size)
       @rect = nil
       @colliding_with = []
       @collidable = true
-      @rect = Rubygame::Rect.new(pos, size)
+      @rect = Rubygame::Rect.new(pos[0], pos[1], size[0], size[1])
       center [pos[0],pos[1]]
     end
     
@@ -65,12 +65,12 @@ module Game::Core
     end
     
     def center(pos)
-      @rect.center = pos
+      #@rect.center = pos
     end
     
-    def draw(surface, pos)
+    def blit(surface, pos)
       return if not visible?
-      @image.blit surface, pos
+      @image.blit surface, [@rect.x,@rect.y]
     end
     
     def visible?

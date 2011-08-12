@@ -14,18 +14,10 @@ module Game::Views
       add_entity @menu
       
       @menu.select_by_index 0
-      
-      
-      
-    end
-    
-    def update
-      @entities.each { |id,e| e.update }
     end
     
     def draw
       surface.fill :red
-      @entities.each { |id,e| e.draw }
     end
     
     def menu_close_selected
