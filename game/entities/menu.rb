@@ -24,7 +24,7 @@ module Game::Entities
       @item_size = [menu_size[0],item_height]
       @item_height = item_height
       @menu_size = menu_size
-      @menu_items = []
+      @items = []
       @buffer = Rubygame::Surface.new menu_size
       @selected_item = nil
       @input = Game::Core::PlayerInput
@@ -33,6 +33,7 @@ module Game::Entities
     def update
       @timer.cool_down @view.clock.seconds
       if(@input.key_pressed?( :return )) 
+        puts "ssssss"
         trigger
       elsif(@input.key_pressed?( :down )) 
         select_next       
@@ -42,8 +43,8 @@ module Game::Entities
     end
     
     def select_next
-      current_index = @menu_items.index @selected_item
-      if(current_index + 1 > @menu_items.size - 1)
+      current_index = @items.index @selected_item
+      if(current_index + 1 > @items.size - 1)
         select_by_index 0
       else
         select_by_index current_index + 1
@@ -51,9 +52,9 @@ module Game::Entities
     end
     
     def select_prev
-      current_index = @menu_items.index @selected_item
+      current_index = @items.index @selected_item
       if(current_index - 1 < 0)
-        select_by_index @menu_items.size - 1
+        select_by_index @items.size - 1
       else
         select_by_index current_index - 1
       end
@@ -65,7 +66,7 @@ module Game::Entities
       if not @selected_item.nil? then
         @selected_item.unselect
       end
-      @selected_item = @menu_items[index]
+      @selected_item = @items[index]
       @selected_item.select
       
       @timer.wait_for MENU_SELECT_SPEED
@@ -81,17 +82,18 @@ module Game::Entities
     
     def draw
       @buffer.fill(:black)
-      @menu_items.each {|item| item.draw }
-      #@buffer.blit @view.surface, pos
+      @items.each do |item| 
+        index = @items.index item
+        y = index * @item_size[1] + pos[1]
+        #puts y
+        item.blit @buffer, [pos[0], y]
+      end
+      @buffer.blit surface, pos
     end
     
-    def add_item(text, block)
-      item_y = @item_height * (@menu_items.size)
-      item = MenuItem.new view, [0, item_y], @item_size, text, @font_size, @font_color, block
-      @menu_items << item
-      if @selected_item.nil? then
-        @selected_item = item
-      end
+    def add_item(text, callback)
+      item = MenuItem.new text, @font_size, @item_size, callback
+      @items << item
     end
     
   end

@@ -23,8 +23,8 @@ module Game::Views
       @hud = HudView.new self
       add_view @hud
       
-      @modal_dialog = ModalView.new self
-      add_view @modal_dialog
+      @dialog = ModalView.new self
+      add_view @dialog
     end
     
     def update
@@ -54,8 +54,8 @@ module Game::Views
     end
     
     def menu_show_modal_selected
-      @modal_dialog.show
-      freeze
+      @dialog.show
+      deactivate
     end
     
     def closing

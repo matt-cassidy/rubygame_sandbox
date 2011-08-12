@@ -9,7 +9,7 @@ module Game::Entities
       super view, pos, @actor[:hitbox]
       @image = Rubygame::Surface.load(@actor[:sprite][:path])
       @hitbox.make_visible
-      @debugtxt = TextBox.new view, pos, "x,y", 8, :white
+      @debugtxt = Game::Core::Font.new "pirulen", 10
       @ball_reset = true
       @dir = [0,0]
       @vel = [0,0]
@@ -21,13 +21,12 @@ module Game::Entities
       handle_collisions
       handle_screen_boundry
       @debugtxt.text = "x=#{pos[0]},y=#{pos[1]}"
-      @debugtxt.move @pos
     end
     
     def draw
       @hitbox.draw surface, screen_pos
       @image.blit surface, @hitbox.rect
-      @debugtxt.draw
+      @debugtxt.blit surface, screen_pos
     end
     
     def handle_reset

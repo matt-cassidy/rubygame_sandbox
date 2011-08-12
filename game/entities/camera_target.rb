@@ -14,18 +14,17 @@ module Game::Entities
       @hitbox.make_visible
       @image = Rubygame::Surface.new [10,10]
       @image.fill :white
-      @debugtxt = TextBox.new view, pos, "x,y", 8, :white
+      @debugtxt = Game::Core::Font.new "pirulen", 10
     end
   
     def update
       handle_movement
       @debugtxt.text = "x=#{pos[0]},y=#{pos[1]}"
-      @debugtxt.move screen_pos
     end
 
     def draw
       @image.blit surface, screen_pos
-      @debugtxt.draw
+      @debugtxt.blit surface, screen_pos
     end
 
     def handle_movement

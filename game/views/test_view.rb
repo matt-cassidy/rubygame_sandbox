@@ -19,7 +19,7 @@ module Game::Views
       parent_collision_node = Game::Core::CollisionNode.new Rubygame::Rect.new(0, 0, 640, 480), 5
       @collision_tree = Game::Core::CollisionTree.new parent_collision_node
 
-      @framerate_text = Game::Entities::TextBox.new self, [10, 10], "framerate", 14, [255,255,255]
+      @framerate_text = Game::Entities::TextBox.new self, [10, 10], 14
       add_entity @framerate_text
       
       @world = Game::Core::WorldMap.new
@@ -42,7 +42,7 @@ module Game::Views
       add_entity planet3
       @collision_tree.objects << planet3
 
-      marker = Game::Entities::TextBox.new self,[300, 300], "300,300", 14, [255,255,255], false
+      marker = Game::Entities::TextBox.new self, [300, 300], 14
       add_entity marker
       
       @camera.follow player

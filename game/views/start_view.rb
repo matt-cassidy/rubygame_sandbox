@@ -12,13 +12,7 @@ module Game::Views
       menu = MenuView.new self
       menu.show
       add_view menu
-      @input = Game::Core::PlayerInput
-    end
-    
-    def update
-      if @input.quit_requested? then
-        quit
-      end
+      hide
     end
     
     def closing

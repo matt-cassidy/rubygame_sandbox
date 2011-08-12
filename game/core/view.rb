@@ -8,10 +8,11 @@ module Game::Core
     attr_reader :children
     attr_reader :loaded
     attr_reader :visible
-    attr_reader :freeze
+    attr_reader :active
     attr_reader :quit_requested
     attr_reader :camera
     attr_reader :entities
+    attr_reader :input
     attr_reader :surface
     
     def initialize(parent_view)
@@ -21,10 +22,15 @@ module Game::Core
       @entities = Hash.new
       @loaded = false
       @visible = false
-      @freeze = false
+      @active = false
+      @input = Game::Core::PlayerInput
       @quit_requested = false
+      @surface = Rubygame::Surface.new [640,480]
       add_entity @camera.viewport
-      #@surface = Rubygame::Surface.new [640,480]
+    end
+    
+    def surface
+      @@view_manager.screen
     end
     
     def view_manager=(view_manager)
@@ -41,10 +47,6 @@ module Game::Core
 
     def draw
       #implement in sub class
-    end
-    
-    def surface
-      @@view_manager.screen
     end
 
     def close
@@ -70,26 +72,28 @@ module Game::Core
     
     def show
       @visible = true
+      activate
     end
     
     def hide
       @visible = false
+      deactivate
     end
     
     def visible?
       @visible
     end
     
-    def freeze
-      @freeze = true
+    def active?
+      @active
     end
     
-    def unfreeze
-      @freeze = false
+    def deactivate
+      @active = false
     end
     
-    def frozen?
-      @freeze
+    def activate
+      @active = true
     end
     
     def add_view(view)
@@ -109,7 +113,10 @@ module Game::Core
     end
     
     def quit_requested?
-      @quit_requested
+      return true if @quit_requested
+      if @input.quit_requested? then
+        return true
+      end
     end
     
     def quit

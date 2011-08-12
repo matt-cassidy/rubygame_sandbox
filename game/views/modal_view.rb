@@ -8,12 +8,13 @@ module Game::Views
     end
     
     def load
-      @menu = Game::Entities::Menu.new self, [100, 100], [100, 50], 25, [255,255,255], 14
+      @menu = Game::Entities::Menu.new self, [300, 300], [100, 50], 25, [255,255,255], 14
+      @menu.add_item "Ok", method(:menu_ok_selected)
+      @menu.add_item "Close", method(:menu_close_selected)
       add_entity @menu
       
-      @menu.add_item "Ok", method(:menu_nothing_selected)
-      @menu.add_item "Close", method(:menu_close_selected)
       @menu.select_by_index 0
+      
       @background = Rubygame::Surface.new [300, 200]
       @background.fill :red
       
@@ -24,18 +25,18 @@ module Game::Views
     end
     
     def draw
-      @entities.each { |id,e| e.draw }
       @background.blit surface, [250, 250]
+      @entities.each { |id,e| e.draw }
     end
     
     def menu_close_selected
       hide
-      @parent.unfreeze
+      @parent.activate
     end
     
-    def menu_nothing_selected
+    def menu_ok_selected
       hide
-      @parent.unfreeze
+      @parent.activate
     end
    
    end

@@ -15,17 +15,13 @@ module Game::Views
     
     def load
       @menu = Game::Entities::Menu.new self, [0, 0], [300, 200], 25, [255,255,255], 14
-      add_entity @menu
-      
       @menu.add_item "Game Logic", method(:menu_game_logic_selected)
       @menu.add_item "Test Camera", method(:menu_test_camera_selected)
       @menu.add_item "Pong!", method(:menu_pong_selected)
       @menu.add_item "View Management", method(:menu_view_mgmt_selected)
       @menu.add_item "Exit", method(:menu_exit_selected)
       @menu.select_by_index 0
-      
-      
-      @input = Game::Core::PlayerInput
+      add_entity @menu
     end
     
     def update

@@ -12,8 +12,6 @@ module Game::Views
     end
     
     def load
-      @input = Game::Core::PlayerInput    
-      
       player = Game::Entities::CameraTarget.new self, [300,300]
       add_entity player
       
@@ -22,9 +20,6 @@ module Game::Views
       
       planet2 = Game::Entities::Planet.new self, [200,200], true
       add_entity planet2
-
-      #marker = Game::Core::TextBox.new [100, 100], "100,100", 14, [255,255,255]
-      #add_entity marker
       
       @camera.follow player
       

@@ -7,13 +7,15 @@ module Game::Core
     
     attr_reader :clock
     attr_reader :screen
+    attr_reader :resolution
     
     def initialize
       Log.info "Initializing view manager..."
 
-      resolution = [640,480]
-      Log.info "Creating screen #{resolution}"
-      @screen = Rubygame::Screen.new resolution, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
+      @resolution = [640,480]
+      
+      Log.info "Creating screen #{@resolution}"
+      @screen = Rubygame::Screen.new @resolution, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
       @screen.title = "Sandbox"
 
       fps = 60
@@ -38,6 +40,8 @@ module Game::Core
       @master_view = Game::Views::StartView.new
       @master_view.view_manager = self
       @master_view.show
+      
+      @input = Game::Core::PlayerInput
     end
 
     def tick
@@ -48,40 +52,32 @@ module Game::Core
       @screen.flip
     end
     
-    def refresh(view)            
-      check_quit_request view
-      update view
-      draw view
+    def refresh(view)
+      if view.visible? then 
+        if view.active? then
+          quit? view
+          load view
+          view.update
+        end
+        view.draw
+      end
       view.children.each do |child| 
         refresh child
       end  
     end
     
-    def update(view)
-      return if not view.visible?
-      if not view.frozen? then
-        load_view view
-        view.update
-      end
+    def load(view)
+      return if view.loaded? or not view.active
+      Log.info "Loading view #{view.class}"
+      view.load
+      view.finished_loading 
     end
     
-    def draw(view)
-      return if not view.visible?
-      view.draw
-    end
-    
-    def check_quit_request(view)
+    def quit?(view)
       if view.quit_requested? then
         Log.info "Quit requested by #{view.class}"
         @master_view.close
       end
-    end
-    
-    def load_view(view)
-      return if view.loaded?
-      Log.info "Loading view #{view.class}"
-      view.load
-      view.finished_loading 
     end
     
   end

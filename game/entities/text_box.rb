@@ -1,30 +1,27 @@
 require "./game/core/entity.rb"
+require "./game/core/font.rb"
 
 module Game::Entities
   
   class TextBox < Game::Core::Entity
     
-    attr_accessor :color
-    attr_accessor :position
-    attr_accessor :text
+    attr_accessor :font
     
-    def initialize(view, pos, text, font_size, color,absolute=true)
+    def initialize(view, pos, size, absolute=true)
       super view, pos, [50, 50]
-      @font = Rubygame::TTF.new "./resource/ttf/pirulen.ttf", font_size
-      @smooth = true
-      @color = color
-      @surface = nil
-      @text = text
+      @font = Game::Core::Font.new "pirulen", size
       @absolute = absolute
     end
     
+    def text=(text)
+      @font.text = text
+    end
+    
     def draw
-      @surface = @font.render_utf8 @text, @smooth, @color
-      
       if @absolute then
-        @surface.blit surface, pos
+        @font.blit surface, pos
       else
-        @surface.blit surface, screen_pos
+        @font.blit surface, screen_pos
       end
     end
 
