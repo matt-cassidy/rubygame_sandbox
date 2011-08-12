@@ -3,7 +3,7 @@ module Game::Core
   class View
 
     @@view_manager
-    attr_accessor :parent
+    attr_reader :parent
     attr_reader :entities
     attr_reader :children
     attr_reader :loaded
@@ -14,14 +14,16 @@ module Game::Core
     attr_reader :entities
     attr_reader :surface
     
-    def initialize
+    def initialize(parent_view)
+      @parent = parent_view
       @children = []
-      @camera = Camera.new [640,480]
+      @camera = Camera.new self, [640,480]
       @entities = Hash.new
       @loaded = false
       @visible = false
       @freeze = false
       @quit_requested = false
+      add_entity @camera.viewport
       #@surface = Rubygame::Surface.new [640,480]
     end
     
@@ -29,36 +31,20 @@ module Game::Core
       @@view_manager = view_manager
     end
     
-    def do_load
-      add_entity @camera.viewport
-      load
-      @loaded = true
-    end
-    
     def load
       #implement in sub class
-    end
-    
-    def do_update
-      update
-      @entities.each { |id,e| e.do_update }
     end
     
     def update
       #implement in sub class
     end
 
-    def do_draw
-      draw
-      @entities.each { |id,e| e.do_draw }
+    def draw
+      #implement in sub class
     end
     
     def surface
       @@view_manager.screen
-    end
-    
-    def draw
-      #implement in sub class
     end
 
     def close
@@ -68,6 +54,10 @@ module Game::Core
         Log.info "Closing view #{self.class}"
         @parent.children.delete self  
       end
+    end
+    
+    def finished_loading
+      @loaded = true
     end
     
     def closing
@@ -103,25 +93,19 @@ module Game::Core
     end
     
     def add_view(view)
-      view.parent = self
       @children << view
     end
     
     def remove_view(view)
-      view.parent = nil
       @children.delete view
     end
     
     def add_entity(entity)
-      entity.view = self
-      @entities[entity.goid] = entity
-      entity.load
+      @entities[entity.entity_id] = entity
     end
     
-    def remove_entity(goid)
-      entity = @entities[goid]
-      @entities.delete goid
-      entity.unload
+    def remove_entity(entity_id)
+      @entities.delete entity_id
     end
     
     def quit_requested?

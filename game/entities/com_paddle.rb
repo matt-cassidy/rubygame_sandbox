@@ -6,12 +6,9 @@ module Game::Entities
     
     MOVE_SPEED = 5.0
     
-    def initialize(pos)
+    def initialize(view, pos)
       @actor = load_script "paddle"
-      super pos, @actor[:hitbox]
-    end
-    
-    def load
+      super view, pos, @actor[:hitbox]
       @image = Rubygame::Surface.new [35,150]
       @image.fill :white
       @hitbox.make_visible
@@ -25,8 +22,8 @@ module Game::Entities
     end
     
     def draw
-      @hitbox.draw @view.surface, screen_pos
-      @image.blit @view.surface, screen_pos
+      @hitbox.draw surface, screen_pos
+      @image.blit surface, screen_pos
     end
    
     def move_toward_ball

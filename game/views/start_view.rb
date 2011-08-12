@@ -5,11 +5,11 @@ module Game::Views
   class StartView < Game::Core::View
 
     def initialize
-      super
+      super nil
     end
     
     def load
-      menu = MenuView.new
+      menu = MenuView.new self
       menu.show
       add_view menu
       @input = Game::Core::PlayerInput

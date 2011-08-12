@@ -3,12 +3,12 @@ module Game::Views
 
   class ModalView < Game::Core::View
     
-    def initialize
-      super
+    def initialize(parent)
+      super parent
     end
     
     def load
-      @menu = Game::Entities::Menu.new [100, 100], [100, 50], 25, [255,255,255], 14
+      @menu = Game::Entities::Menu.new self, [100, 100], [100, 50], 25, [255,255,255], 14
       add_entity @menu
       
       @menu.add_item "Ok", method(:menu_nothing_selected)
@@ -19,7 +19,12 @@ module Game::Views
       
     end
     
+    def update
+      @entities.each { |id,e| e.update }
+    end
+    
     def draw
+      @entities.each { |id,e| e.draw }
       @background.blit surface, [250, 250]
     end
     

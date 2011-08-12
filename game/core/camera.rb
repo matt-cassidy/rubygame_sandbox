@@ -10,10 +10,10 @@ module Game::Core
     attr_reader :pos
     attr_reader :viewport
     
-    def initialize(camera_size)
+    def initialize(view, camera_size)
       @center = [camera_size[0] / 2, camera_size[1] / 2]
       @offset = [0,0]
-      @viewport = Viewport.new @center, camera_size
+      @viewport = Viewport.new view, @center, camera_size
     end
     
     def pos

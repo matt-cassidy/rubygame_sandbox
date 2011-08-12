@@ -40,28 +40,34 @@ module Game::Core
       @master_view.show
     end
 
-    def update
+    def tick
       @clock.tick
-      @screen.fill :black
       PlayerInput.fetch
-      process_view @master_view
+      @screen.fill :black
+      refresh @master_view
       @screen.flip
     end
     
-    def process_view(view)
-      return if not view.visible?
-      update_view view
-      draw_view view
+    def refresh(view)            
+      check_quit_request view
+      update view
+      draw view
       view.children.each do |child| 
-        process_view child
+        refresh child
+      end  
+    end
+    
+    def update(view)
+      return if not view.visible?
+      if not view.frozen? then
+        load_view view
+        view.update
       end
     end
     
-    def update_view(view)
-      load_view view
-      return if view.frozen?
-      check_quit_request view
-      view.do_update
+    def draw(view)
+      return if not view.visible?
+      view.draw
     end
     
     def check_quit_request(view)
@@ -74,11 +80,8 @@ module Game::Core
     def load_view(view)
       return if view.loaded?
       Log.info "Loading view #{view.class}"
-      view.do_load 
-    end
-    
-    def draw_view(view)
-      view.do_draw
+      view.load
+      view.finished_loading 
     end
     
   end

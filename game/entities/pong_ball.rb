@@ -4,21 +4,17 @@ module Game::Entities
 
   class PongBall < Game::Core::Entity
     
-    def initialize(pos)
+    def initialize(view, pos)
       @actor = load_script "pong_ball"
-      super pos, @actor[:hitbox]
-    end
-    
-    def load
+      super view, pos, @actor[:hitbox]
       @image = Rubygame::Surface.load(@actor[:sprite][:path])
       @hitbox.make_visible
-      @debugtxt = Game::Core::TextBox.new pos, "x,y", 8, :white
-      @debugtxt.view = @view
+      @debugtxt = TextBox.new view, pos, "x,y", 8, :white
       @ball_reset = true
       @dir = [0,0]
       @vel = [0,0]
     end
-  
+
     def update
       handle_reset
       handle_movement
@@ -29,9 +25,9 @@ module Game::Entities
     end
     
     def draw
-      @hitbox.draw @view.surface, screen_pos
-      @image.blit @view.surface, @hitbox.rect
-      @debugtxt.draw @view.surface
+      @hitbox.draw surface, screen_pos
+      @image.blit surface, @hitbox.rect
+      @debugtxt.draw
     end
     
     def handle_reset

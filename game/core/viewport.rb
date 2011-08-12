@@ -6,8 +6,8 @@ module Game::Core
     
     attr_reader :target
     
-    def initialize(pos,size)
-      super pos, size
+    def initialize(view, pos,size)
+      super view, pos, size
       @hitbox.disable_collision
     end
     

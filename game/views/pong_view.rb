@@ -8,23 +8,31 @@ module Game::Views
     
     attr_reader :ball
     
-    def initialize
-      super
+    def initialize(parent)
+      super parent
     end
     
     def load
 
-      @ball = Game::Entities::PongBall.new [280,200]
+      @ball = Game::Entities::PongBall.new self, [280,200]
       add_entity @ball
       
-      player = Game::Entities::PlayerPaddle.new [10, 10]
+      player = Game::Entities::PlayerPaddle.new self, [10, 10]
       add_entity player
       
-      com = Game::Entities::ComPaddle.new [600, 10]
+      com = Game::Entities::ComPaddle.new self, [600, 10]
       add_entity com
       
       @input = Game::Core::PlayerInput
       @paused = false
+    end
+    
+    def update
+      @entities.each { |id,e| e.update }
+    end
+    
+    def draw
+      @entities.each { |id,e| e.draw }
     end
     
   end

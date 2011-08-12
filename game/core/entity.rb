@@ -6,18 +6,19 @@ module Game::Core
 
   class Entity
     
-    attr_accessor :view
+    attr_reader :view
     attr_reader :updated
     attr_reader :events
     attr_reader :pos
     attr_reader :size
-    attr_reader :goid
+    attr_reader :entity_id
     attr_reader :hitbox
     
-    def initialize(pos, size)
+    def initialize(view, pos, size)
+      @view = view
       @pos = pos
       @size = size
-      @goid = GOID.next
+      @entity_id = GOID.next
       @events = []
       @hitbox = CollisionHitbox.new pos, size
       @updated = false
@@ -69,6 +70,10 @@ module Game::Core
     
     def screen_pos
       return @view.camera.get_screen_pos self
+    end
+    
+    def surface
+      return @view.surface
     end
     
     def load_script(script_name)

@@ -16,8 +16,8 @@ module Game::Entities
     attr_reader :font_size
     attr_reader :disabled
     
-    def initialize(pos, menu_size, item_height, font_color, font_size)
-      super pos, menu_size
+    def initialize(view, pos, menu_size, item_height, font_color, font_size)
+      super view, pos, menu_size
       @timer = Timer.new
       @font_color = font_color
       @font_size = font_size
@@ -87,9 +87,7 @@ module Game::Entities
     
     def add_item(text, block)
       item_y = @item_height * (@menu_items.size)
-      item = MenuItem.new [0, item_y], @item_size, text, @font_size, @font_color, block
-      item.view = @view
-      item.load
+      item = MenuItem.new view, [0, item_y], @item_size, text, @font_size, @font_color, block
       @menu_items << item
       if @selected_item.nil? then
         @selected_item = item

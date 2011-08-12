@@ -5,12 +5,12 @@ module Game::Views
 
   class ViewTestView < Game::Core::View
     
-    def initialize
-      super
+    def initialize(parent)
+      super parent
     end
     
     def load
-      @menu = Game::Entities::Menu.new [0, 0], [300, 200], 25, [255,255,255], 14
+      @menu = Game::Entities::Menu.new self, [0, 0], [300, 200], 25, [255,255,255], 14
       add_entity @menu
       
       @menu.add_item "Show Hud", method(:menu_show_hud_selected)
@@ -20,13 +20,20 @@ module Game::Views
       @menu.add_item "Exit", method(:menu_exit_selected)
       @menu.select_by_index 0
       
-      @hud = HudView.new
+      @hud = HudView.new self
       add_view @hud
       
-      @modal_dialog = ModalView.new
+      @modal_dialog = ModalView.new self
       add_view @modal_dialog
     end
     
+    def update
+      @entities.each { |id,e| e.update }
+    end
+    
+    def draw
+      @entities.each { |id,e| e.draw }
+    end
     
     def menu_show_hud_selected
       @hud.show

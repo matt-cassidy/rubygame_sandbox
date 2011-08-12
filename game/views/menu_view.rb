@@ -9,12 +9,12 @@ module Game::Views
 
   class MenuView < Game::Core::View
     
-    def initialize
-      super
+    def initialize(parent)
+      super parent
     end
     
     def load
-      @menu = Game::Entities::Menu.new [0, 0], [300, 200], 25, [255,255,255], 14
+      @menu = Game::Entities::Menu.new self, [0, 0], [300, 200], 25, [255,255,255], 14
       add_entity @menu
       
       @menu.add_item "Game Logic", method(:menu_game_logic_selected)
@@ -28,20 +28,28 @@ module Game::Views
       @input = Game::Core::PlayerInput
     end
     
+    def update
+      @entities.each { |id,e| e.update }
+    end
+    
+    def draw
+      @entities.each { |id,e| e.draw }
+    end
+    
     def menu_game_logic_selected
-      show_view TestView.new
+      show_view TestView.new parent
     end
     
     def menu_view_mgmt_selected
-      show_view ViewTestView.new
+      show_view ViewTestView.new parent
     end
     
     def menu_pong_selected
-      show_view PongView.new
+      show_view PongView.new self
     end
     
     def menu_test_camera_selected
-      show_view CameraView.new
+      show_view CameraView.new parent
     end
     
     def menu_exit_selected

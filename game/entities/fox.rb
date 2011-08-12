@@ -6,15 +6,16 @@ module Game::Entities
 
   class Fox < Game::Core::Entity
     
-    def initialize(pos)
+    def initialize(view, pos)
       @actor = load_script "fox"
-      super pos, @actor[:hitbox]
-    end
-    
-    def load
+      super view, pos, @actor[:hitbox]
       @input = Game::Core::PlayerInput
       @animation = Game::Core::Animation.make @actor
       @hitbox.make_visible
+    end
+    
+    def load
+      
     end
   
     def update
@@ -24,8 +25,8 @@ module Game::Entities
     end
 
     def draw
-      @hitbox.draw @view.surface, screen_pos
-      @animation.draw @view.surface, screen_pos
+      @hitbox.draw surface, screen_pos
+      @animation.draw surface, screen_pos
     end
 
     def handle_movement

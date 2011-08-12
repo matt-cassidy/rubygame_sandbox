@@ -2,8 +2,8 @@ module Game::Views
 
   class HudView < Game::Core::View
     
-    def initialize
-      super
+    def initialize(parent)
+      super parent
     end
     
     def load

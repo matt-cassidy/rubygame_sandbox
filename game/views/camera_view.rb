@@ -7,20 +7,20 @@ module Game::Views
 
   class CameraView < Game::Core::View
 
-    def initialize
-      super
+    def initialize(parent)
+      super parent
     end
     
     def load
       @input = Game::Core::PlayerInput    
       
-      player = Game::Entities::CameraTarget.new [300,300]
+      player = Game::Entities::CameraTarget.new self, [300,300]
       add_entity player
       
-      planet = Game::Entities::Planet.new [100,100], false
+      planet = Game::Entities::Planet.new self, [100,100], false
       add_entity planet
       
-      planet2 = Game::Entities::Planet.new [200,200], true
+      planet2 = Game::Entities::Planet.new self, [200,200], true
       add_entity planet2
 
       #marker = Game::Core::TextBox.new [100, 100], "100,100", 14, [255,255,255]
@@ -28,6 +28,14 @@ module Game::Views
       
       @camera.follow player
       
+    end
+    
+    def update
+      @entities.each { |id,e| e.update }
+    end
+    
+    def draw
+      @entities.each { |id,e| e.draw }
     end
     
   end

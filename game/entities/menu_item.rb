@@ -9,19 +9,15 @@ module Game::Entities
     attr_reader :textbox
     attr_reader :rect
     
-    def initialize(pos, rect_size, text, font_size, font_color, click_callback)
-      super pos, rect_size
+    def initialize(view, pos, rect_size, text, font_size, font_color, click_callback)
+      super view, pos, rect_size
       @selected = false
-      @textbox = TextBox.new pos, text, font_size, font_color
+      @textbox = TextBox.new view, pos, text, font_size, font_color
       @textbox.text = text
       @image = Rubygame::Surface.new(rect_size)
       @image.fill([100, 100, 100])
       @image.set_alpha 0
       @click_callback = click_callback
-    end
-    
-    def load
-      @textbox.view = @view
     end
     
     def select
@@ -39,7 +35,7 @@ module Game::Entities
     end
     
     def draw
-      @image.blit @view.surface, pos
+      @image.blit surface, pos
       @textbox.draw
     end
     
