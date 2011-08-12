@@ -39,8 +39,7 @@ module Game::Core
       @master_view = Game::Views::StartView.new
       @master_view.view_manager = self
       @master_view.show
-      
-      @input = Game::Core::PlayerInput
+
     end
 
     def tick

@@ -7,9 +7,9 @@ module Game::Entities
     
     attr_accessor :font
     
-    def initialize(view, pos, size, absolute=true)
-      super view, pos, [50, 50]
-      @font = Game::Core::Font.new "pirulen", size
+    def initialize(view, pos, font_size, absolute=true)
+      super view, pos, [50,12]
+      @font = Game::Core::Font.new "pirulen", font_size
       @absolute = absolute
     end
     

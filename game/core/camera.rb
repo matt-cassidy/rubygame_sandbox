@@ -38,7 +38,7 @@ module Game::Core
       
       return [x,y]
     end
-      
+    
   end
 
 

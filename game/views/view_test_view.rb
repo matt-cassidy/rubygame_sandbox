@@ -1,5 +1,6 @@
 require "game/views/hud_view.rb"
 require "game/views/modal_view.rb"
+require "game/views/transparency_view.rb" 
 
 module Game::Views
 
@@ -16,6 +17,7 @@ module Game::Views
       @menu.add_item "Show Hud", method(:menu_show_hud_selected)
       @menu.add_item "Hide Hud", method(:menu_hide_hud_selected)
       @menu.add_item "Show Modal View", method(:menu_show_modal_selected)
+      @menu.add_item "Transparency", method(:menu_transparency_selected)
       @menu.add_item "Cancel Exit Event", method(:menu_fake_exit_selected)
       @menu.add_item "Exit", method(:menu_exit_selected)
       @menu.select_by_index 0
@@ -25,6 +27,10 @@ module Game::Views
       
       @dialog = ModalView.new self
       add_view @dialog
+      
+      @trans = TransparencyView.new self
+      add_view @trans
+      
     end
     
     def menu_show_hud_selected
@@ -48,6 +54,14 @@ module Game::Views
     def menu_show_modal_selected
       @dialog.show
       deactivate
+    end
+    
+    def menu_transparency_selected
+      if @trans.visible? then
+        @trans.hide
+      else
+        @trans.show
+      end
     end
     
     def closing

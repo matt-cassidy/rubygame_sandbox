@@ -28,6 +28,7 @@ module Game::Core
       @quit_requested = false
       @size = size
       @pos = pos
+      @input = PlayerInput
     end
     
     def view_manager=(view_manager)

@@ -45,6 +45,10 @@ module Game::Core
         @request_quit = true
       end
       
+      def anykey_pressed?
+        @keys.size > 0
+      end
+      
       def quit_requested?
         @request_quit
       end

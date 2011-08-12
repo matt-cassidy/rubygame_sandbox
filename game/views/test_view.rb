@@ -55,7 +55,6 @@ module Game::Views
 
       @world.draw surface, camera[0], camera[1]
       
-      
     end
     
   end

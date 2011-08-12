@@ -6,7 +6,7 @@ module Game::Entities
 
   class CameraTarget < Game::Core::Entity
     
-    MOVE_SPEED = 1
+    MOVE_SPEED = 2
     
     def initialize(view, pos)
       super view, pos, [10,10]

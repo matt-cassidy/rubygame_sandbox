@@ -24,12 +24,18 @@ module Game::Views
       planet2 = Game::Entities::Planet.new self, [200,200], true
       add_entity planet2
       
-      @camera.follow player
+      marker = Game::Entities::TextBox.new self, [350,350], 10, false
+      marker.text = "350,350"
+      add_entity marker
+      
+      camera.follow player
       
     end
     
     def updating
       @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
+      
+      
     end
 
     
