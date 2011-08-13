@@ -5,7 +5,7 @@ require "game/views/alpha_comp_view.rb"
 
 module Game::Views
 
-  class ViewTestView < Game::Core::View
+  class ViewMgmtView < Game::Core::View
     
     def initialize(parent)
       super parent

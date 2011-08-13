@@ -1,5 +1,5 @@
 require "game/views/test_view.rb"
-require "game/views/view_test_view.rb"
+require "game/views/viewmgmt_view.rb"
 require "game/views/pong_view.rb"
 require "game/views/shapes_view.rb"
 require "game/views/hitbox_view.rb"
@@ -32,7 +32,7 @@ module Game::Views
     end
     
     def menu_view_mgmt_selected
-      show_view ViewTestView.new parent
+      show_view ViewMgmtView.new parent
     end
     
     def menu_pong_selected
