@@ -23,6 +23,8 @@ module Game::Core
       @events = []
       @hitbox = CollisionHitbox.new pos, size
       @updated = false
+      
+      @spos =  [0,0]
     end
     
     def updating
@@ -38,14 +40,19 @@ module Game::Core
       cool_down_events
       updating
       @spos =  @view.camera.get_screen_pos self
-      @hitbox.rect.x = @spos[0]
-      @hitbox.rect.y = @spos[1]
+      #@hitbox.rect.x = @spos[0]
+      #@hitbox.rect.y = @spos[1]
+      @hitbox.center @spos
       @updated = true
     end
     
     def draw
       drawing
       @updated = false
+    end
+    
+    def cblit(surf)#center blit
+      surf.blit surface, [spos[0]-surf.w/2, spos[1]-surf.h/2]
     end
     
     def blit(surf, xy=spos, offset=[0,0])

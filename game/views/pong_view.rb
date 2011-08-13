@@ -17,10 +17,10 @@ module Game::Views
       @ball = Game::Entities::PongBall.new self, [280,200]
       add_entity @ball
       
-      player = Game::Entities::PlayerPaddle.new self, [10, 10]
+      player = Game::Entities::PlayerPaddle.new self, [20, 200]
       add_entity player
       
-      com = Game::Entities::ComPaddle.new self, [600, 10]
+      com = Game::Entities::ComPaddle.new self, [615, 200]
       add_entity com
       
       @input = Game::Core::PlayerInput

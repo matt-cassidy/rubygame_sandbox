@@ -24,9 +24,9 @@ module Game::Entities
     end
     
     def drawing
-      blit @hitbox
-      blit @image
-      blit @debugtxt
+      cblit @hitbox
+      cblit @image
+      cblit @debugtxt
     end
     
     def handle_reset

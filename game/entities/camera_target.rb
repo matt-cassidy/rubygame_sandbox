@@ -9,7 +9,7 @@ module Game::Entities
     MOVE_SPEED = 2
     
     def initialize(view, pos)
-      super view, pos, [10,10]
+      super view, pos, [15,15]
       @input = Game::Core::PlayerInput
       @hitbox.make_visible
       @image = Rubygame::Surface.new [10,10]
@@ -23,8 +23,9 @@ module Game::Entities
     end
 
     def drawing
-      blit @image
-      blit @debugtxt
+      cblit @hitbox
+      cblit @image
+      blit @debugtxt, spos, [5,-5]
     end
 
     def handle_movement

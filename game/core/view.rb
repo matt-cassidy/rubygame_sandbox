@@ -41,8 +41,7 @@ module Game::Core
     
     def load
       @camera = Camera.new self, size
-      @surface = Rubygame::Surface.new size, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
-      #@surface.colorkey = [240, 140, 240]
+      @surface = Rubygame::Surface.new size
       @collision_tree = Game::Core::CollisionTree.make size, 5
       add_entity @camera.viewport
       @loaded = true

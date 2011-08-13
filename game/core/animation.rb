@@ -59,6 +59,14 @@ module Game::Core
       @sprite_sheet.blit(screen, pos, @sprite_rect)
     end
     
+    def w
+      @sprite.w
+    end
+    
+    def h
+      @sprite.h
+    end
+    
   end
 
 end

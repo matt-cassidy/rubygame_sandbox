@@ -22,8 +22,8 @@ module Game::Entities
     end
     
     def drawing
-      blit @hitbox
-      blit @image
+      cblit @hitbox
+      cblit @image
     end
     
     def handle_movement

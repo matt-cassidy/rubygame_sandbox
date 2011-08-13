@@ -17,6 +17,14 @@ module Game::Core
       refresh 
     end
     
+    def w
+      @font.size_text(@text)[0]
+    end
+    
+    def h
+      @font.size_text(@text)[1]
+    end
+    
     def refresh
       @font = Rubygame::TTF.new "./resource/ttf/#{@font_name}.ttf", @font_size
     end

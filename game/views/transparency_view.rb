@@ -7,7 +7,13 @@ module Game::Views
     end
     
     def loading
-      @image = Rubygame::Surface.load("./resource/img/trans.png")
+      #this is slow for some reason...
+      #@image = Rubygame::Surface.load("./resource/img/trans.png")
+      
+      #a basic color is much faster
+      @image = Rubygame::Surface.new [640,480]
+      @image.fill :green
+      
       surface.set_alpha 150
     end
     

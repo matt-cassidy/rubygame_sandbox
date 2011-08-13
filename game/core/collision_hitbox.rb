@@ -12,7 +12,14 @@ module Game::Core
       @colliding_with = []
       @collidable = true
       @rect = Rubygame::Rect.new(pos[0], pos[1], size[0], size[1])
-      center [pos[0],pos[1]]
+    end
+    
+    def w
+      @rect.w
+    end
+    
+    def h
+      @rect.h
     end
     
     def make_visible
@@ -65,12 +72,12 @@ module Game::Core
     end
     
     def center(pos)
-      #@rect.center = pos
+      @rect.center = pos
     end
     
     def blit(surface, pos)
       return if not visible?
-      @image.blit surface, [@rect.x,@rect.y]
+      @image.blit surface, pos #[@rect.x,@rect.y]
     end
     
     def visible?

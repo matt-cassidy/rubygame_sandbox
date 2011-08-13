@@ -16,15 +16,15 @@ module Game::Entities
     end
     
     def updating
-      #@screenpos.text = "x=#{spos[0]},y=#{spos[1]}"
-      #@virtpos.text = "x=#{pos[0]},y=#{pos[1]}"
+      @screenpos.text = "x=#{spos[0]},y=#{spos[1]}"
+      @virtpos.text = "x=#{pos[0]},y=#{pos[1]}"
     end
     
     def drawing
-      blit @image
-      blit @hitbox
-      #blit @screenpos, spos, [-5,0]
-      #blit @virtpos, spos, [5,0] 
+      cblit @image 
+      cblit @hitbox
+      blit @screenpos, spos, [15,-8]
+      blit @virtpos, spos, [15,8] 
     end
       
   end

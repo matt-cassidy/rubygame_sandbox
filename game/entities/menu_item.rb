@@ -19,6 +19,14 @@ module Game::Entities
       @click_callback = click_callback
     end
     
+    def w
+      @image.w
+    end
+    
+    def h
+      @image.h
+    end
+    
     def select
       @selected = true
       @image.set_alpha 255
