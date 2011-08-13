@@ -1,6 +1,7 @@
 require "game/views/hud_view.rb"
 require "game/views/modal_view.rb"
 require "game/views/transparency_view.rb" 
+require "game/views/alpha_comp_view.rb" 
 
 module Game::Views
 
@@ -17,6 +18,7 @@ module Game::Views
       @menu.add_item "Show Hud", method(:menu_show_hud_selected)
       @menu.add_item "Hide Hud", method(:menu_hide_hud_selected)
       @menu.add_item "Show Modal View", method(:menu_show_modal_selected)
+      @menu.add_item "Alpha Compositing", method(:menu_alpha_selected)
       @menu.add_item "Transparency", method(:menu_transparency_selected)
       @menu.add_item "Cancel Exit Event", method(:menu_fake_exit_selected)
       @menu.add_item "Exit", method(:menu_exit_selected)
@@ -25,11 +27,14 @@ module Game::Views
       @hud = HudView.new self
       add_view @hud
       
-      @dialog = ModalView.new self
-      add_view @dialog
+      @alpha = AlphaCompView.new self
+      add_view @alpha
       
       @trans = TransparencyView.new self
       add_view @trans
+      
+      @dialog = ModalView.new self
+      add_view @dialog
       
     end
     
@@ -61,6 +66,14 @@ module Game::Views
         @trans.hide
       else
         @trans.show
+      end
+    end
+    
+    def menu_alpha_selected
+      if @alpha.visible? then
+        @alpha.hide
+      else
+        @alpha.show
       end
     end
     

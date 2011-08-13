@@ -1,6 +1,7 @@
 require "game/views/test_view.rb"
 require "game/views/view_test_view.rb"
 require "game/views/pong_view.rb"
+require "game/views/shapes_view.rb"
 require "game/views/hitbox_view.rb"
 require "game/views/camera_view.rb"
 require "game/entities/menu.rb"
@@ -19,6 +20,7 @@ module Game::Views
       @menu.add_item "Test Camera", method(:menu_test_camera_selected)
       @menu.add_item "Collision Detection", method(:menu_collision_selected)
       @menu.add_item "Pong!", method(:menu_pong_selected)
+      @menu.add_item "Shapes", method(:menu_shapes_selected)
       @menu.add_item "View Management", method(:menu_view_mgmt_selected)
       @menu.add_item "Exit", method(:menu_exit_selected)
       @menu.select_by_index 0
@@ -44,6 +46,11 @@ module Game::Views
     def menu_collision_selected
       show_view HitboxView.new parent
     end
+    
+    def menu_shapes_selected
+      show_view ShapesView.new parent
+    end
+      
     
     def menu_exit_selected
       quit

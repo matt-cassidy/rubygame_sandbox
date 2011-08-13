@@ -15,6 +15,11 @@ module Game::Views
       @image.blit surface, [0,0]
     end
     
+    def clear
+      
+    end
+    
+    
    end
     
 end

@@ -1,7 +1,9 @@
 module Game::Core
 
   class View
-
+    
+    COLORKEY = [240, 140, 240]
+    
     @@view_manager
     attr_reader :parent
     attr_reader :entities
@@ -12,6 +14,7 @@ module Game::Core
     attr_reader :quit_requested
     attr_reader :camera
     attr_reader :entities
+    attr_reader :transparent
     attr_reader :input
     attr_reader :collision_tree
     attr_reader :surface
@@ -27,6 +30,7 @@ module Game::Core
       @active = false
       @quit_requested = false
       @size = size
+      @transparent = false
       @pos = pos
       @input = PlayerInput
     end
@@ -38,6 +42,7 @@ module Game::Core
     def load
       @camera = Camera.new self, size
       @surface = Rubygame::Surface.new size, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
+      #@surface.colorkey = [240, 140, 240]
       @collision_tree = Game::Core::CollisionTree.make size, 5
       add_entity @camera.viewport
       @loaded = true
@@ -68,7 +73,11 @@ module Game::Core
     end
     
     def clear
-      @surface.fill :black  
+      if transparent? then
+        surface.fill COLORKEY
+      else
+        surface.fill :black     
+      end
     end
     
     def close
@@ -142,6 +151,20 @@ module Game::Core
       if PlayerInput.quit_requested? then
         return true
       end
+    end
+    
+    def transparent?
+      @transparent
+    end
+    
+    def enable_transparency
+      surface.colorkey = COLORKEY
+      @transparent = true
+    end
+    
+    def disable_transparency
+      surface.colorkey = nil
+      @transparent = false
     end
     
     def quit
