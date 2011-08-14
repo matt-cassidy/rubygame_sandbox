@@ -176,6 +176,9 @@ module Game::Core
         quit
       end
       if input.key_pressed? :escape then
+        if self.class.to_s == "Game::Views::MenuView" then
+          quit
+        end
         Log.warn "TODO: fix this"
         @@view_manager.master_view.hack_restart
       end
