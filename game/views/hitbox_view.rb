@@ -12,7 +12,14 @@ module Game::Views
     
     def loading
       
-      rect1 = Game::Entities::Rectzilla.new self, [200,200], [50,50]
+     regions = {  topleft: [0,0], 
+                  bottomleft: [0,50],
+                  center: [25,25],
+                  topright: [50,0],
+                  bottomright: [50,50],
+                  }
+                  
+      rect1 = Game::Entities::Rectzilla.new self, [200,200], [50,50], regions
       add_entity rect1
       
       rect2 = Game::Entities::Rectzilla.new self, [400,400], [10,10]

@@ -7,6 +7,8 @@ module Game::Views
   class PongView < Game::Core::View
     
     attr_reader :ball
+    attr_reader :player
+    attr_reader :com
     
     def initialize(parent)
       super parent
@@ -17,14 +19,18 @@ module Game::Views
       @ball = Game::Entities::PongBall.new self, [280,200]
       add_entity @ball
       
-      player = Game::Entities::PlayerPaddle.new self, [20, 200]
-      add_entity player
+      #@player = Game::Entities::PlayerPaddle.new self, [20, 200]
+      #add_entity player
       
-      com = Game::Entities::ComPaddle.new self, [615, 200]
-      add_entity com
+      #@com = Game::Entities::ComPaddle.new self, [615, 200]
+      #add_entity com
       
-      @input = Game::Core::PlayerInput
-      @paused = false
+    end
+    
+    def updating
+      if input.key_pressed? :space then
+        @ball.reset
+      end
     end
     
     

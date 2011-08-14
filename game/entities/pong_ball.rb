@@ -1,64 +1,58 @@
 require "./game/core/entity.rb"
+require "matrix"
 
 module Game::Entities
 
   class PongBall < Game::Core::Entity
     
+    MAX_VEL = 30
+    
     def initialize(view, pos)
-      @actor = load_script "pong_ball"
-      super view, pos, @actor[:hitbox]
-      @image = Rubygame::Surface.load(@actor[:sprite][:path])
-      @hitbox.make_visible
-      @debugtxt = Game::Core::Font.new "pirulen", 10
-      @ball_reset = true
-      @dir = [0,0]
-      @vel = [0,0]
+      super view, pos, [32,32]
+      @image = Rubygame::Surface.load("./resource/img/planet_ff.png")
+      @vvel = Vector[0,0]
+      @vpos = Vector[0,0]
+      @vacc = Vector[0,0]
+      reset
     end
 
     def updating
-      handle_reset
+      bounce_screen
       handle_movement
-      handle_collisions
-      handle_screen_boundry
-      @debugtxt.text = "x=#{pos[0]},y=#{pos[1]}"
     end
     
     def drawing
-      cblit @hitbox
       cblit @image
-      cblit @debugtxt
     end
     
-    def handle_reset
-      if @ball_reset then
-        @destination = [280,200]
-        @dir = [1,0]
-        @vel = [1,1]
-        @ball_reset = false
+    def reset
+      @vvel = Vector[rand(5), rand(5)]
+      @vacc = Vector[0,0]
+      @vpos = Vector[320,320]
+      move
+    end
+    
+    def move
+      p = @vvel + @vpos + @vacc
+      @pos = [p[0],p[1]]
+    end
+    
+    def handle_movement  
+      move 
+    end
+    
+    def bounce_screen
+      if hitbox.right >= 640
+        reset
+      elsif hitbox.left <= 0
+        reset
+      elsif hitbox.bottom >= 480
+        reset
+      elsif hitbox.top <= 0
+        reset
       end
     end
     
-    def handle_movement
-      x = @dir[0] * @vel[0]
-      y = @dir[1] * @vel[1]
-      shift [x,y] 
-    end
-    
-    def handle_collisions
-      if @hitbox.colliding? 
-        
-      end
-    end
-    
-    def handle_screen_boundry
-      if @pos[0] < 0 or @pos[0] > 640 then
-        @ball_reset = true
-      end
-      if @pos[1] < 0 or @pos[1] > 480 then
-        @ball_reset = true
-      end
-    end
-  
   end
 
 end

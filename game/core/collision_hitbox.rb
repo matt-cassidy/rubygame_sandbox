@@ -6,12 +6,15 @@ module Game::Core
     attr_reader :colliding_with
     attr_reader :collidable
     attr_reader :rect
+    attr_reader :regions
     
     def initialize(pos, size)
       @rect = nil
       @colliding_with = []
       @collidable = true
       @rect = Rubygame::Rect.new(pos[0], pos[1], size[0], size[1])
+      @regions = Hash.new
+      @region_collisions = []
     end
     
     def w
@@ -22,6 +25,22 @@ module Game::Core
       @rect.h
     end
     
+    def top
+      @rect.top
+    end
+    
+    def bottom
+      @rect.bottom
+    end
+    
+    def right
+      @rect.right
+    end
+      
+    def left
+      @rect.left  
+    end
+    
     def make_visible
       @image = Rubygame::Surface.new([@rect.w, @rect.h])
       @image.set_alpha 100
@@ -30,6 +49,7 @@ module Game::Core
     
     def clear_colliding_objects
       @colliding_with.clear
+      @region_collisions.clear
     end
     
     def collide_with(object)
@@ -40,6 +60,10 @@ module Game::Core
     
     def colliding?
       @colliding_with.size > 0
+    end
+    
+    def colliding_with?(object)
+      @colliding_with.include? object
     end
     
     def collidable?
@@ -71,7 +95,7 @@ module Game::Core
       @collidable = false
     end
     
-    def center(pos)
+    def update(pos)
       @rect.center = pos
     end
     
@@ -82,6 +106,32 @@ module Game::Core
     
     def visible?
       @image.nil? == false
+    end
+    
+    def add_regions(regions)
+      regions.each { |name,point| add_region name, point }  
+    end
+    
+    def add_region(name, point)
+      @regions[name] = point
+    end
+    
+    def colliding_regions
+      #get a list of all regions that are colliding, 
+      #including who is colliding with the region
+      if @region_collisions.size == 0
+        @colliding_with.each do |obj|
+          @regions.each do |name,r|
+            x = r[0] + @rect.x
+            y = r[1] + @rect.y
+            if obj.hitbox.rect.collide_point? x, y then
+              @region_collisions << [name, obj]
+            end
+          end
+        end
+      end
+      #only do this once per frame
+      return @region_collisions 
     end
     
   end

@@ -40,9 +40,7 @@ module Game::Core
       cool_down_events
       updating
       @spos =  @view.camera.get_screen_pos self
-      #@hitbox.rect.x = @spos[0]
-      #@hitbox.rect.y = @spos[1]
-      @hitbox.center @spos
+      @hitbox.update @spos
       @updated = true
     end
     
