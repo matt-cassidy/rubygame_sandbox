@@ -9,16 +9,24 @@ module Game::Views
     end
     
     def loading
-      menu = MenuView.new self
-      menu.show
-      add_view menu
+      show_main_menu
       hide
     end
     
     def closing
-      #handle quit confirm and clean up here
-      Log.info "Quitting game"
-      throw :quit
+      cancel_quit
+      show_main_menu
+    end
+    
+    def show_main_menu
+      menu = MenuView.new self
+      menu.show
+      add_view menu
+    end
+    
+    def hack_restart
+      @children = []
+      show_main_menu
     end
 
   end

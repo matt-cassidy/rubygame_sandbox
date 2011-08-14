@@ -10,11 +10,12 @@ module Game::Core
         @queue = Rubygame::EventQueue.new
         @queue.enable_new_style_events
         @keys = [] # Keys being pressed
-        @request_quit = false;
+        @request_quit = false
         create_event_hooks
       end
     
       def fetch
+        @request_quit = false
         @queue.each { |event| handle( event ) }  
       end
       
@@ -23,8 +24,7 @@ module Game::Core
         {
           Rubygame::Events::KeyPressed => :key_pressed,
           Rubygame::Events::KeyReleased => :key_released,
-          Rubygame::Events::QuitRequested => :set_request_quit,
-          :escape => :set_request_quit
+          Rubygame::Events::QuitRequested => :set_request_quit
         }
         make_magic_hooks hooks
       end
@@ -53,10 +53,6 @@ module Game::Core
         @request_quit
       end
       
-      def clear_request_quit
-        @request_quit = false
-      end
-  
     end
             
   end

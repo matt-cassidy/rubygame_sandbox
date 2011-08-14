@@ -1,3 +1,5 @@
+require "game/entities/planet"
+
 module Game::Views
 
   class AlphaCompView < Game::Core::View

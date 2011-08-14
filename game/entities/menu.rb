@@ -18,7 +18,7 @@ module Game::Entities
     
     def initialize(view, pos, menu_size, item_height, font_color, font_size)
       super view, pos, menu_size
-      @timer = Timer.new
+      @timer = Game::Core::Timer.new
       @font_color = font_color
       @font_size = font_size
       @item_size = [menu_size[0],item_height]

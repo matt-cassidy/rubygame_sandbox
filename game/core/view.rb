@@ -53,6 +53,7 @@ module Game::Core
     end
     
     def update
+      check_return_to_menu #hack
       @collision_tree.update
       updating
       @entities.each { |id,e| e.update }
@@ -84,7 +85,9 @@ module Game::Core
       return if cancel_close == true
       if not @parent.nil? then
         Log.info "Closing view #{self.class}"
-        @parent.children.delete self  
+        @parent.children.delete self
+      else
+        quit    
       end
     end
     
@@ -145,13 +148,6 @@ module Game::Core
       @collision_tree.objects.delete entity 
     end
     
-    def quit_requested?
-      return true if @quit_requested
-      if PlayerInput.quit_requested? then
-        return true
-      end
-    end
-    
     def transparent?
       @transparent
     end
@@ -166,16 +162,23 @@ module Game::Core
       @transparent = false
     end
     
-    def quit
-      @quit_requested = true
-    end
-    
-    def cancel_quit
-      quit_requested = false
-    end
-    
     def clock
       @@view_manager.clock
+    end
+    
+    def quit
+      throw :quit
+    end
+    
+    #this is a hack to get back to the main menu... got tired of flipping around the views
+    def check_return_to_menu
+      if input.quit_requested? then
+        quit
+      end
+      if input.key_pressed? :escape then
+        Log.warn "TODO: fix this"
+        @@view_manager.master_view.hack_restart
+      end
     end
 
   end

@@ -7,6 +7,7 @@ module Game::Core
     
     attr_reader :clock
     attr_reader :screen
+    attr_reader :master_view
     
     def initialize
       Log.info "Initializing view manager..."
@@ -53,7 +54,6 @@ module Game::Core
     def refresh(view)
       if view.visible? then 
         if view.active? then
-          quit? view
           load view
           view.update
           view.clear
@@ -71,13 +71,6 @@ module Game::Core
       Log.info "Loading view #{view.class}"
       view.load
       view.finished_loading 
-    end
-    
-    def quit?(view)
-      if view.quit_requested? then
-        Log.info "Quit requested by #{view.class}"
-        @master_view.close
-      end
     end
     
   end

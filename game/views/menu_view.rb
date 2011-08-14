@@ -1,8 +1,3 @@
-require "game/views/test_view.rb"
-require "game/views/viewmgmt_view.rb"
-require "game/views/pong_view.rb"
-require "game/views/hitbox_view.rb"
-require "game/views/camera_view.rb"
 require "game/entities/menu.rb"
 
 module Game::Views
@@ -15,7 +10,8 @@ module Game::Views
     
     def loading
       @menu = Game::Entities::Menu.new self, [50, 50], [300, 200], 25, [255,255,255], 14
-      @menu.add_item "Game Logic", method(:menu_game_logic_selected)
+      @menu.add_item "Tile System", method(:menu_game_logic_selected)
+      @menu.add_item "Vectors", method(:menu_vectors_selected)
       @menu.add_item "Test Camera", method(:menu_test_camera_selected)
       @menu.add_item "Collision Detection", method(:menu_collision_selected)
       @menu.add_item "Pong!", method(:menu_pong_selected)
@@ -26,24 +22,34 @@ module Game::Views
     end
     
     def menu_game_logic_selected
+      require "game/views/test_view.rb"
       show_view TestView.new parent
     end
     
     def menu_view_mgmt_selected
+      require "game/views/viewmgmt_view.rb"
       show_view ViewMgmtView.new parent
     end
     
     def menu_pong_selected
+      require "game/views/pong_view.rb"
       show_view PongView.new self
     end
     
     def menu_test_camera_selected
+      require "game/views/camera_view.rb"
       show_view CameraView.new parent
     end
     
     def menu_collision_selected
+      require "game/views/hitbox_view.rb"
       show_view HitboxView.new parent
     end  
+    
+    def menu_vectors_selected
+      require "game/views/vectors_view.rb"
+      show_view VectorsView.new parent
+    end
     
     def menu_exit_selected
       quit
