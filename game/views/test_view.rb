@@ -38,7 +38,6 @@ module Game::Views
       planet2 = Game::Entities::Planet.new [2000,200]
       add_entity planet2
 
-
       planet3 = Game::Entities::Planet.new [100,100], false
       add_entity planet3
       @collision_tree.objects << planet3
@@ -57,13 +56,12 @@ module Game::Views
       @collision_tree.update
       
       #update camera position by updating the entity it's following
-      @camera.target.update clock 
+      @camera.update clock 
       
       @entities.each do |id,e|
         next if e == @camera.target #dont update camera target twice
         e.cool_down_events clock.seconds
         e.update clock
-        e.move #move the entity to the destined position
       end
       
     end

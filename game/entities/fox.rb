@@ -1,5 +1,5 @@
 require "./game/core/player_input.rb"
-require "./game/core/game_object.rb"
+require "./game/core/entity.rb"
 require "./game/core/animation.rb"
 
 module Game::Entities
@@ -22,8 +22,8 @@ module Game::Entities
     end
 
     def draw(screen)
-      @hitbox.draw screen
-      @animation.draw screen, @pos
+      @hitbox.draw screen, screen_pos
+      @animation.draw screen, screen_pos
     end
 
     def handle_movement

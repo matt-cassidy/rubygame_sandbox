@@ -68,9 +68,9 @@ module Game::Core
       @rect.center = pos
     end
     
-    def draw(screen)
+    def draw(surface, pos)
       return if not visible?
-      @image.blit screen, @rect
+      @image.blit surface, pos
     end
     
     def visible?

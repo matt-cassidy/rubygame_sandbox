@@ -19,7 +19,7 @@ module Game::Entities
     end
   
     def update(clock)
-      handle_movement
+      move_toward_ball
     end
     
     def draw(surface)
@@ -27,8 +27,13 @@ module Game::Entities
       @image.blit surface, pos
     end
    
-    def handle_movement
-      
+    def move_toward_ball
+      if @view.ball.pos[1] > @pos[1] then
+        @destination = [@pos[0], @pos[1] - MOVE_SPEED]
+      end
+      if @view.ball.pos[1] < @pos[1] then
+        @destination = [@pos[0], @pos[1] + MOVE_SPEED]
+      end
     end
       
    

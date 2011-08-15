@@ -19,7 +19,6 @@ module Game::Core
       @goid = GOID.next
       @events = []
       @hitbox = CollisionHitbox.new pos, size
-      @destination = @pos
     end
     
     def update(clock)
@@ -30,23 +29,15 @@ module Game::Core
       #implement in sub class
     end
     
-    def move()
-      @pos = @destination
-      @hitbox.center [@pos[0],@pos[1]]
-      
+    def move(pos)
+      @pos = pos
+      @hitbox.center [pos[0],pos[1]]
     end
     
     def shift(pos)
-      
-      if self == @view.camera.target then
-        #puts "shift #{pos}"
-        @view.camera.focus pos
-        
-      else
-        @destination[0] = @pos[0] + pos[0] - @view.camera.offset[0]
-        @destination[1]  = @pos[1] + pos[1] - @view.camera.offset[1]
-      end
-
+      x = @pos[0] += pos[0]
+      y = @pos[1] += pos[1]
+      move [x,y]
     end
     
     def cool_down_events(seconds)
@@ -54,8 +45,10 @@ module Game::Core
       @events.delete_if {|e| e.is_finished}
     end
     
+    def screen_pos
+      return @view.camera.get_screen_pos self
+    end
 
-    
   end
 
 end

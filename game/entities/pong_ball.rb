@@ -22,7 +22,7 @@ module Game::Entities
       handle_collisions
       handle_screen_boundry
       @debugtxt.text = "x=#{pos[0]},y=#{pos[1]}"
-      @debugtxt.move @pos
+      @debugtxt.destination = @pos
     end
     
     def draw(surface)
@@ -33,7 +33,7 @@ module Game::Entities
     
     def handle_reset
       if @ball_reset then
-        move [280,200]
+        @destination = [280,200]
         @dir = [1,0]
         @vel = [1,1]
         @ball_reset = false
@@ -43,7 +43,7 @@ module Game::Entities
     def handle_movement
       x = @dir[0] * @vel[0]
       y = @dir[1] * @vel[1]
-      shift [x,y] 
+      @destination = [x,y] 
     end
     
     def handle_collisions
