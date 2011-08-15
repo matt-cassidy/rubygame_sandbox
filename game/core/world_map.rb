@@ -19,8 +19,9 @@ module Game::Core
       @world_height = @area.length * TILE_HEIGHT
 
       #how many tiles will fit on screen
-      @screen_tiles_width = SCREEN_WIDTH / TILE_WIDTH
-      @screen_tiles_height = SCREEN_HEIGHT / TILE_HEIGHT
+      #TODO: hack for tile cliping
+      @screen_tiles_width = SCREEN_WIDTH / TILE_WIDTH + 1
+      @screen_tiles_height = SCREEN_HEIGHT / TILE_HEIGHT + 2
 
       #where is the world camera at
       @last_camera_pos = [-1,-1]
@@ -36,6 +37,7 @@ module Game::Core
       @ran = false
 
       puts "world WxH #{@world_width},#{@world_height}"
+      puts "screen tiles WxH #{@screen_tiles_width},#{@screen_tiles_height}"
     end
     
     def get_tile(x, y)
@@ -43,39 +45,33 @@ module Game::Core
       begin
         tile_no = @area[x][y]
       rescue
-        tile_no = 0
+        tile_no = 5
       end
 
+      return 5 if tile_no.nil?
       return tile_no
     end
     
-    def get_blit_rect(tile_no, tx, ty, rect)
-        puts "tile_no #{tile_no} tx #{tx} ty#{ty} "
+    def get_blit_rect(tile_no, scroll_x, scroll_y, rect)
+
+        #puts "tile_no #{tile_no} tx #{scroll_x} ty#{scroll_y} "
         rect.left = 0
         rect.right = TILE_WIDTH
         rect.top = tile_no * TILE_HEIGHT
         rect.bottom = rect.top + TILE_HEIGHT
 
 
-        #if tx < 0 then
-        #    rect.left = rect.left - tx
-        #    tx = 0
-        #end
-        #if ty < 0 then
-        #    rect.top = rect.top - ty
-        #    ty = 0
-        #end
+        #this following section should be doing the clipping to display partial tiles
 
+        if scroll_x + TILE_WIDTH >= SCREEN_WIDTH then
+          puts "clipping right"
+          rect.right = rect.right + (SCREEN_WIDTH - (scroll_x + TILE_WIDTH))
+        end
 
-        #should be clipping to
-        #if tx + TILE_WIDTH > SCREEN_WIDTH then
-        #  rect.right = rect.right + (SCREEN_WIDTH - (tx + TILE_WIDTH))
-
-        #end
-        #if ty + TILE_HEIGHT > SCREEN_HEIGHT then
-        #  rect.bottom = rect.bottom + (SCREEN_HEIGHT - (ty + TILE_HEIGHT))
-        #end
-
+        if scroll_y + TILE_HEIGHT >= SCREEN_HEIGHT then
+          puts "clipping bottom"
+          rect.bottom = rect.bottom + (SCREEN_HEIGHT - (scroll_y + TILE_HEIGHT))
+        end
 
     end
     
@@ -92,18 +88,18 @@ module Game::Core
       @screen_tiles_height.to_int.times do
         
         @screen_tiles_width.to_int.times do
-             scroll_x = x + (world_point[0] / TILE_WIDTH)
-             scroll_y = y + (world_point[1] / TILE_HEIGHT)
+             #what is the index of the map to get
+             map_x = x + (world_point[0] / TILE_WIDTH)
+             map_y = y + (world_point[1] / TILE_HEIGHT)
 
              #Use Bitwise AND to get finer offset
              offset_x = world_point[0] & (TILE_WIDTH - 1)
              offset_y = world_point[1] & (TILE_HEIGHT - 1)
 
-             tile_num = get_tile scroll_y,scroll_x
+             tile_num = get_tile map_y,map_x
 
-             get_blit_rect tile_num,scroll_x,scroll_y,@rect_tile
+             get_blit_rect tile_num,map_x,map_y,@rect_tile
 
-             #puts "row=#{y} col=#{x} tile_num#{tile_num}"
 
              @tiles.blit @background, [(x * TILE_WIDTH) - offset_x,(y * TILE_HEIGHT) - offset_y], @rect_tile
 
@@ -118,7 +114,6 @@ module Game::Core
     end
 
     def camera_moved?(camera_pos)
-      #puts "last_cx #{@last_cx},last_cy #{@last_cy}"
       if @last_camera_pos[0] != camera_pos[0] or @last_camera_pos[1] != camera_pos[1] then
         return true
       end
@@ -126,11 +121,9 @@ module Game::Core
     end
     
     def draw(screen, camera_pos)
-
       #dont re-blit if the camera hasnt moved... blit_tiles is expensive
       if camera_moved? camera_pos then
-        #puts "Camera moved xy=>#{cx},#{cy}"
-          blit_tiles camera_pos
+        blit_tiles camera_pos
       end
       @background.blit screen, [0, 0]
     end
