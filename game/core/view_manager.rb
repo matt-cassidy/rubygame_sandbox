@@ -4,12 +4,17 @@ require "game/core/game_clock"
 module Game::Core
 
   class ViewManager
-
+    
+    attr_reader :clock
+    attr_reader :screen
+    attr_reader :master_view
+    
     def initialize
       Log.info "Initializing view manager..."
 
       resolution = [640,480]
-      Log.info "Creating screen #{resolution}"
+      
+      Log.info "Creating screen #{@resolution}"
       @screen = Rubygame::Screen.new resolution, 0, [Rubygame::HWSURFACE,Rubygame::DOUBLEBUF]
       @screen.title = "Sandbox"
 
@@ -33,50 +38,39 @@ module Game::Core
       Rubygame::Music.autoload_dirs   << File.join(resource_dir, "music")
       
       @master_view = Game::Views::StartView.new
+      @master_view.view_manager = self
       @master_view.show
+
     end
 
-    def update
+    def tick
       @clock.tick
-      @screen.fill :black
       PlayerInput.fetch
-      process_view @master_view
+      @screen.fill :black
+      refresh @master_view
       @screen.flip
     end
     
-    def process_view(view)
-      return if not view.visible?
-      update_view view
-      draw_view view
+    def refresh(view)
+      if view.visible? then 
+        if view.active? then
+          load view
+          view.update
+          view.clear
+          view.draw
+        end
+        view.surface.blit @screen, view.pos
+      end
       view.children.each do |child| 
-        process_view child
-      end
+        refresh child
+      end  
     end
     
-    def update_view(view)
-      load_view view
-      return if view.frozen?
-      check_quit_request view
-      #view.camera.reset
-      view.update @clock
-    end
-    
-    def check_quit_request(view)
-      if view.quit_requested? then
-        Log.info "Quit requested by #{view.class}"
-        @master_view.close
-      end
-    end
-    
-    def load_view(view)
-      return if view.loaded?
+    def load(view)
+      return if view.loaded? or not view.active
       Log.info "Loading view #{view.class}"
-      view.loading 
-      view.loaded = true
-    end
-    
-    def draw_view(view)
-      view.draw @screen
+      view.load
+      view.finished_loading 
     end
     
   end

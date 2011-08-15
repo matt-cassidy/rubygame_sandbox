@@ -6,32 +6,31 @@ module Game::Entities
 
   class Fox < Game::Core::Entity
     
-    def initialize(pos)
+    def initialize(view, pos)
       @actor = load_script "fox"
-      
-      super pos, @actor[:hitbox]
+      super view, pos, @actor[:hitbox]
       @input = Game::Core::PlayerInput
       @animation = Game::Core::Animation.make @actor
       @hitbox.make_visible
     end
-  
-    def update(clock)
+    
+    def updating
       handle_movement
       handle_animation
       handle_collisions
     end
 
-    def draw(screen)
-      @hitbox.draw screen, screen_pos
-      @animation.draw screen, screen_pos
+    def drawing
+      cblit @hitbox 
+      cblit @animation
     end
 
     def handle_movement
       x, y = 0,0
-      x -= 1 if @input.key_pressed?( :left )
-      x += 1 if @input.key_pressed?( :right )
-      y -= 1 if @input.key_pressed?( :up ) # up is down in screen coordinates
-      y += 1 if @input.key_pressed?( :down )
+      x -= 5 if @input.key_pressed?( :left )
+      x += 5 if @input.key_pressed?( :right )
+      y -= 5 if @input.key_pressed?( :up ) # up is down in screen coordinates
+      y += 5 if @input.key_pressed?( :down )
       if(x != 0 || y != 0)
         shift [x, y]
       end

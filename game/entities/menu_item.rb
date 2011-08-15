@@ -1,22 +1,30 @@
-require "game/core/text_box.rb"
+require "game/core/entity.rb"
+require "game/core/font.rb"
 
-module Game::Core
+module Game::Entities
   
-  class MenuItem < Game::Core::GameObject
+  class MenuItem
     
     attr_reader :selected
-    attr_reader :textbox
+    attr_reader :font
     attr_reader :rect
     
-    def initialize(pos, rect_size, text, font_size, font_color, click_callback)
-      super pos, rect_size
+    def initialize(text, font_size, rect_size, click_callback)
       @selected = false
-      @textbox = Game::Core::TextBox.new pos, text, font_size, font_color
-      @textbox.text = text
+      @font = Game::Core::Font.new "pirulen", font_size
+      @font.text = text
       @image = Rubygame::Surface.new(rect_size)
       @image.fill([100, 100, 100])
       @image.set_alpha 0
       @click_callback = click_callback
+    end
+    
+    def w
+      @image.w
+    end
+    
+    def h
+      @image.h
     end
     
     def select
@@ -33,9 +41,9 @@ module Game::Core
       @textbox.text = value
     end
     
-    def draw(surface)
+    def blit(surface, pos)
       @image.blit surface, pos
-      @textbox.draw surface
+      @font.blit surface, pos
     end
     
     def trigger

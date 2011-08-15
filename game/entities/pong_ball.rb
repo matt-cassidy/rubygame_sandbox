@@ -1,66 +1,46 @@
 require "./game/core/entity.rb"
+require "matrix"
 
 module Game::Entities
 
   class PongBall < Game::Core::Entity
     
-    def initialize(pos)
-      @actor = load_script "pong_ball"
-      
-      super pos, @actor[:hitbox]
-      @image = Rubygame::Surface.load(@actor[:sprite][:path])
-      @hitbox.make_visible
-      @debugtxt = Game::Core::TextBox.new pos, "x,y", 8, :white
-      @ball_reset = true
-      @dir = [0,0]
-      @vel = [0,0]
+    MAX_VEL = 30
+    
+    def initialize(view, pos)
+      super view, pos, [32,32]
+      @image = Rubygame::Surface.load("./resource/img/planet_ff.png")
+      @vvel = Vector[0,0]
+      @vpos = Vector[0,0]
+      @vacc = Vector[0,0]
+      reset
     end
-  
-    def update(clock)
-      handle_reset
+
+    def updating
+      bounce_screen
       handle_movement
-      handle_collisions
-      handle_screen_boundry
-      @debugtxt.text = "x=#{pos[0]},y=#{pos[1]}"
-      @debugtxt.destination = @pos
     end
     
-    def draw(surface)
-      @hitbox.draw surface
-      @image.blit surface, @hitbox.rect
-      @debugtxt.draw surface
+    def drawing
+      cblit @image
     end
     
-    def handle_reset
-      if @ball_reset then
-        @destination = [280,200]
-        @dir = [1,0]
-        @vel = [1,1]
-        @ball_reset = false
-      end
+    def reset
+      @vvel = Vector[rand(5), rand(5)]
+      @vacc = Vector[0,0]
+      @vpos = Vector[320,320]
+      move
     end
     
-    def handle_movement
-      x = @dir[0] * @vel[0]
-      y = @dir[1] * @vel[1]
-      @destination = [x,y] 
+    def move
+      p = @vvel + @vpos + @vacc
+      @pos = [p[0],p[1]]
     end
     
-    def handle_collisions
-      if @hitbox.colliding? 
-        
-      end
+    def handle_movement  
+      move 
     end
     
-    def handle_screen_boundry
-      if @pos[0] < 0 or @pos[0] > 640 then
-        @ball_reset = true
-      end
-      if @pos[1] < 0 or @pos[1] > 480 then
-        @ball_reset = true
-      end
-    end
-  
   end
 
 end

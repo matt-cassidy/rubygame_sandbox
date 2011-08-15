@@ -1,54 +1,102 @@
 module Game::Core
 
   class View
-
-    attr_accessor :parent
+    
+    COLORKEY = [240, 140, 240]
+    
+    @@view_manager
+    attr_reader :parent
     attr_reader :entities
     attr_reader :children
-    attr_accessor :loaded
+    attr_reader :loaded
     attr_reader :visible
-    attr_reader :freeze
+    attr_reader :active
     attr_reader :quit_requested
     attr_reader :camera
     attr_reader :entities
+    attr_reader :transparent
+    attr_reader :input
+    attr_reader :collision_tree
+    attr_reader :surface
+    attr_reader :size
+    attr_reader :pos
     
-    def initialize
-      @parent = nil
+    def initialize(parent_view, pos=[0,0], size=[640,480])
+      @parent = parent_view
       @children = []
-      @camera = Camera.new [640,480]
       @entities = Hash.new
       @loaded = false
       @visible = false
-      @freeze = false
+      @active = false
       @quit_requested = false
+      @size = size
+      @transparent = false
+      @pos = pos
+      @input = PlayerInput
+    end
+    
+    def view_manager=(view_manager)
+      @@view_manager = view_manager
+    end
+    
+    def load
+      @camera = Camera.new self, size
+      @surface = Rubygame::Surface.new size
+      @collision_tree = Game::Core::CollisionTree.make size, 5
+      add_entity @camera.viewport
+      @loaded = true
+      loading
     end
     
     def loading
       #implement in sub class
     end
     
-    def update(clock)
-      #implement in sub class
+    def update
+      check_return_to_menu #hack
+      @collision_tree.update
+      updating
+      @entities.each { |id,e| e.update }
     end
-
-    def draw(screen)
-      #implement in sub class
-    end
-
-    def closing
+    
+    def updating
       #implement in sub class
     end
     
-    def close
-      cancel = closing
-      return if cancel == true
-      if @parent.nil? then
-        Log.info "Quitting game"
-        throw :quit
+    def drawing
+      #implement in sub class
+    end    
+
+    def draw
+      drawing
+      @entities.each { |id,e| e.draw }
+    end
+    
+    def clear
+      if transparent? then
+        surface.fill COLORKEY
       else
-        Log.info "Closing view #{self.class}"
-        @parent.children.delete self  
+        surface.fill :black     
       end
+    end
+    
+    def close
+      cancel_close = closing
+      return if cancel_close == true
+      if not @parent.nil? then
+        Log.info "Closing view #{self.class}"
+        @parent.children.delete self
+      else
+        quit    
+      end
+    end
+    
+    def finished_loading
+      @loaded = true
+    end
+    
+    def closing
+      #implement in sub class
     end
     
     def loaded?
@@ -57,57 +105,80 @@ module Game::Core
     
     def show
       @visible = true
+      activate
     end
     
     def hide
       @visible = false
+      deactivate
     end
     
     def visible?
       @visible
     end
     
-    def freeze
-      @freeze = true
+    def active?
+      @active
     end
     
-    def unfreeze
-      @freeze = false
+    def deactivate
+      @active = false
     end
     
-    def frozen?
-      @freeze
+    def activate
+      @active = true
     end
     
     def add_view(view)
-      view.parent = self
       @children << view
     end
     
     def remove_view(view)
-      view.parent = nil
       @children.delete view
     end
     
     def add_entity(entity)
-      entity.view = self
-      @entities[entity.goid] = entity
+      @collision_tree.objects << entity
+      @entities[entity.entity_id] = entity
     end
     
-    def remove_entity(goid)
-      @entities.delete goid
+    def remove_entity(entity_id)
+      entity = @entities[entity_id]
+      @entities.delete entity
+      @collision_tree.objects.delete entity 
     end
     
-    def quit_requested?
-      @quit_requested
+    def transparent?
+      @transparent
+    end
+    
+    def enable_transparency
+      surface.colorkey = COLORKEY
+      @transparent = true
+    end
+    
+    def disable_transparency
+      surface.colorkey = nil
+      @transparent = false
+    end
+    
+    def clock
+      @@view_manager.clock
     end
     
     def quit
-      @quit_requested = true
+      throw :quit
     end
     
-    def cancel_quit
-      quit_requested = false
+    #this is a hack to get back to the main menu... got tired of flipping around the views
+    def check_return_to_menu
+      if input.quit_requested? then
+        quit
+      end
+      if input.key_pressed? :escape then
+        Log.warn "TODO: fix this"
+        @@view_manager.master_view.hack_restart
+      end
     end
 
   end

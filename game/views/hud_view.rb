@@ -2,20 +2,17 @@ module Game::Views
 
   class HudView < Game::Core::View
     
-    def initialize
-      super
+    def initialize(parent)
+      super parent, [0,parent.surface.h-100], [640,100]
     end
     
     def loading
-      @surface = Rubygame::Surface.load("./resource/img/hud_bk.png")
+      @hud = Rubygame::Surface.load("./resource/img/hud_bk.png")
     end
     
-    def update(clock)
-      
-    end
-   
-    def draw(surface)
-      @surface.blit surface, [0,408]
+    def drawing
+      surface.fill :red
+      @hud.blit surface, [0,0]
     end
     
    end

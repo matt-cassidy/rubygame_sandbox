@@ -1,7 +1,7 @@
 require "game/core/view"
 require "game/core/collision_node"
 require "game/core/collision_tree"
-require "game/core/text_box.rb"
+require "game/entities/text_box.rb"
 require "game/core/world_map.rb"
 require "game/core/log.rb"
 require "game/entities/fox.rb"
@@ -11,79 +11,52 @@ module Game::Views
 
   class TestView < Game::Core::View
 
-    def initialize
-      super
+    def initialize(parent)
+      super parent
     end
     
     def loading
-      parent_collision_node = Game::Core::CollisionNode.new Rubygame::Rect.new(0, 0, 640, 480), 5
-      @collision_tree = Game::Core::CollisionTree.new parent_collision_node
-
-      @framerate_text = Game::Core::TextBox.new [10, 10], "framerate", 14, [255,255,255]
+      
+      @framerate_text = Game::Entities::TextBox.new self, [10, 10], 14
+      add_entity @framerate_text
       
       @world = Game::Core::WorldMap.new
       
       @input = Game::Core::PlayerInput    
       
-      player = Game::Entities::Fox.new [320,240]
+      player = Game::Entities::Fox.new self, [320,240]
       add_entity player
-      @camera.follow player
-      @collision_tree.objects << player
       
-      planet1 = Game::Entities::Planet.new [100,100]
+      planet1 = Game::Entities::Planet.new self, [100,100]
       add_entity planet1
-
-      @collision_tree.objects << planet1
-
-      planet2 = Game::Entities::Planet.new [2000,200]
+      
+      planet2 = Game::Entities::Planet.new self, [2000,200]
       add_entity planet2
-
-      planet3 = Game::Entities::Planet.new [100,100], false
+      
+      planet3 = Game::Entities::Planet.new self, [100,100], false
       add_entity planet3
-      @collision_tree.objects << planet3
-
-      marker = Game::Core::TextBox.new [100, 100], "100,100", 14, [255,255,255]
+      
+      marker = Game::Entities::TextBox.new self, [300, 300], 14
       add_entity marker
+      
+      @camera.follow player
       
     end
     
-    def update(clock)
-      
-      handle_quit
-      
+    def updating
       @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
       
-      @collision_tree.update
-      
-      #update camera position by updating the entity it's following
-      @camera.update clock 
-      
-      @entities.each do |id,e|
-        next if e == @camera.target #dont update camera target twice
-        e.cool_down_events clock.seconds
-        e.update clock
-      end
-      
     end
 
-    def draw(surface)
+    def drawing
       
       #retrieve the center point where the camera would be over on the map
+      camera = @camera.pos
 
-      @world.draw surface, @camera.pos
-      
-      @entities.each { |id,e| e.draw surface }
-      
-      @framerate_text.draw surface
+      @world.draw surface, camera
       
     end
-
-    def handle_quit
-      if @input.quit_requested? then
-        quit
-      end
-    end
-
+    
   end
 
 end

@@ -14,7 +14,7 @@ module Game
       view_manager = Game::Core::ViewManager.new
       catch(:quit) do
         loop do
-          view_manager.update
+          view_manager.tick
         end
       end
       Rubygame.quit

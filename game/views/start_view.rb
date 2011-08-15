@@ -5,19 +5,28 @@ module Game::Views
   class StartView < Game::Core::View
 
     def initialize
-      super
+      super nil
     end
     
     def loading
-      menu = MenuView.new
-      menu.show
-      add_view menu
-      @input = Game::Core::PlayerInput
+      show_main_menu
+      hide
     end
     
     def closing
-      #handle quit confirm and clean up here
-      return false#dont cancel the quit event
+      cancel_quit
+      show_main_menu
+    end
+    
+    def show_main_menu
+      menu = MenuView.new self
+      menu.show
+      add_view menu
+    end
+    
+    def hack_restart
+      @children = []
+      show_main_menu
     end
 
   end

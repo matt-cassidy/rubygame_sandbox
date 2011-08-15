@@ -3,36 +3,31 @@ module Game::Views
 
   class ModalView < Game::Core::View
     
-    def initialize
-      super
+    def initialize(parent)
+      super parent, [150, 100], [300, 200]
     end
     
     def loading
-      @menu = Game::Core::Menu.new [100, 100], [100, 50], 25, [255,255,255], 14
-      @menu.add_item "Ok", method(:menu_nothing_selected)
+      @menu = Game::Entities::Menu.new self, [50, 50], [100, 50], 25, [255,255,255], 14
+      @menu.add_item "Ok", method(:menu_ok_selected)
       @menu.add_item "Close", method(:menu_close_selected)
+      add_entity @menu
+      
       @menu.select_by_index 0
-      @background = Rubygame::Surface.new [300, 200]
-      @background.fill :red
     end
     
-    def update(clock)
-      @menu.update clock
-    end
-    
-    def draw(surface)
-      @menu.draw @background
-      @background.blit surface, [250, 250]
+    def drawing
+      surface.fill :red
     end
     
     def menu_close_selected
       hide
-      @parent.unfreeze
+      @parent.activate
     end
     
-    def menu_nothing_selected
+    def menu_ok_selected
       hide
-      @parent.unfreeze
+      @parent.activate
     end
    
    end
