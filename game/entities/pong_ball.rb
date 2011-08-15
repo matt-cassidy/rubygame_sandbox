@@ -41,18 +41,6 @@ module Game::Entities
       move 
     end
     
-    def bounce_screen
-      if hitbox.right >= 640
-        reset
-      elsif hitbox.left <= 0
-        reset
-      elsif hitbox.bottom >= 480
-        reset
-      elsif hitbox.top <= 0
-        reset
-      end
-    end
-    
   end
 
 end
