@@ -64,35 +64,35 @@ module Game::Core
       changed = false
 
       #there must be a better way that this
-      if @input.key_pressed?( :number_1 ) then
+      if @input.up?( :number_1 ) then
           changed = true
           @layers[0].each { |e|
               e.visible = !e.visible
           }
       end
 
-      if @input.key_pressed?( :number_2 ) then
+      if @input.up?( :number_2 ) then
           changed = true
           @layers[1].each { |e|
               e.visible = !e.visible
           }
       end
 
-      if @input.key_pressed?( :number_3 ) then
+      if @input.up?( :number_3 ) then
           changed = true
           @layers[2].each { |e|
               e.visible = !e.visible
           }
       end
 
-      if @input.key_pressed?( :number_4 ) then
+      if @input.up?( :number_4 ) then
           changed = true
           @layers[3].each { |e|
               e.visible = !e.visible
           }
       end
 
-      if @input.key_pressed?( :number_5 ) then
+      if @input.up?( :number_5 ) then
           changed = true
           @layers[4].each { |e|
               e.visible = !e.visible
