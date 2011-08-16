@@ -3,8 +3,8 @@ require "game/core/layer.rb"
 module Game::Core
 
   class ParallaxLayer < Game::Core::Layer
-    def initialize (tiles,tile_width,tile_height,pos,speed,layer_num = 0)
-      super nil,tiles,tile_width,tile_height,layer_num
+    def initialize (tiles,tile_width,tile_height,pos,speed,visible,layer_num = 0)
+      super nil,tiles,tile_width,tile_height,visible,layer_num
 
       @pos = pos
       @speed = speed
@@ -42,12 +42,13 @@ module Game::Core
         @pos[0] = 0
       end
 
+
       if (@pos[0] - @tile_width) < background.width
         location = [@pos[0] + @tile_width, @pos[1]]
         @tiles.blit background,location
       end
 
-       if (@pos[0] + @tile_width) > background.width
+      if (@pos[0] + @tile_width) > background.width
         location = [@pos[0] - @tile_width, @pos[1]]
         @tiles.blit background,location
       end

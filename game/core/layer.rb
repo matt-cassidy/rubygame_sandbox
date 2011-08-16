@@ -10,7 +10,7 @@ module Game::Core
     attr_accessor :layer_num
     attr_accessor :visible
 
-    def initialize (area,tiles,tile_width,tile_height,layer_num = 0)
+    def initialize (area,tiles,tile_width,tile_height,visible,layer_num = 0)
       @name = tiles
 
       if (!area.nil?) then
@@ -30,13 +30,13 @@ module Game::Core
        @world_width = @area[0].length
        @world_height = @area.length
 
-       @visible = true
+       @visible = visible
        @layer_num = layer_num
 
-       puts "world wXh #{@world_width},#{@world_height}"
     end
 
     def update(clock,camera_pos,background)
+
       @screen_tiles_width = background.width / @tile_width + 1
       @screen_tiles_height = background.height / @tile_height + 2
 
@@ -93,7 +93,6 @@ module Game::Core
            map_pos[1] = (map_pos[1] % @world_height)
          end
 
-
        begin
          #you swap them to otherwise the map is flipped 90degress counter clockwise
         tile_no = @area[map_pos[1]][map_pos[0]]
@@ -112,7 +111,6 @@ module Game::Core
         rect.top = tile_no * @tile_height
         rect.bottom = rect.top + @tile_height
     end
-
 
   end
 

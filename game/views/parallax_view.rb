@@ -26,19 +26,22 @@ module Game::Views
       #adding layers to map
 
       #tile to use, width,height, start pos, speed [x,y], layer
-      layer1 = Game::Core::ParallaxLayer.new "parallax_1",800,200,[0,100],[10,10], 0
+      #layer0 = Game::Core::ParallaxLayer.new "parallax_1_5",284,197,[0,100],[200,10],true, 0
+      #@world.add_layer layer0
+
+      layer1 = Game::Core::ParallaxLayer.new "parallax_1",800,200,[0,100],[200,10],true, 0
       @world.add_layer layer1
 
-      layer2 = Game::Core::ParallaxLayer.new "parallax_2",800,120,[0,100],[20,20], 1
+      layer2 = Game::Core::ParallaxLayer.new "parallax_2",800,120,[0,100],[150,20],true, 1
       @world.add_layer layer2
 
-      layer3 = Game::Core::ParallaxLayer.new "parallax_3",800,200,[0,100],[40,30],2
+      layer3 = Game::Core::ParallaxLayer.new "parallax_3",800,200,[0,100],[140,30],true, 2
       @world.add_layer layer3
 
-      layer4 = Game::Core::ParallaxLayer.new "parallax_4",800,200,[0,100],[100,40],3
+      layer4 = Game::Core::ParallaxLayer.new "parallax_4",800,200,[0,100],[100,40],true,3
       @world.add_layer layer4
 
-      layer5 = Game::Core::ParallaxLayer.new "parallax_5",1600,400,[0,0],[150,150],4
+      layer5 = Game::Core::ParallaxLayer.new "parallax_5",1600,400,[0,0],[50,150],true,4
       @world.add_layer layer5
 
     end

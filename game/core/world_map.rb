@@ -27,10 +27,10 @@ module Game::Core
       @background.fill([0,0,0])
 
       for layer_group in (@layers)
-          layer_group.each { |e|
-              if e.visible == true then
+          layer_group.each { |layer|
+              if layer.visible == true then
 
-                e.update clock, camera_pos,@background
+                layer.update clock, camera_pos,@background
               end
             }
        end
@@ -43,7 +43,6 @@ module Game::Core
     def camera_moved?(camera_pos)
       if @last_camera_pos[0] != camera_pos[0] or @last_camera_pos[1] != camera_pos[1] then
         return true
-
       end
       return false
     end
@@ -89,6 +88,13 @@ module Game::Core
       if @input.key_pressed?( :number_4 ) then
           changed = true
           @layers[3].each { |e|
+              e.visible = !e.visible
+          }
+      end
+
+      if @input.key_pressed?( :number_5 ) then
+          changed = true
+          @layers[4].each { |e|
               e.visible = !e.visible
           }
       end
