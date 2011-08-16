@@ -18,7 +18,6 @@ module Game::Views
     
     def updating
       @vecman.update clock.seconds
-      @vecman
     end
    
    end
@@ -54,7 +53,7 @@ class VectorMan
   end
   
   def jumping?
-    @input.key_pressed? :space
+    @input.down? :space
   end
   
   def moving_right?
@@ -71,31 +70,26 @@ class VectorMan
   
   def update(seconds)
     
-    
-    if falling? then
-      vel.y = 1
+    if falling?
+      vel.y = 2
       @falling_duration += seconds
-    end
-    
-    if not falling? then
+    else
       vel.y = 0
-      @jump_duration = 0.0
       @falling_duration = 0
-    end   
-
-    if jumping? then
-      if @jump_duration <= 1.0 then
-        @jump_duration += seconds
-        vel.y += -5
-      end
     end
     
+    if jumping? then
+      vel.y = -100
+      @jump_duration += seconds
+    else
+      @jump_duration = 0.0
+    end
     
-    if moving_right? then
+    if moving_right?
       vel.x = 1
-    elsif moving_left? then
+    elsif moving_left?
       vel.x = -1
-    elsif not falling? then
+    elsif not falling?
       vel.x = 0
     end
     

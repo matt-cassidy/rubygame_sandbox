@@ -8,6 +8,16 @@ module Game::Core
     
     class << self
       
+      def max(v,u)
+        return v if v >= u
+        return u
+      end
+      
+      def min(v,u)
+        return v if v <= u
+        return u
+      end
+      
       def angle(v,u)
         Mathh.acos Vector2.normalize(v).dot(Vector2.normalize(u))
       end
@@ -264,6 +274,10 @@ module Game::Core
     
     def zero?
       self == Vector2.zero
+    end
+    
+    def -@()
+      Vector2.negate self
     end
     
   end
