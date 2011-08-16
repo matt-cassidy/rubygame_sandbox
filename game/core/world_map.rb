@@ -1,4 +1,5 @@
 require "rubygame"
+require "game/core/layer.rb"
 
 module Game::Core
 
@@ -13,108 +14,122 @@ module Game::Core
 
     def initialize
       @area = eval File.open("./resource/area/test.area").read
+      @layers = []
+
+      # what are the dimensions of the map loaded
+      @world_width = @area[0].length * TILE_WIDTH
+      @world_height = @area.length * TILE_HEIGHT
+
+      #how many tiles will fit on screen
+      #TODO: hack for tile clipping
+      @screen_tiles_width = SCREEN_WIDTH / TILE_WIDTH + 1
+      @screen_tiles_height = SCREEN_HEIGHT / TILE_HEIGHT + 2
+
+      #where is the world camera at
+      @last_camera_pos = [-1,-1]
+
       @background = Rubygame::Surface.new [SCREEN_WIDTH, SCREEN_HEIGHT]
+
       @tiles = Rubygame::Surface.load "./resource/img/tiles.png"
       @rect_tile = Rubygame::Rect.new 0, 0, TILE_WIDTH, TILE_HEIGHT 
-      @tiles_width = SCREEN_WIDTH / TILE_WIDTH
-      @tiles_height = SCREEN_HEIGHT / TILE_HEIGHT
-      @last_cx = -1
-      @last_cy = -1
+
     end
     
-    def get_tile(tx, ty, cx, cy)
-      y = (tx + (TILE_WIDTH / 2) + cx - SCREEN_WIDTH / 2) / TILE_WIDTH
-      x = (ty + (TILE_HEIGHT / 2) + cy - SCREEN_HEIGHT / 2) / TILE_HEIGHT
+    def get_tile(x,y,camera_pos)
+       map_pos = [x + (camera_pos[0] / TILE_WIDTH),y + (camera_pos[1] / TILE_HEIGHT)]
 
-      #puts "xy=#{x},#{y}"
-      begin
-        tile_no = @area[x][y]
+       begin
+        tile_no = @area[map_pos[0]][map_pos[1]]
       rescue
-        tile_no = 4
+        tile_no = 5
       end
-      
-      #puts "xy=#{x},#{y} => #{tile_no}"
-      
-      return 0 if tile_no.nil?
+
+      return 5 if tile_no.nil?
       return tile_no
     end
     
-    def get_blit_rect(tile_no, tx, ty, rect)
+    def get_blit_rect(tile_no, offset_x, offset_y, rect)
         rect.left = 0
         rect.right = TILE_WIDTH
         rect.top = tile_no * TILE_HEIGHT
         rect.bottom = rect.top + TILE_HEIGHT
- 
-        if tx < 0 then
-            rect.left = rect.left - tx
-            tx = 0
-        end
-        if ty < 0 then
-            rect.top = rect.top - ty
-            ty = 0
-        end
 
-        if tx + TILE_WIDTH > SCREEN_WIDTH then
-          rect.right = rect.right + (SCREEN_WIDTH - (tx + TILE_WIDTH))
+        #this following section should be doing the clipping to display partial tiles
 
-        end
-        if ty + TILE_HEIGHT > SCREEN_HEIGHT then
-          rect.bottom = rect.bottom + (SCREEN_HEIGHT - (ty + TILE_HEIGHT))
+        #if the tile's right side is off the screen clip(shrink the rectangle's right to fit screen) it
+        if (offset_x + TILE_WIDTH) > SCREEN_WIDTH then
+          #puts "clipping right"
+          #rect.right= rect.right - ((x * TILE_WIDTH + TILE_WIDTH) - SCREEN_WIDTH)
         end
 
-
+        #if the tile's bottom is off the screen clip (shrink the rectangle's bottom to fit screen) it
+        if (offset_y + TILE_HEIGHT) > SCREEN_HEIGHT then
+          #puts "clipping bottom"
+          #rect.bottom= rect.bottom - ((y * TILE_HEIGHT + TILE_HEIGHT) - SCREEN_HEIGHT)
+        end
     end
     
-    def blit_tiles(cx, cy)
+    def blit_tiles(camera_pos)
+      #Algorithmn at  http://www.cpp-home.com/tutorials/292_1.htm
+
       #Create the Screen from left to right, top to bottom
-      i, j = 0, 0
+      y, x = 0, 0
 
-      point = full_size
-      #puts "Bilt Tiles"
-      @tiles_height.to_int.times do
+      @screen_tiles_height.to_int.times do
         
-        @tiles_width.to_int.times do
-            ty = i * TILE_WIDTH - cx % TILE_WIDTH
-            tx = j * TILE_HEIGHT - cy % TILE_HEIGHT
+        @screen_tiles_width.to_int.times do
+             #Use Bitwise AND to get finer offset
+             #If you remove the -1 you get tile by tile moving as the offset is always 0,0
+             offset_x = (x * TILE_WIDTH) - (camera_pos[0] & (TILE_WIDTH - 1))
+             offset_y = (y * TILE_HEIGHT) - (camera_pos[1] & (TILE_HEIGHT - 1))
+             tile_num = get_tile x,y,camera_pos
 
-            tile_num = get_tile tx, ty, cx, cy
-            get_blit_rect tile_num, tx, ty, @rect_tile
-            @tiles.blit @background, [tx, ty], @rect_tile
-            #puts "i #{i} j#{j} tilenum #{tile_num} tx: #{tx} ty #{ty}"
+             get_blit_rect tile_num,offset_x,offset_y,@rect_tile
 
-            j = j + 1
+             @tiles.blit @background, [offset_x,offset_y], @rect_tile
+
+            x = x + 1
         end
-        j = 0
-        i = i + 1
+        x = 0
+        y = y + 1
       end
 
-      @last_cx = cx
-      @last_cy = cy
+      #update the world camera
+      @last_camera_pos = [camera_pos[0],camera_pos[1]]
     end
-    
-    def camera_moved?(cx, cy)
-      #puts "last_cx #{@last_cx},last_cy #{@last_cy}"
-      if @last_cx != cx or @last_cy != cy then
+
+    def camera_moved?(camera_pos)
+      if @last_camera_pos[0] != camera_pos[0] or @last_camera_pos[1] != camera_pos[1] then
         return true
       end
       return false
     end
-    
-    def draw(screen, cx, cy)
+
+    def update(clock,camera_pos)
+      #convert camera position to use top left instead of centre position
+      camera_top_left = [camera_pos[0] - (SCREEN_WIDTH / 2),camera_pos[1] - (SCREEN_HEIGHT / 2)]
 
       #dont re-blit if the camera hasnt moved... blit_tiles is expensive
-      if camera_moved? cx, cy then
-        #puts "Camera moved xy=>#{cx},#{cy}"
-        blit_tiles cx, cy
-        #@tiles.x = cx
-        #@tiles.y = cy
+      if camera_moved? camera_top_left then
+        blit_tiles camera_top_left
       end
+
+    end
+
+    def draw(screen)
+      #blit the background to the screen surface
       @background.blit screen, [0, 0]
     end
 
-    def full_size
-      return [@area.length * TILE_WIDTH,@area[0].length * TILE_HEIGHT]
+    def add_layer(layer)
+
     end
+
+    def remove_layer(layer_num)
+
+    end
+
+
   end
   
 end

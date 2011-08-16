@@ -45,15 +45,15 @@ module Game::Views
     
     def updating
       @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
-      
+      @world.update clock, @camera.pos
     end
 
     def drawing
       
       #retrieve the center point where the camera would be over on the map
-      camera = @camera.pos
 
-      @world.draw surface, camera[0], camera[1]
+
+      @world.draw surface
       
     end
     

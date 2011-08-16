@@ -27,10 +27,10 @@ module Game::Entities
 
     def handle_movement
       x, y = 0,0
-      x -= 1 if @input.key_pressed?( :left )
-      x += 1 if @input.key_pressed?( :right )
-      y -= 1 if @input.key_pressed?( :up ) # up is down in screen coordinates
-      y += 1 if @input.key_pressed?( :down )
+      x -= 5 if @input.key_pressed?( :left )
+      x += 5 if @input.key_pressed?( :right )
+      y -= 5 if @input.key_pressed?( :up ) # up is down in screen coordinates
+      y += 5 if @input.key_pressed?( :down )
       if(x != 0 || y != 0)
         shift [x, y]
       end
