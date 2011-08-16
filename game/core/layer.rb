@@ -6,11 +6,14 @@ module Game::Core
 
     attr_reader :tile_width
     attr_reader :tile_height
+    attr_reader :name
     attr_accessor :layer_num
     attr_accessor :visible
 
-    def initialize (area,tiles,tile_width,tile_height,speed,layer_num = 0)
-       if (!area.nil?) then
+    def initialize (area,tiles,tile_width,tile_height,layer_num = 0)
+      @name = tiles
+
+      if (!area.nil?) then
         @area = eval File.open("./resource/area/#{area}.area").read
        else
          @area = [[0]]
@@ -24,11 +27,10 @@ module Game::Core
        @rect_tile = Rubygame::Rect.new 0, 0, @tile_width, @tile_height
 
        # what are the dimensions of the map loaded
-       @world_width = @area[0].length #* @tile_width
-       @world_height = @area.length  #* @tile_height
+       @world_width = @area[0].length
+       @world_height = @area.length
 
        @visible = true
-       @speed = speed
        @layer_num = layer_num
 
        puts "world wXh #{@world_width},#{@world_height}"
@@ -38,11 +40,11 @@ module Game::Core
       @screen_tiles_width = background.width / @tile_width + 1
       @screen_tiles_height = background.height / @tile_height + 2
 
-      blit_tiles camera_pos,background
+      blit_layer camera_pos,background
+
     end
 
-    def blit_tiles(camera_pos,background)
-
+    def blit_layer(camera_pos,background)
       #Algorithmn at  http://www.cpp-home.com/tutorials/292_1.htm
 
       #Create the Screen from left to right, top to bottom
@@ -54,11 +56,11 @@ module Game::Core
              #Use Bitwise AND to get finer offset
              #If you remove the -1 you get tile by tile moving as the offset is always 0,0
 
-             offset_x = (x * @tile_width) - (camera_pos[0] & (@tile_width - @speed))
-             offset_y = (y * @tile_height) - (camera_pos[1] & (@tile_height - @speed))
+             offset_x = (x * @tile_width) - (camera_pos[0] & (@tile_width - 1) )
+             offset_y = (y * @tile_height) - (camera_pos[1] & (@tile_height - 1) )
              tile_num = get_tile x,y,camera_pos
 
-             get_blit_rect tile_num,offset_x,offset_y,@rect_tile
+             get_blit_rect tile_num,@rect_tile
 
              @tiles.blit background, [offset_x,offset_y], @rect_tile
 
@@ -104,7 +106,7 @@ module Game::Core
       return tile_no
     end
 
-    def get_blit_rect(tile_no, offset_x, offset_y, rect)
+    def get_blit_rect(tile_no, rect)
         rect.left = 0
         rect.right = @tile_width
         rect.top = tile_no * @tile_height
