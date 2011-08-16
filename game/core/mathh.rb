@@ -15,7 +15,7 @@ module Game::Core
     end
     
     def atan2(x,y)
-      rad2deg( Math.atan2 )
+      rad2deg( Math.atan2(x,y) )
     end
     
   end

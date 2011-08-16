@@ -47,6 +47,7 @@ module Game::Core
       end
       
       def direction(v)
+        return -1 if v.zero?
         d = Mathh.atan2(v.y, v.x)
         return d if d > 0
         return d = 360 + d
@@ -107,6 +108,7 @@ module Game::Core
     
     def initialize(x,y)
       @components = [x.to_f,y.to_f]
+      @clamp = []
     end
     
     def x()
@@ -114,7 +116,13 @@ module Game::Core
     end
     
     def x=(value)
-      @components[0] = value.to_f
+      unless clamped? 
+        @components[0] = value.to_f
+      else
+        if value >= @clamp[0].x && value <= @clamp[1].x 
+          @components[0] = value.to_f
+        end
+      end
     end
     
     def y()
@@ -122,7 +130,27 @@ module Game::Core
     end
     
     def y=(value)
-      @components[1] = value.to_f
+      unless clamped?
+        @components[1] = value.to_f
+      else
+        if value >= @clamp[0].y && value <= @clamp[1].y
+          @components[1] = value.to_f
+        end
+      end
+    end
+    
+    def clamp(min,max)
+      release_clamp
+      @clamp << min
+      @clamp << max
+    end
+    
+    def clamped?
+      @clamp.size == 2 
+    end
+    
+    def release_clamp
+      @clamp.clear
     end
     
     def add(other)
@@ -216,6 +244,7 @@ module Game::Core
     end
     
     def normalize!
+      release_clamp
       v = Vector2.normalize self
       self.x = v.x
       self.y = v.y
@@ -231,6 +260,10 @@ module Game::Core
     
     def interpolate(other, control)
       Vector2.interpolate self, other, control
+    end
+    
+    def zero?
+      self == Vector2.zero
     end
     
   end

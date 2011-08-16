@@ -17,7 +17,7 @@ module Game::Views
       @menu.add_item "Test Camera", method(:menu_test_camera_selected)
 
       @menu.add_item "Collision Detection", method(:menu_collision_selected)
-      @menu.add_item "Pong!", method(:menu_pong_selected)
+      #@menu.add_item "Pong!", method(:menu_pong_selected)
       @menu.add_item "View Management", method(:menu_view_mgmt_selected)
       @menu.add_item "Exit", method(:menu_exit_selected)
       @menu.select_by_index 0
