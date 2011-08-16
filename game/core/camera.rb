@@ -1,4 +1,5 @@
 require "game/core/viewport.rb"
+require "./game/core/player_input.rb"
 
 module Game::Core
 
@@ -9,11 +10,14 @@ module Game::Core
     
     attr_reader :pos
     attr_reader :viewport
-    
+
     def initialize(view, camera_size)
+      @input = Game::Core::PlayerInput
+
       @center = [camera_size[0] / 2, camera_size[1] / 2]
       @offset = [0,0]
       @viewport = Viewport.new view, @center, camera_size
+
     end
     
     def pos
@@ -38,7 +42,7 @@ module Game::Core
       
       return [x,y]
     end
-    
+
   end
 
 
