@@ -17,7 +17,7 @@ module Game::Views
       @menu.add_item "Test Camera", method(:menu_test_camera_selected)
 
       @menu.add_item "Collision Detection", method(:menu_collision_selected)
-      @menu.add_item "Pong!", method(:menu_pong_selected)
+      @menu.add_item "Input", method(:menu_input_selected)
       @menu.add_item "View Management", method(:menu_view_mgmt_selected)
       @menu.add_item "Exit", method(:menu_exit_selected)
       @menu.select_by_index 0
@@ -39,9 +39,9 @@ module Game::Views
       show_view ViewMgmtView.new parent
     end
     
-    def menu_pong_selected
-      require "game/views/pong_view.rb"
-      show_view PongView.new self
+    def menu_input_selected
+      require "game/views/input_view.rb"
+      show_view InputView.new self
     end
     
     def menu_test_camera_selected
