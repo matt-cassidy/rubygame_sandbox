@@ -7,33 +7,29 @@ module Game::Core
     
     attr_reader :area
     
-    SCREEN_WIDTH = 640
-    SCREEN_HEIGHT = 480
-    TILE_WIDTH = 64
-    TILE_HEIGHT = 64
 
-    def initialize(layer)
-      @layers =[[],[],[],[]]
-      add_layer layer
 
-      #how many tiles will fit on screen
-      #TODO: hack for tile clipping
-      @screen_tiles_width = SCREEN_WIDTH / TILE_WIDTH + 1
-      @screen_tiles_height = SCREEN_HEIGHT / TILE_HEIGHT + 2
+    def initialize(screen_width = 640,screen_height = 480)
+      @layers =[[],[],[],[],[]]
 
       #where is the world camera at
       @last_camera_pos = [-1,-1]
 
-      @background = Rubygame::Surface.new [SCREEN_WIDTH, SCREEN_HEIGHT]
+      @screen_width = screen_width
+      @screen_height = screen_height
+
+      @background = Rubygame::Surface.new [@screen_width, @screen_height]
 
       @input = Game::Core::PlayerInput
     end
 
     def blit_layers (clock, camera_pos)
       @background.fill([0,0,0])
+
       for layer_group in (@layers)
           layer_group.each { |e|
               if e.visible == true then
+
                 e.update clock, camera_pos,@background
               end
             }
@@ -54,7 +50,7 @@ module Game::Core
 
     def update(clock,camera_pos)
       #convert camera position to use top left instead of centre position
-      camera_top_left = [camera_pos[0] - (SCREEN_WIDTH / 2),camera_pos[1] - (SCREEN_HEIGHT / 2)]
+      camera_top_left = [camera_pos[0] - (@screen_width / 2),camera_pos[1] - (@screen_height / 2)]
 
       changed = handle_layers
 
@@ -107,7 +103,9 @@ module Game::Core
     end
 
     def add_layer(layer)
+
       @layers[layer.layer_num] << layer
+
     end
 
   end

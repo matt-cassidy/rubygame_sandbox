@@ -22,7 +22,8 @@ module Game::Views
       add_entity @framerate_text
 
       layer = Game::Core::Layer.new "test","tiles",64,64,1, 0
-      @world = Game::Core::WorldMap.new layer
+      @world = Game::Core::WorldMap.new
+      @world.add_layer layer
       
       @input = Game::Core::PlayerInput    
       
