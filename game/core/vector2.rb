@@ -31,7 +31,15 @@ module Game::Core
       end
       
       def add(v,u)
-        Vector2.new (v.x + u.x), (v.y + u.y)
+        w = Vector2.zero
+        Vector2.add! w,v
+        Vector2.add! w,u
+        return w
+      end
+      
+      def add!(v,u)
+        v.x = (v.x + u.x)
+        v.y = (v.y + u.y)
       end
       
       def subtract(v,u)
@@ -131,6 +139,10 @@ module Game::Core
       else
         if value >= @clamp[0].x && value <= @clamp[1].x 
           @components[0] = value.to_f
+        elsif value < @clamp[0].x
+          @components[0] = @clamp[0].x
+        else
+          @components[0] = @clamp[1].x 
         end
       end
     end
@@ -145,6 +157,10 @@ module Game::Core
       else
         if value >= @clamp[0].y && value <= @clamp[1].y
           @components[1] = value.to_f
+        elsif value < @clamp[0].y
+          @components[1] = @clamp[0].y
+        else
+          @components[1] = @clamp[1].y
         end
       end
     end
@@ -219,6 +235,11 @@ module Game::Core
       Vector2.negate self
     end
     
+    def <<(other)
+      Vector2.add! self, other
+      return self
+    end
+    
     def >(other)
       Vector2.greater self, other
     end
@@ -247,6 +268,10 @@ module Game::Core
     
     def to_s
       "[#{x},#{y}]"
+    end
+    
+    def to_s_f
+      "[#{x.to_i},#{y.to_i}]"
     end
     
     def to_a

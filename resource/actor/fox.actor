@@ -1,18 +1,10 @@
 def_actor fox: 
 {
-	hitbox: [38,55],
+	hitbox: [32,32],
 
 	sprite: 
 	{
-		path: "./resource/img/pic_walk.png",
-		size: [48,72],
-		animations:
-		{
-    		walk_up: { index: 1, frames: 4, time: [5, 10, 5, 10] },
-    		walk_right: { index: 2, frames: 4, time: [5, 10, 5, 10] },
-    		walk_down: { index: 3, frames: 4, time: [5, 10, 5, 10] },
-    		walk_left: { index: 4, frames: 4, time: [5, 10, 5, 10] },
-		}
-    
+		path: "./resource/img/planet_ff.png",
+    	size: [32,32]    
   	}
 } 
