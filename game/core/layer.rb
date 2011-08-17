@@ -7,11 +7,19 @@ module Game::Core
     attr_reader :tile_width
     attr_reader :tile_height
     attr_reader :name
+
     attr_accessor :layer_num
     attr_accessor :visible
+    attr_accessor :speed
 
-    def initialize (area,tiles,tile_width,tile_height,visible,layer_num = 0)
+    def initialize (area,tiles,tile_width,tile_height)
       @name = tiles
+      @tile_width = tile_width
+      @tile_height = tile_height
+
+
+      @tiles = Rubygame::Surface.load "./resource/img/#{tiles}.png"
+      @rect_tile = Rubygame::Rect.new 0, 0, @tile_width, @tile_height
 
       if (!area.nil?) then
         @area = eval File.open("./resource/area/#{area}.area").read
@@ -19,29 +27,66 @@ module Game::Core
          @area = [[0]]
        end
 
+      @layer_num = 0
+      @visible = true
+      @speed = [1,1]
+      @pos = [0,0]
+      @last_camera = [0,0]
 
-       @tile_width = tile_width
-       @tile_height = tile_height
-
-       @tiles = Rubygame::Surface.load "./resource/img/#{tiles}.png"
-       @rect_tile = Rubygame::Rect.new 0, 0, @tile_width, @tile_height
+      @scroll_x = true
+      @scroll_y = true
 
        # what are the dimensions of the map loaded
        @world_width = @area[0].length
        @world_height = @area.length
 
-       @visible = visible
-       @layer_num = layer_num
+       @screen_tiles_height = 0
+       @screen_tiles_width = 0
 
     end
 
+    def setup_blitting_surface (background)
+
+      @screen_tiles_width = amount_of_tiles @tile_width,background.width
+
+      @screen_tiles_height = amount_of_tiles @tile_height, background.height
+
+    end
+
+
+    def amount_of_tiles (x,z)
+      #calculates the amount of times a value
+      a = 0 - x/4
+      y = 0
+      while  a < (z + x )
+        y += 1
+        a += x
+      end
+
+      return y
+    end
+
     def update(clock,camera_pos,background)
+      displacement_x = (@speed[0] * clock.seconds)
+      displacement_y = (@speed[1] * clock.seconds)
 
-      @screen_tiles_width = background.width / @tile_width + 1
-      @screen_tiles_height = background.height / @tile_height + 2
 
+      if @last_camera[0] < camera_pos[0] #moving forward
+        @pos[0] += displacement_x
+      elsif @last_camera[0] > camera_pos[0] #moving backward
+        @pos[0] -= displacement_x
+      end
+
+      if @last_camera[1] < camera_pos[1] #moving up
+        @pos[1] += displacement_y
+      elsif @last_camera[1] > camera_pos[1] #moving down
+        @pos[1] -= displacement_y
+      end
+
+      puts "pos xy #{@pos[0]},#{@pos[1]}"
       blit_layer camera_pos,background
 
+      @last_camera = [camera_pos[0],camera_pos[1]]
     end
 
     def blit_layer(camera_pos,background)
@@ -56,8 +101,9 @@ module Game::Core
              #Use Bitwise AND to get finer offset
              #If you remove the -1 you get tile by tile moving as the offset is always 0,0
 
-             offset_x = (x * @tile_width) - (camera_pos[0] & (@tile_width - 1) )
-             offset_y = (y * @tile_height) - (camera_pos[1] & (@tile_height - 1) )
+             offset_x = (x * @tile_width) -  (camera_pos[0] & (@tile_width - 1) )
+             offset_y = (y * @tile_height) - (camera_pos[1] & (@tile_height - 1))
+
              tile_num = get_tile x,y,camera_pos
 
              get_blit_rect tile_num,@rect_tile
@@ -110,6 +156,16 @@ module Game::Core
         rect.right = @tile_width
         rect.top = tile_no * @tile_height
         rect.bottom = rect.top + @tile_height
+    end
+
+    def start_blit_pos (pos,amount)
+      return 0 if pos.abs >= amount
+
+      start = pos
+      while (start > 0)
+        start -= amount
+      end
+      return start
     end
 
   end

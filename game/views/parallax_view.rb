@@ -26,22 +26,41 @@ module Game::Views
       #adding layers to map
 
       #tile to use, width,height, start pos, speed [x,y], layer
-      #layer0 = Game::Core::ParallaxLayer.new "parallax_1_5",284,197,[0,100],[200,10],true, 0
-      #@world.add_layer layer0
+      layer0 = Game::Core::ParallaxLayer.new "test_2", "tiles",64,64,[0,100]
+      layer0.layer_num = 0
+      layer0.speed = [1,10]
 
-      layer1 = Game::Core::ParallaxLayer.new "parallax_1",800,200,[0,100],[200,10],true, 0
-      @world.add_layer layer1
 
-      layer2 = Game::Core::ParallaxLayer.new "parallax_2",800,120,[0,100],[150,20],true, 1
+      @world.add_layer layer0
+
+      #layer1 = Game::Core::ParallaxLayer.new nil,"parallax_1",800,200,[0,100]
+      #layer1.layer_num = 0
+      #layer1.speed = [10,10]
+      #layer1.visible = false
+      #@world.add_layer layer1
+
+      layer2 = Game::Core::ParallaxLayer.new nil,"parallax_2",800,120,[0,100]
+      layer2.layer_num = 1
+      layer2.speed = [50,20]
+      layer2.visible = false
       @world.add_layer layer2
 
-      layer3 = Game::Core::ParallaxLayer.new "parallax_3",800,200,[0,100],[140,30],true, 2
+      layer3 = Game::Core::ParallaxLayer.new nil,"parallax_3",800,200,[0,100]
+      layer3.layer_num = 2
+      layer3.speed = [90,30]
+      layer3.visible = false
       @world.add_layer layer3
 
-      layer4 = Game::Core::ParallaxLayer.new "parallax_4",800,200,[0,100],[100,40],true,3
+      layer4 = Game::Core::ParallaxLayer.new nil,"parallax_4",800,200,[0,100]
+      layer4.layer_num = 3
+      layer4.speed = [100,40]
+      layer4.visible = false
       @world.add_layer layer4
 
-      layer5 = Game::Core::ParallaxLayer.new "parallax_5",1600,400,[0,0],[50,150],true,4
+      layer5 = Game::Core::ParallaxLayer.new nil,"parallax_5",1600,400,[0,0]
+      layer5.layer_num = 4
+      layer5.speed = [150,150]
+      layer5.visible = false
       @world.add_layer layer5
 
     end

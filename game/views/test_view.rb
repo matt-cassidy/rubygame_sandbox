@@ -21,7 +21,7 @@ module Game::Views
       @framerate_text = Game::Entities::TextBox.new self, [10, 10], 14
       add_entity @framerate_text
 
-      layer = Game::Core::Layer.new "test_2","tiles",64,64,true, 0
+      layer = Game::Core::Layer.new "test_2","tiles",64,64
       @world = Game::Core::WorldMap.new
       @world.add_layer layer
       

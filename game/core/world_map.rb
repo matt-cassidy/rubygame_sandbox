@@ -109,7 +109,7 @@ module Game::Core
     end
 
     def add_layer(layer)
-
+      layer.setup_blitting_surface @background
       @layers[layer.layer_num] << layer
 
     end

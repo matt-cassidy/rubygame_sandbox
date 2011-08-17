@@ -3,60 +3,36 @@ require "game/core/layer.rb"
 module Game::Core
 
   class ParallaxLayer < Game::Core::Layer
-    def initialize (tiles,tile_width,tile_height,pos,speed,visible,layer_num = 0)
-      super nil,tiles,tile_width,tile_height,visible,layer_num
-
+    def initialize (area,tiles,tile_width,tile_height,pos)
+      super area,tiles,tile_width,tile_height
       @pos = pos
-      @speed = speed
-      @last_camera = [0,0]
     end
-
-    def update(clock,camera_pos,background)
-
-      distance_x = (@speed[0] * clock.seconds).round
-      distance_y = (@speed[1] * clock.seconds).round
-      if @last_camera[0] < camera_pos[0] #moving forward
-        @pos[0] += distance_x
-      elsif @last_camera[0] > camera_pos[0] #moving backward
-        @pos[0] -= distance_x
-      end
-
-      if @last_camera[1] < camera_pos[1] #moving forward
-        @pos[1] += distance_y
-      elsif @last_camera[1] > camera_pos[1] #moving backward
-        @pos[1] -= distance_y
-      end
-
-
-      blit_layer camera_pos,background
-
-      @last_camera = [camera_pos[0],camera_pos[1]]
-    end
-
 
     def blit_layer(camera_pos,background)
+
       #Create the Screen from left to right, top to bottom
 
       #TODO: properly clip tile for efficiency
-      if @pos[0].abs >= @tile_width
-        @pos[0] = 0
+      blit_pos = start_blit_pos @pos[0],@tile_width
+      @pos[0] = blit_pos
+
+      x = 0
+      y = 0
+      @screen_tiles_width.to_int.times do
+
+
+        tile_num = get_tile x,y,camera_pos
+
+        get_blit_rect tile_num,@rect_tile
+
+        @tiles.blit background,[blit_pos,@pos[1]],@rect_tile
+        blit_pos += @tile_width
+        x += 1
       end
-
-
-      if (@pos[0] - @tile_width) < background.width
-        location = [@pos[0] + @tile_width, @pos[1]]
-        @tiles.blit background,location
-      end
-
-      if (@pos[0] + @tile_width) > background.width
-        location = [@pos[0] - @tile_width, @pos[1]]
-        @tiles.blit background,location
-      end
-
-
-      @tiles.blit background, @pos
 
     end
+
+
 
   end
 
