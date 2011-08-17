@@ -12,7 +12,6 @@ module Game::Views
     end
 
     def loading
-      enable_transparency
 
       @framerate_text = Game::Entities::TextBox.new self, [10, 10], 14
       add_entity @framerate_text
@@ -25,42 +24,34 @@ module Game::Views
       @world = Game::Core::WorldMap.new
       #adding layers to map
 
-      #tile to use, width,height, start pos, speed [x,y], layer
-      layer0 = Game::Core::ParallaxLayer.new "test_2", "tiles",64,64,[0,100]
-      layer0.layer_num = 0
-      layer0.speed = [1,10]
+      layer1 = Game::Core::Layer.new "test_2","tiles",64,64
+      layer1.speed = [10,150]
+      layer1.visible = false
+      layer1.pos = [0,0]
+      @world.add_layer layer1
 
-
-      @world.add_layer layer0
-
-      #layer1 = Game::Core::ParallaxLayer.new nil,"parallax_1",800,200,[0,100]
-      #layer1.layer_num = 0
-      #layer1.speed = [10,10]
-      #layer1.visible = false
-      #@world.add_layer layer1
-
-      layer2 = Game::Core::ParallaxLayer.new nil,"parallax_2",800,120,[0,100]
-      layer2.layer_num = 1
-      layer2.speed = [50,20]
-      layer2.visible = false
+      layer2 = Game::Core::ParallaxLayer.new nil,"parallax_2",800,120
+      layer2.layer_no = 1
+      layer2.speed = [50,100]
+      layer2.pos = [0,0]
       @world.add_layer layer2
 
-      layer3 = Game::Core::ParallaxLayer.new nil,"parallax_3",800,200,[0,100]
-      layer3.layer_num = 2
-      layer3.speed = [90,30]
-      layer3.visible = false
+      layer3 = Game::Core::ParallaxLayer.new nil,"parallax_3",800,200
+      layer3.layer_no = 2
+      layer3.speed = [90,90]
+      layer3.pos = [0,50]
       @world.add_layer layer3
 
-      layer4 = Game::Core::ParallaxLayer.new nil,"parallax_4",800,200,[0,100]
-      layer4.layer_num = 3
-      layer4.speed = [100,40]
-      layer4.visible = false
+      layer4 = Game::Core::ParallaxLayer.new nil,"parallax_4",800,200
+      layer4.layer_no = 3
+      layer4.speed = [100,50]
+      layer4.pos = [0,90]
       @world.add_layer layer4
 
-      layer5 = Game::Core::ParallaxLayer.new nil,"parallax_5",1600,400,[0,0]
-      layer5.layer_num = 4
-      layer5.speed = [150,150]
-      layer5.visible = false
+      layer5 = Game::Core::ParallaxLayer.new nil,"parallax_5",1600,400
+      layer5.layer_no = 4
+      layer5.speed = [150,40]
+      layer5.pos = [0,0]
       @world.add_layer layer5
 
     end

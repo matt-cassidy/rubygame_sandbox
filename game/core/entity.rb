@@ -23,7 +23,7 @@ module Game::Core
       @events = []
       @hitbox = CollisionHitbox.new pos, size
       @updated = false
-      
+      @visible = true
       @spos =  [0,0]
     end
     
@@ -45,7 +45,7 @@ module Game::Core
     end
     
     def draw
-      drawing
+      drawing if @visible == true
       @updated = false
     end
     
