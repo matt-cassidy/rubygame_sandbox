@@ -1,68 +1,41 @@
-require "./game/core/player_input.rb"
 require "./game/core/entity.rb"
-require "./game/core/animation.rb"
+
+include Game::Core
 
 module Game::Entities
 
-  class Fox < Game::Core::Entity
+  class Fox < Entity
     
-    def initialize(view, pos)
+    def initialize(view, pos, animate = true)
       @actor = load_script "fox"
       super view, pos, @actor[:hitbox]
-      @input = Game::Core::PlayerInput
-      @animation = Game::Core::Animation.make @actor
+      @animate = animate
+      @image = Rubygame::Surface.load(@actor[:sprite][:path])
       @hitbox.make_visible
+      @angle = 2*Math::PI * rand
     end
     
     def updating
-      handle_movement
-      handle_animation
-      handle_collisions
-    end
-
-    def drawing
-      cblit @hitbox 
-      cblit @animation
-    end
-
-    def handle_movement
-      x, y = 0,0
-      x -= 5 if @input.key_pressed?( :left )
-      x += 5 if @input.key_pressed?( :right )
-      y -= 5 if @input.key_pressed?( :up ) # up is down in screen coordinates
-      y += 5 if @input.key_pressed?( :down )
-      if(x != 0 || y != 0)
-        shift [x, y]
-      end
-    end
-
-    def handle_animation
-      #this needs to be streamlined somehow... animations should be implicit via state
-      moving = false
-      if @input.key_pressed?( :down )
-        moving = true
-        @animation.change :walk_down
-      elsif @input.key_pressed?( :up )
-        moving = true
-        @animation.change :walk_up
-      elsif @input.key_pressed?( :right )
-        moving = true
-        @animation.change :walk_right
-      elsif @input.key_pressed?( :left )
-        moving = true
-        @animation.change :walk_left
-      end
-      if moving == true then
-        @animation.animate
+      if @animate == true then
+        handle_movement
+      else
+        shift [0,0]
       end
     end
     
-    def handle_collisions
-      if @hitbox.colliding? 
-        
+    def drawing
+      blit @hitbox
+      blit @image
+    end
+    
+    def handle_movement
+      @angle = ( @angle + 2*Math::PI / 4 * @view.clock.seconds) % ( 2*Math::PI)
+      direction = [Math.sin(@angle), Math.cos(@angle)]
+      if(direction[0] != 0 || direction[1] != 0)
+        shift direction
       end
     end
-  
+      
   end
 
 end

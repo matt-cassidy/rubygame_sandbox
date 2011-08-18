@@ -5,7 +5,7 @@ module Game::Entities
   
   class Menu < Game::Core::Entity
     
-    MENU_SELECT_SPEED = 0.2 #make sure player cannot change selection than x times per sec
+    MENU_SELECT_SPEED = 0.15 #make sure player cannot change selection than x times per sec
     MENU_TRIGGER_SPEED = 0.5 #make sure player cannot trigger more than x times per sec
     
     attr_reader :menu_items
@@ -28,18 +28,15 @@ module Game::Entities
       @buffer = Rubygame::Surface.new menu_size
       @selected_item = nil
       @input = Game::Core::PlayerInput
-      
-      @debug = Game::Core::Font.new "pirulen"
-      @debug.text ="bla------------------"
     end
     
     def updating
       @timer.cool_down @view.clock.seconds
-      if(@input.key_pressed?( :return )) 
+      if(@input.down?( :return )) 
         trigger
-      elsif(@input.key_pressed?( :down )) 
+      elsif(@input.down?( :down )) 
         select_next       
-      elsif(@input.key_pressed?( :up )) 
+      elsif(@input.down?( :up )) 
         select_prev
       end
     end

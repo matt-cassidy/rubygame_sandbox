@@ -1,4 +1,4 @@
-require "game/entities/planet"
+require "game/entities/fox"
 
 module Game::Views
 
@@ -11,11 +11,11 @@ module Game::Views
     def loading
       enable_transparency
       
-      planet1 = Game::Entities::Planet.new self, [200, 200]
-      add_entity planet1
+      fox1 = Game::Entities::Fox.new self, [200, 200]
+      add_entity fox1
       
-      planet2 = Game::Entities::Planet.new self, [400, 400]
-      add_entity planet2
+      fox2 = Game::Entities::Fox.new self, [400, 400]
+      add_entity fox2
       
     end
     
