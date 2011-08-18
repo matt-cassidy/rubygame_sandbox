@@ -9,9 +9,6 @@ module Game::Core
     attr_reader :area
     
     def initialize(screen_width = 640,screen_height = 480)
-
-      @layers = [Game::Core::LayerGroup.new(0)]
-
       #where is the world camera at
       @last_camera_pos = [-1,-1]
 
@@ -20,21 +17,21 @@ module Game::Core
 
       @background = Rubygame::Surface.new [@screen_width, @screen_height]
 
+      @layers = [Game::Core::LayerGroup.new(0,@background)]
+
       @input = Game::Core::PlayerInput
     end
+
 
     def blit_layers (clock, camera_pos)
       @background.fill([0,0,0])
       @layers.each { |group|
-        if group.visible == true
-
-           group.collection.each { |id,layer|
-               layer.update clock, camera_pos,@background
-           }
+        if group.visible?
+            group.update clock,camera_pos
         end
       }
 
-       @last_camera_pos = [camera_pos[0],camera_pos[1]]
+      @last_camera_pos = [camera_pos[0],camera_pos[1]]
     end
 
 
@@ -64,7 +61,7 @@ module Game::Core
 
 
       @layers.each{ | group |
-        if @input.up?(keys[group.layer_no]) then
+        if @input.up?(keys[group.layer_no?]) then
            changed = true
            group.flip
         end
@@ -80,24 +77,26 @@ module Game::Core
     end
 
     def add_layer(layer)
-      layer.setup_blitting_surface @background
+
 
       inserted = false
       for layer_group in (@layers) do
-          if layer_group.layer_no == layer.layer_no then
+          if layer_group.layer_no? == layer.layer_no then
             layer_group.add_layer layer
             inserted = true
             break
           end
       end
 
+      #if the layer was group was not found create a new layer group based on that layer number
       if inserted == false
-        new_group = Game::Core::LayerGroup.new layer.layer_no
+        new_group = Game::Core::LayerGroup.new layer.layer_no,@background
         new_group.add_layer layer
         @layers << new_group
       end
 
 
     end
+
    end
 end

@@ -5,7 +5,8 @@ require "./game/core/script_manager.rb"
 module Game::Core
 
   class Entity
-    
+    attr_accessor:visible
+
     attr_reader :view
     attr_reader :updated
     attr_reader :events
@@ -83,6 +84,7 @@ module Game::Core
       end
       return script
     end
+
 
   end
 

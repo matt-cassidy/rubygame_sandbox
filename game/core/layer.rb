@@ -1,4 +1,4 @@
-
+require "game/core/vector2"
 module Game::Core
 
   class Layer
@@ -10,8 +10,6 @@ module Game::Core
     attr_reader :entity_id
 
     attr_accessor :layer_no
-    attr_accessor :speed
-    attr_accessor :pos
     attr_accessor :visible
 
     def initialize (area,tiles,tile_width,tile_height)
@@ -33,14 +31,11 @@ module Game::Core
 
       @layer_no = 0
 
-      @speed = [1,1]
+      @speed = [150,150]
 
       @pos = [0,0]
 
       @last_camera = [0,0]
-
-      @fill_width = true
-      @fill_height = true
 
       # what are the dimensions of the map loaded
       @world_width = @area[0].length
@@ -49,13 +44,36 @@ module Game::Core
       @screen_tiles_height = 0
       @screen_tiles_width = 0
 
+      @desired_tiles_width = nil
+      @desired_tiles_height = nil
     end
 
-    def setup_blitting_surface (background)
+    def make_parallax (tiles_width_amount,tiles_height_amount,speed, pos = nil)
+       @desired_tiles_width = tiles_width_amount
+       @desired_tiles_height = tiles_height_amount
+       
+       @speed = speed
+       @manual_set = true
+       if pos.nil? == false
+         @pos = pos
+       end
+    end
 
-      @screen_tiles_width = amount_of_tiles @tile_width,background.width
+    def setup_blit(background)
+      temp_width_amount = amount_of_tiles @tile_width,background.width
+      temp_height_amount = amount_of_tiles @tile_height, background.height
 
-      @screen_tiles_height = amount_of_tiles @tile_height, background.height
+      if @desired_tiles_width.nil? == true || @desired_tiles_width > temp_width_amount
+        @screen_tiles_width = temp_width_amount
+      else
+        @screen_tiles_width = @desired_tiles_width
+      end
+
+      if @desired_tiles_height.nil? == true || @desired_tiles_height > temp_height_amount
+        @screen_tiles_height =  temp_height_amount
+      else
+        @screen_tiles_height = @desired_tiles_height
+      end
 
     end
 
@@ -74,6 +92,13 @@ module Game::Core
     def update(clock,camera_pos,background)
       handle_displacement clock,camera_pos
 
+
+      @pos[0] = start_blit_pos @pos[0],@tile_width
+      if @manual_set.nil? == true
+         @pos[1] = start_blit_pos @pos[1],@tile_height
+         puts "name:#{@name} pos y #{@pos[1]}"
+      end
+
       blit_layer camera_pos,background
 
       @last_camera = [camera_pos[0],camera_pos[1]]
@@ -81,22 +106,22 @@ module Game::Core
 
 
     def handle_displacement clock,camera_pos
-      displacement_x = 0
-      displacement_y = 0
+      @displacement_x = 0
+      @displacement_y = 0
 
       if @last_camera[0] < camera_pos[0] #moving forward
-        displacement_x = (@speed[0] * clock.seconds)
+        @displacement_x = (@speed[0] * clock.seconds)
       elsif @last_camera[0] > camera_pos[0] #moving backward
-        displacement_x = (@speed[0] * clock.seconds) * -1
+        @displacement_x = (@speed[0] * clock.seconds) * -1
       end
-      @pos[0] -= displacement_x
+      @pos[0] -= @displacement_x
 
       if @last_camera[1] < camera_pos[1] #moving up
-        displacement_y = (@speed[1] * clock.seconds)
+        @displacement_y = (@speed[1] * clock.seconds)
       elsif @last_camera[1] > camera_pos[1] #moving down
-        displacement_y = (@speed[1] * clock.seconds) * -1
+        @displacement_y = (@speed[1] * clock.seconds) * -1
       end
-      @pos[1] -= displacement_y
+      @pos[1] -= @displacement_y
 
     end
 
@@ -110,14 +135,15 @@ module Game::Core
       @screen_tiles_height.to_int.times do
 
         @screen_tiles_width.to_int.times do
-             #Use Bitwise AND to get finer offset
-             #If you remove the -1 you get tile by tile moving as the offset is always 0,0
+
              map_pos = [x + (camera_pos[0] / @tile_width),y + (camera_pos[1] / @tile_height)]
 
+             #Use Bitwise AND to get finer offset
+             #If you remove the -1 you get tile by tile moving as the offset is always 0,0
              offset_x = (x * @tile_width) -  (camera_pos[0] & (@tile_width - 1) )
              offset_y = (y * @tile_height) - (camera_pos[1] & (@tile_height - 1))
 
-             tile_num = get_tile map_pos,camera_pos
+             tile_num = get_tile map_pos
              get_blit_rect tile_num,@rect_tile
 
              @tiles.blit background, [offset_x,offset_y], @rect_tile
@@ -130,7 +156,7 @@ module Game::Core
 
     end
 
-    def get_tile(map_pos,camera_pos)
+    def get_tile(map_pos)
         #this section creates the effect of an infinite world (aka xy treadmill like scrolling)
          if map_pos[0] < -@world_width then
            map_pos[0] = -@world_width + (map_pos[0] % @world_width)
@@ -150,15 +176,15 @@ module Game::Core
          end
 
        begin
-         #you swap them to otherwise the map is flipped 90degress counter clockwise
+        #you swap them otherwise the map is flipped 90 degrees counter clockwise
         tile_no = @area[map_pos[1]][map_pos[0]]
       rescue
-        puts "rescued xy #{map_pos[1]},#{map_pos[0]}"
+        puts "get_tile - rescued xy #{map_pos[1]},#{map_pos[0]}"
         tile_no = 0
       end
 
       if tile_no.nil? then
-        puts "rescued nill xy #{map_pos[1]},#{map_pos[0]}"
+        puts "get_tile - tile_no nill xy #{map_pos[1]},#{map_pos[0]}"
         return 0
       end
 
@@ -173,6 +199,15 @@ module Game::Core
         rect.bottom = rect.top + @tile_height
     end
 
+    def start_blit_pos (pos,amount)
+      return 0 if pos.abs >= amount
+
+      start = pos
+      while (start > 0)
+        start -= amount
+      end
+      return start
+    end
 
 
   end
