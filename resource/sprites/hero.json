@@ -10,100 +10,100 @@
 
 "frames": {
 
-"000001":
+"0":
 {
 	"name": "walk.up.1",
 	"frame": {"x":0,"y":0,"w":48,"h":72},
 	"flip": false
 },
-"000002":
+"1":
 {
 	"name": "walk.up.2",
+	"frame": {"x":48,"y":0,"w":48,"h":72},
+	"flip": false
+},
+"2":
+{
+	"name": "walk.up.3",
 	"frame": {"x":96,"y":0,"w":48,"h":72},
 	"flip": false
 },
-"000003":
+"3":
 {
-	"name": "walk.up.3",
+	"name": "walk.up.4",
 	"frame": {"x":144,"y":0,"w":48,"h":72},
 	"flip": false
 },
-"000004":
-{
-	"name": "walk.up.4",
-	"frame": {"x":192,"y":0,"w":48,"h":72},
-	"flip": false
-},
-"000005":
+"4":
 {
 	"name": "walk.right.1",
 	"frame": {"x":0,"y":72,"w":48,"h":72},
 	"flip": false
 },
-"000006":
+"5":
 {
 	"name": "walk.right.2",
+	"frame": {"x":48,"y":72,"w":48,"h":72},
+	"flip": false
+},
+"6":
+{
+	"name": "walk.right.3",
 	"frame": {"x":96,"y":72,"w":48,"h":72},
 	"flip": false
 },
-"000007":
+"7":
 {
-	"name": "walk.right.3",
+	"name": "walk.right.4",
 	"frame": {"x":144,"y":72,"w":48,"h":72},
 	"flip": false
 },
-"000008":
-{
-	"name": "walk.right.4",
-	"frame": {"x":192,"y":72,"w":48,"h":72},
-	"flip": false
-},
-"000009":
+"8":
 {
 	"name": "walk.down.1",
 	"frame": {"x":0,"y":144,"w":48,"h":72},
 	"flip": false
 },
-"00000A":
+"9":
 {
 	"name": "walk.down.2",
+	"frame": {"x":48,"y":144,"w":48,"h":72},
+	"flip": false
+},
+"8":
+{
+	"name": "walk.down.3",
 	"frame": {"x":96,"y":144,"w":48,"h":72},
 	"flip": false
 },
-"00000B":
+"A":
 {
-	"name": "walk.down.3",
+	"name": "walk.down.4",
 	"frame": {"x":144,"y":144,"w":48,"h":72},
 	"flip": false
 },
-"00000C":
-{
-	"name": "walk.down.4",
-	"frame": {"x":192,"y":144,"w":48,"h":72},
-	"flip": false
-},
-"00000D":
+"B":
 {
 	"name": "walk.left.1",
 	"frame": {"x":0,"y":216,"w":48,"h":72},
 	"flip": false
 },
-"00000E":
+"C":
 {
 	"name": "walk.left.2",
+	"frame": {"x":48,"y":216,"w":48,"h":72},
+	"flip": false
+},
+"D":
+{
+	"name": "walk.left.3",
 	"frame": {"x":96,"y":216,"w":48,"h":72},
 	"flip": false
 },
-"00000F":
-{
-	"name": "walk.left.3",
-	"frame": {"x":144,"y":216,"w":48,"h":72},
-	"flip": false
-},
-"000010":
+"E":
 {
 	"name": "walk.left.4",
-	"frame": {"x":192,"y":216,"w":48,"h":72},
+	"frame": {"x":144,"y":216,"w":48,"h":72},
 	"flip": false
 }
 

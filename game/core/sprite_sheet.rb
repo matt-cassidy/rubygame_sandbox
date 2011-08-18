@@ -9,7 +9,7 @@ module Game::Core
     
     def initialize(hash)
       @hash = hash
-      @surface = Rubygame::Surface.load "./resources/sprites/#{image}"
+      @surface = Rubygame::Surface.load "./resource/sprites/#{image}"
     end
     
     def name
@@ -20,8 +20,12 @@ module Game::Core
       @hash["meta"]["image"]
     end
     
+    def frames
+      @hash["frames"]
+    end
+    
     def load(frame_key, src_rect)
-      frame = @hash[frame_key]["frame"]
+      frame = frames[frame_key.to_s]["frame"]
       src_rect.x = frame["x"]
       src_rect.y = frame["y"]
       src_rect.h = frame["h"]

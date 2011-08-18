@@ -15,7 +15,7 @@ module Game::Views
       @menu.add_item "Parallax System", method(:menu_parallax_logic_selected)
       @menu.add_item "Vectors", method(:menu_vectors_selected)
       @menu.add_item "Test Camera", method(:menu_test_camera_selected)
-
+      @menu.add_item "Sprites", method(:menu_sprites_selected)
       @menu.add_item "Collision Detection", method(:menu_collision_selected)
       @menu.add_item "Input", method(:menu_input_selected)
       @menu.add_item "View Management", method(:menu_view_mgmt_selected)
@@ -57,6 +57,11 @@ module Game::Views
     def menu_vectors_selected
       require "game/views/vectors_view.rb"
       show_view VectorsView.new parent
+    end
+    
+    def menu_sprites_selected
+      require "game/views/sprites_view.rb"
+      show_view SpritesView.new parent
     end
     
     def menu_exit_selected

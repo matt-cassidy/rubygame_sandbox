@@ -13,9 +13,9 @@ module Game::Core
         @@sheets
       end
       
-      def load_sprites(directory)
+      def setup
         Log.info "Loading sprites..."
-        Dir[File.join(".", directory, "*.json")].each do |file_name|
+        Dir[File.join("./resource/sprites/*.json")].each do |file_name|
           Log.info "   #{file_name}"
           hash = open_json_doc file_name
           add_sprite_sheet hash
@@ -23,12 +23,12 @@ module Game::Core
       end
       
       def add_sprite_sheet(hash)
-        sheet = SpriteSheet.new json
+        sheet = SpriteSheet.new hash
         @@sheets[sheet.name] = sheet
       end
       
       def load(sheet_name, frame_key, src_rect)
-        sheets[sheet_name].load frame_key, rect
+        sheets[sheet_name].load frame_key, src_rect
       end
       
       private 
