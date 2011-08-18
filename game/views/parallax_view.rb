@@ -54,7 +54,7 @@ module Game::Views
 
       layer5 = Game::Core::ParallaxLayer.new nil,"parallax_5",1600,400
       layer5.layer_no = 4
-      layer5.make_parallax nil,1,[150,0],[0,0]
+      layer5.make_parallax nil,1,[150,0],[0,00]
       @world.add_layer layer5
 
     end

@@ -1,4 +1,4 @@
-require "game/core/vector2"
+
 module Game::Core
 
   class Layer
