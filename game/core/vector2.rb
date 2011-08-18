@@ -6,56 +6,71 @@ module Game::Core
   
   class Vector2
     
+    #========================================================================>
+    # Start Class Methods
+    #========================================================================>
+    
     class << self
       
-      def max(v,u)
-        return v if v >= u
-        return u
-      end
-      
-      def min(v,u)
-        return v if v <= u
-        return u
-      end
-      
-      def angle(v,u)
-        Mathh.acos Vector2.normalize(v).dot(Vector2.normalize(u))
-      end
-      
-      def one
-        Vector2.new 1,1
-      end
-      
-      def zero
-        Vector2.new 0,0
-      end
+      #========================================================
+      # Math Operations
+      #========================================================
       
       def add(v,u)
-        w = Vector2.zero
-        Vector2.add! w,v
-        Vector2.add! w,u
-        return w
+        Vector2.add! v.copy, u
       end
       
       def add!(v,u)
         v.x = (v.x + u.x)
         v.y = (v.y + u.y)
+        return v
       end
       
       def subtract(v,u)
-        Vector2.new (v.x - u.x), (v.y - u.y)
+        subtract! v.copy, u
+      end
+      
+      def subtract!(v,u)
+        v.x = v.x - u.x 
+        v.y = v.y - u.y
+        return v
       end
       
       def multiply(v, num)
-        Vector2.new v.x * num, v.y * num
+        multiply! v.copy, num
+      end
+      
+      def multiply!(v, num)
+        v.x = v.x * num
+        v.y = v.y * num
+        return v
       end
       
       def divide(v, num)
-        product = Vector2.zero
-        return product if num == 0 
-        product.x = v.x / num if v.x != 0
-        product.y = v.y / num if v.y != 0
-        return product
+        divide! v.copy, num
+      end
+      
+      def divide!(v, num)
+        if num == 0 
+          v.x = 0
+          v.y = 0
+          return v
+        end
+        v.x = v.x / num if v.x != 0
+        v.y = v.y / num if v.y != 0
+        return v
+      end
+      
+      def dot(v,u)
+        (v.x * u.x) + (v.y * u.y)
+      end
+      
+      #========================================================
+      # Vector Attributes
+      #========================================================
+      
+      def angle(v,u)
+        Mathh.acos Vector2.normalize(v).dot(Vector2.normalize(u))
       end
       
       def distance(v,u)
@@ -71,18 +86,8 @@ module Game::Core
         return d = 360 + d
       end
       
-      def dot(v,u)
-        (v.x * u.x) + (v.y * u.y)
-      end
-      
-      def interpolate(v, u, control)
-        x = v.x * (1-control) + u.x * control
-        y = v.y * (1-control) + u.y * control
-        Vector2 x, y
-      end
-      
-      def equal?(v,u)
-        v.x == u.x and v.y == u.y
+      def length(v)
+        Math.sqrt( (v.x ** 2) + (v.y ** 2) )
       end
       
       def unit(v)
@@ -90,20 +95,79 @@ module Game::Core
         y = v.y / v.length
         return Vector2.new x, y
       end
+
+      def unit?(v)
+        v.length == 1
+      end
+      
+      #========================================================
+      # Vector Operations
+      #========================================================
+      
+      def max(v,u)
+        return v if v >= u
+        return u
+      end
+      
+      def min(v,u)
+        return v if v <= u
+        return u
+      end
+      
+      def interpolate(v, u, control)
+        return interpolate! v.copy, u, control
+      end
+      
+      def interpolate!(v, u, control)
+        v.x = v.x * (1-control) + u.x * control
+        v.y = v.y * (1-control) + u.y * control
+        return v
+      end
       
       def negate(v)
-        Vector2.new -v.x, -v.y
+        return negate! v.copy
+      end
+      
+      def negate!(v)
+        v.x = -v.x
+        v.y = -v.y
+        return v
       end
       
       def normalize(v)
-        inverse = 1 / v.length
-        x = v.x * inverse
-        y = v.y * inverse
-        Vector2.new x, y
+        return normalize! v.copy
       end
       
-      def unit?(v)
-        v.length == 1
+      def normalize!(v)
+        return v if v.unit?
+        inverse = 1 / v.length
+        v.x = v.x * inverse
+        v.y = v.y * inverse
+        return v
+      end
+      
+      #========================================================
+      # Misc Helper Methods
+      #========================================================
+      
+      def one
+        Vector2.new 1,1
+      end
+      
+      def zero
+        Vector2.new 0,0
+      end
+      
+      def copy(v)
+        Vector2.new v.x, v.y
+      end
+      
+      #========================================================
+      # Equality Methods
+      #========================================================
+      
+      def equal?(v,u)
+        v.x == u.x and v.y == u.y
       end
       
       def greater(v,u)
@@ -124,27 +188,24 @@ module Game::Core
       
     end
     
+    #========================================================================>
+    # Start Instance Methods
+    #========================================================================>
+    
     def initialize(x,y)
       @components = [x.to_f,y.to_f]
-      @clamp = []
     end
+    
+    #========================================================
+    # X and Y
+    #========================================================
     
     def x()
       @components[0]
     end
     
     def x=(value)
-      unless clamped? 
-        @components[0] = value.to_f
-      else
-        if value >= @clamp[0].x && value <= @clamp[1].x 
-          @components[0] = value.to_f
-        elsif value < @clamp[0].x
-          @components[0] = @clamp[0].x
-        else
-          @components[0] = @clamp[1].x 
-        end
-      end
+      @components[0] = value.to_f
     end
     
     def y()
@@ -152,42 +213,39 @@ module Game::Core
     end
     
     def y=(value)
-      unless clamped?
-        @components[1] = value.to_f
-      else
-        if value >= @clamp[0].y && value <= @clamp[1].y
-          @components[1] = value.to_f
-        elsif value < @clamp[0].y
-          @components[1] = @clamp[0].y
-        else
-          @components[1] = @clamp[1].y
-        end
-      end
+      @components[1] = value.to_f
     end
     
-    def clamp(min,max)
-      release_clamp
-      @clamp << min
-      @clamp << max
-    end
+    #========================================================
+    # Math Operations
+    #========================================================
     
-    def clamped?
-      @clamp.size == 2 
-    end
-    
-    def release_clamp
-      @clamp.clear
-    end
+    #--- add
     
     def add(other)
-      Vector2.add(self,other)
+      Vector2.add self, other
+    end
+    
+    def add!(other)
+      Vector2.add! self, other
     end
     
     def +(other)
-      Vector2.add(self,other)
+      Vector2.add self, other
     end
     
+    def <<(other)
+      Vector2.add! self, other
+      return self
+    end
+    
+    #--- subtract
+    
     def subtract(other)
+      Vector2.subtract self, other
+    end
+    
+    def subtract!(other)
       Vector2.subtract self, other
     end
     
@@ -195,7 +253,13 @@ module Game::Core
       Vector2.subtract self, other
     end
     
+    #--- multiply
+    
     def multiply(num)
+      Vector2.multiply self, num
+    end
+    
+    def multiply!(num)
       Vector2.multiply self, num
     end
     
@@ -203,13 +267,29 @@ module Game::Core
       Vector2.multiply self, num
     end
     
+    #--- divide
+    
     def divide(num)
       Vector2.divide self, num
+    end
+    
+    def divide!(num)
+      Vector2.divide! self, num
     end
     
     def /(num)
       Vector2.divide self, num 
     end
+    
+    #--- dot product
+    
+    def dot(other)
+      Vector2.dot self, other
+    end
+    
+    #========================================================
+    # Vector Attributes
+    #========================================================
     
     def angle(other)
       Vector2.angle self, other
@@ -223,22 +303,58 @@ module Game::Core
       Vector2.direction self
     end
     
-    def dot(other)
-      Vector2.dot self, other
+    def length
+      Vector2.length self
     end
     
-    def length
-      Math.sqrt( (x ** 2) + (y ** 2) )
-    end
+    
+    #========================================================
+    # Vector Opertations
+    #========================================================
     
     def negate
       Vector2.negate self
     end
     
-    def <<(other)
-      Vector2.add! self, other
-      return self
+    def negate!
+      Vector2.negate! self
     end
+    
+    def -@()
+      Vector2.negate self
+    end
+    
+    def interpolate(other, control)
+      Vector2.interpolate self, other, control
+    end
+    
+    def interpolate!(other, control)
+      Vector2.interpolate! self, other, control
+    end
+    
+    def zero?
+      self == Vector2.zero
+    end
+    
+    def normalize
+      Vector2.normalize self
+    end
+    
+    def normalize!
+      Vector2.normalize! self
+    end
+    
+    def unit
+      Vector2.unit self
+    end
+    
+    def unit?
+      Vector2.unit? self
+    end
+    
+    #========================================================
+    # Equality Checks
+    #========================================================
     
     def >(other)
       Vector2.greater self, other
@@ -266,43 +382,26 @@ module Game::Core
       Vector2.equal? self, other
     end
     
+    #========================================================
+    # Misc Class Operations
+    #========================================================
+    
     def to_s
       "[#{x},#{y}]"
     end
     
-    def to_s_f
-      "[#{x.to_i},#{y.to_i}]"
+    def to_s_formated
+      sx = "%0.2f" % self.x
+      sy = "%0.2f" % self.y
+      "[#{sx},#{sy}]"
     end
     
     def to_a
       @components
     end
     
-    def normalize!
-      release_clamp
-      v = Vector2.normalize self
-      self.x = v.x
-      self.y = v.y
-    end
-    
-    def unit
-      Vector2.unit self
-    end
-    
-    def unit?
-      Vector2.unit? self
-    end
-    
-    def interpolate(other, control)
-      Vector2.interpolate self, other, control
-    end
-    
-    def zero?
-      self == Vector2.zero
-    end
-    
-    def -@()
-      Vector2.negate self
+    def copy(other)
+      Vector2.copy self
     end
     
   end
