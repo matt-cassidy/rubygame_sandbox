@@ -2,6 +2,7 @@ require "game/core/view"
 require "game/core/collision_node"
 require "game/core/collision_tree"
 require "game/entities/text_box.rb"
+require "game/core/layer.rb"
 require "game/core/world_map.rb"
 require "game/core/log.rb"
 require "game/entities/hero.rb"
@@ -19,8 +20,10 @@ module Game::Views
       
       @framerate_text = Game::Entities::TextBox.new self, [10, 10], 14
       add_entity @framerate_text
-      
+
+      layer = Game::Core::Layer.new "test","tiles",64,64
       @world = Game::Core::WorldMap.new
+      @world.add_layer layer
       
       @input = Game::Core::PlayerInput    
       
