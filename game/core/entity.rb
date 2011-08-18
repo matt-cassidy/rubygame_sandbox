@@ -5,7 +5,8 @@ require "./game/core/script_manager.rb"
 module Game::Core
 
   class Entity
-    
+    attr_accessor:visible
+
     attr_reader :view
     attr_reader :updated
     attr_reader :events
@@ -23,7 +24,7 @@ module Game::Core
       @events = []
       @hitbox = CollisionHitbox.new pos, size
       @updated = false
-      
+      @visible = true
       @spos =  [0,0]
     end
     
@@ -45,7 +46,7 @@ module Game::Core
     end
     
     def draw
-      drawing
+      drawing if @visible == true
       @updated = false
     end
     
@@ -83,6 +84,7 @@ module Game::Core
       end
       return script
     end
+
 
   end
 
