@@ -7,13 +7,13 @@ module Game::Entities
     ZERO = 0.0
     GROUND_Y = 400
     JUMP_ACCEL_RATE = 1.0
-    WALK_ACCEL_RATE = 0.5
-    RUN_ACCEL_RATE = 1.5
+    WALK_ACCEL_RATE = 0.3
+    RUN_ACCEL_RATE = 0.5
     SLIDE_FRICTION = 2
     AIR_FRICTION = 0.5
     GRAVITY = 0.3
-    MAX_RUN_SPEED = 12
-    MAX_WALK_SPEED = 6
+    MAX_RUN_SPEED = 14
+    MAX_WALK_SPEED = 5
     
     KEY_JUMP = :space
     KEY_RIGHT = :right
@@ -126,6 +126,10 @@ module Game::Entities
     def handle_movement
       seconds = @view.clock.seconds
       
+      #TODO:need to implement some sort of jump timing, 
+      #longer player holds jump the higher you should jump
+      #also player shouldnt be able to hold jump key and jump as soon as he lands
+      
       #jump
       if @input.press? KEY_JUMP and not moving_vert?
         @acc.y = -JUMP_ACCEL_RATE
@@ -173,6 +177,8 @@ module Game::Entities
       elsif accelerating_opposite_dir? and moving_fast? # switch direction
         
         @sliding = true
+        @acc.x += (-@vel.x * 0.05).round(2)
+        @acc.x = -@vel.x if @acc.x == ZERO
         
       elsif @ducking and moving_fast? # duck slide 
         
@@ -181,12 +187,13 @@ module Game::Entities
           
       elsif moving_hort? and @running and not accelerating? # stop running
         
-        @acc.x += (-@vel.x * 0.1).round(2)
+        @acc.x += (-@vel.x * 0.3).round(2)
         @acc.x = -@vel.x if @acc.x == ZERO
         
       elsif moving_hort? and not accelerating? or accelerating_opposite_dir? # stop walking
         
-        @acc.x = -@vel.x #dead stop
+        @acc.x += (-@vel.x * 0.5).round(2)
+        @acc.x = -@vel.x if @acc.x == ZERO
           
       end
       
