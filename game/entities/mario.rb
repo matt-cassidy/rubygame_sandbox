@@ -7,7 +7,7 @@ module Game::Entities
     ZERO = 0.0
     GROUND_Y = 400
     JUMP_ACCEL_RATE = 1.0
-    WALK_ACCEL_RATE = 0.3
+    WALK_ACCEL_RATE = 0.2
     RUN_ACCEL_RATE = 0.5
     SLIDE_FRICTION = 2
     AIR_FRICTION = 0.5
@@ -61,10 +61,10 @@ module Game::Entities
     
     def update_debug_messages
       air = "%0.2f" % @airtime
-      direction = "%0.2f" %  @vel.direction
+      direction = "%0.2f" %  (@vel.direction - 360)
       speed = "%0.2f" %  @vel.length
       @debug1.text = "airtime   [#{air}]"
-      @debug2.text = "position  #{@vpos.to_s_f}"
+      @debug2.text = "position  #{@vpos.to_s_formated}"
       @debug3.text = "direction [#{direction}]"
       @debug4.text = "velocity  #{@vel}"
       @debug5.text = "accel  #{@acc}"
