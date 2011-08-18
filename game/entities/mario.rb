@@ -81,7 +81,6 @@ module Game::Entities
       blit @debug4, [400,10]
       blit @debug5, [400,25]
       blit @debug6, [400,40]
-      
     end
     
     def moving_vert?
