@@ -6,28 +6,29 @@ module Game::Entities
     
     ZERO = 0.0
     GROUND_Y = 400
-    JUMP_ACCEL_RATE = 1.5
-    MOVE_ACCEL_RATE = 1
-    MAX_SPEED = 4.0
-    GROUND_FRICTION = 0.1
-    AIR_FRICTION = 0.8
+    JUMP_ACCEL_RATE = 1.0
+    WALK_ACCEL_RATE = 0.5
+    RUN_ACCEL_RATE = 1.5
+    SLIDE_FRICTION = 2
+    AIR_FRICTION = 0.5
     GRAVITY = 0.3
+    MAX_RUN_SPEED = 12
+    MAX_WALK_SPEED = 6
     
     KEY_JUMP = :space
     KEY_RIGHT = :right
     KEY_LEFT = :left
-     
-    attr_reader :image
-    attr_reader :pos
-    attr_reader :acc
-    attr_reader :vel
-    attr_reader :jumping  
+    KEY_DOWN = :down
+    KEY_RUN = :left_shift
     
     def initialize(view,pos)
-      super view, pos, [15,32]
+      super view, pos, [64,128]
       
       @actor = load_script "mario"
       @animation = Game::Core::Animation.make @actor
+      
+      @controls = Game::Core::Font.new "pirulen", 10
+      @controls.text = "Shift=Run, Space=Jump, Arrows=Move"
       
       @debug1 = Game::Core::Font.new "pirulen", 10
       @debug2 = Game::Core::Font.new "pirulen", 10
@@ -36,23 +37,18 @@ module Game::Entities
       @debug5 = Game::Core::Font.new "pirulen", 10
       @debug6 = Game::Core::Font.new "pirulen", 10
       
-      @hitbox.make_visible
+      #@hitbox.make_visible
       
       @input = Game::Core::PlayerInput
       
-      max_pos_speed = Game::Core::Vector2.new(MAX_SPEED, MAX_SPEED + 10)
-      max_neg_speed = Game::Core::Vector2.new(-MAX_SPEED, -MAX_SPEED - 10)
-      
       @acc = Game::Core::Vector2.zero
-      @acc.clamp max_neg_speed, max_pos_speed
-      
       @vel = Game::Core::Vector2.zero
-      @vel.clamp max_neg_speed, max_pos_speed
-      
       @vpos = Game::Core::Vector2.new pos[0], pos[1]
       
       @airtime = 0.0
       @facing = 1
+      @ducking = false
+      @sliding = false
       
       @animation.change :stand_right
     end
@@ -78,12 +74,14 @@ module Game::Entities
     def drawing
       cblit @hitbox
       cblit @animation
+      blit @controls, [10,470]
       blit @debug1, [10,10]
       blit @debug2, [10,25]
       blit @debug3, [10,40]
       blit @debug4, [400,10]
       blit @debug5, [400,25]
       blit @debug6, [400,40]
+      
     end
     
     def moving_vert?
@@ -106,6 +104,25 @@ module Game::Entities
       @vpos.y < GROUND_Y
     end
     
+    def moving_right
+      @vel.x > ZERO
+    end
+    
+    def moving_left
+      @vel.x < ZERO
+    end
+    
+    def accelerating_opposite_dir?
+      return true if @vel.x < ZERO and @acc.x > ZERO 
+      return true if @vel.x > ZERO and @acc.x < ZERO
+      return false
+    end
+    
+    def moving_fast?
+      return true if moving_left and @vel.x < -MAX_WALK_SPEED
+      return true if moving_right and @vel.x > MAX_WALK_SPEED
+    end
+    
     def handle_movement
       seconds = @view.clock.seconds
       
@@ -114,36 +131,77 @@ module Game::Entities
         @acc.y = -JUMP_ACCEL_RATE
       end
       
+      #run
+      if @input.press? KEY_RUN
+        accel_rate = RUN_ACCEL_RATE
+        @running = true
+      else
+        accel_rate = WALK_ACCEL_RATE
+        @running = false
+      end
+      
+      #duck
+      if @input.press? KEY_DOWN
+        @ducking = true
+      else
+        @ducking = false
+      end
+      
       #move left and right
-      if @input.press? KEY_RIGHT
-        @acc.x += MOVE_ACCEL_RATE
-        @facing = 1
-      elsif @input.press? KEY_LEFT
-        @acc.x -= MOVE_ACCEL_RATE
-        @facing = 2
+      if @input.press? KEY_RIGHT and not @ducking
+        @acc.x = accel_rate
+        @facing = 1 if not moving_vert?
+      elsif @input.press? KEY_LEFT and not @ducking
+        @acc.x = -accel_rate
+        @facing = 2 if not moving_vert?
       else
         @acc.x = ZERO
       end
       
+      @sliding = false
+      
       #physics
-      if moving_vert? and not accelerating? #air 
+      if moving_vert? and not accelerating? # air 
         
         @acc.y += GRAVITY * @airtime
       
-      elsif moving_vert? and accelerating? #moving in air 
+      elsif moving_vert? and accelerating? # moving in air 
         
         @acc.y += GRAVITY * @airtime
         @acc.x += (-@acc.x * AIR_FRICTION)
+      
+      elsif accelerating_opposite_dir? and moving_fast? # switch direction
         
-  
-      elsif moving_hort? and not accelerating?
+        @sliding = true
         
-        @acc.x += (-@vel.x * GROUND_FRICTION).round(2)
+      elsif @ducking and moving_fast? # duck slide 
+        
+        @acc.x += (-@vel.x * 0.05).round(2)
+        @acc.x = -@vel.x if @acc.x == ZERO
+          
+      elsif moving_hort? and @running and not accelerating? # stop running
+        
+        @acc.x += (-@vel.x * 0.1).round(2)
         @acc.x = -@vel.x if @acc.x == ZERO
         
+      elsif moving_hort? and not accelerating? or accelerating_opposite_dir? # stop walking
+        
+        @acc.x = -@vel.x #dead stop
+          
       end
       
       @vel << @acc
+      
+      #control max speed
+      if @running 
+        @vel.x = -MAX_RUN_SPEED if @vel.x < -MAX_RUN_SPEED 
+        @vel.x = MAX_RUN_SPEED if @vel.x > MAX_RUN_SPEED
+      else
+        @vel.x = -MAX_WALK_SPEED if @vel.x < -MAX_WALK_SPEED
+        @vel.x = MAX_WALK_SPEED if @vel.x > MAX_WALK_SPEED
+      end
+      
+      
       @vpos << @vel 
       
       #touching ground logic   
@@ -169,7 +227,17 @@ module Game::Entities
           @animation.change :jump_left
         end
       
-      elsif moving_hort?
+      elsif @sliding
+        
+        if @facing == 1
+          @animation.change :slide_right
+        elsif @facing == 2
+          @animation.change :slide_left
+        else
+          @animation.change :slide_right
+        end
+      
+      elsif moving_hort? and not @ducking
         
         if @facing == 1
           @animation.change :walk_right
@@ -177,6 +245,16 @@ module Game::Entities
           @animation.change :walk_left
         else
           @animation.change :walk_right
+        end
+      
+      elsif @ducking and not moving_vert?
+        
+        if @facing == 1
+          @animation.change :duck_right
+        elsif @facing == 2
+          @animation.change :duck_left
+        else
+          @animation.change :duck_right
         end
         
       else
