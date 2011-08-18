@@ -11,6 +11,7 @@ module Game::Core
 
     attr_accessor :layer_no
     attr_accessor :visible
+    attr_accessor :pos
 
     def initialize (area,tiles,tile_width,tile_height)
       @name = tiles
@@ -24,7 +25,12 @@ module Game::Core
       @rect_tile = Rubygame::Rect.new 0, 0, @tile_width, @tile_height
 
       if (!area.nil?) then
-        @area = eval File.open("./resource/area/#{area}.area").read
+        if area.kind_of?(Array) then
+          @area = area
+        else
+          @area = eval File.open("./resource/area/#{area}.area").read
+        end
+
        else
          @area = [[0]]
        end
@@ -44,13 +50,13 @@ module Game::Core
       @screen_tiles_height = 0
       @screen_tiles_width = 0
 
-      @desired_tiles_width = nil
-      @desired_tiles_height = nil
+      @desired_tiles_amount_width = nil
+      @desired_tiles_amount__height = nil
     end
 
     def make_parallax (tiles_width_amount,tiles_height_amount,speed, pos = nil)
-       @desired_tiles_width = tiles_width_amount
-       @desired_tiles_height = tiles_height_amount
+       @desired_tiles_amount__width = tiles_width_amount
+       @desired_tiles_amount__height = tiles_height_amount
        
        @speed = speed
        @manual_set = true
@@ -63,16 +69,16 @@ module Game::Core
       temp_width_amount = amount_of_tiles @tile_width,background.width
       temp_height_amount = amount_of_tiles @tile_height, background.height
 
-      if @desired_tiles_width.nil? == true || @desired_tiles_width > temp_width_amount
+      if @desired_tiles_amount__width.nil? == true || @desired_tiles_amount__width > temp_width_amount
         @screen_tiles_width = temp_width_amount
       else
-        @screen_tiles_width = @desired_tiles_width
+        @screen_tiles_width = @desired_tiles_amount__width
       end
 
-      if @desired_tiles_height.nil? == true || @desired_tiles_height > temp_height_amount
+      if @desired_tiles_amount__height.nil? == true || @desired_tiles_amount__height > temp_height_amount
         @screen_tiles_height =  temp_height_amount
       else
-        @screen_tiles_height = @desired_tiles_height
+        @screen_tiles_height = @desired_tiles_amount__height
       end
 
     end
@@ -96,7 +102,6 @@ module Game::Core
       @pos[0] = start_blit_pos @pos[0],@tile_width
       if @manual_set.nil? == true
          @pos[1] = start_blit_pos @pos[1],@tile_height
-         puts "name:#{@name} pos y #{@pos[1]}"
       end
 
       blit_layer camera_pos,background
@@ -140,8 +145,8 @@ module Game::Core
 
              #Use Bitwise AND to get finer offset
              #If you remove the -1 you get tile by tile moving as the offset is always 0,0
-             offset_x = (x * @tile_width) -  (camera_pos[0] & (@tile_width - 1) )
-             offset_y = (y * @tile_height) - (camera_pos[1] & (@tile_height - 1))
+             offset_x = (x * @tile_width) -  (camera_pos[0].to_int & (@tile_width - 1) )
+             offset_y = (y * @tile_height) - (camera_pos[1].to_int & (@tile_height - 1))
 
              tile_num = get_tile map_pos
              get_blit_rect tile_num,@rect_tile
@@ -179,12 +184,12 @@ module Game::Core
         #you swap them otherwise the map is flipped 90 degrees counter clockwise
         tile_no = @area[map_pos[1]][map_pos[0]]
       rescue
-        puts "get_tile - rescued xy #{map_pos[1]},#{map_pos[0]}"
+        #puts "get_tile - rescued xy #{map_pos[1]},#{map_pos[0]}"
         tile_no = 0
       end
 
       if tile_no.nil? then
-        puts "get_tile - tile_no nill xy #{map_pos[1]},#{map_pos[0]}"
+        #puts "get_tile - tile_no nill xy #{map_pos[1]},#{map_pos[0]}"
         return 0
       end
 
@@ -193,9 +198,16 @@ module Game::Core
 
     def get_blit_rect(tile_no, rect)
         #TODO: properly clip tile for efficiency
-        rect.left = 0
-        rect.right = @tile_width
-        rect.top = tile_no * @tile_height
+        if tile_no.kind_of?(Array)
+           rect.left = tile_no[1] * @tile_width
+           rect.top = tile_no[0] * @tile_height
+        else
+          rect.left = 0
+          rect.top = tile_no * @tile_height
+        end
+
+
+        rect.right = rect.left + @tile_width
         rect.bottom = rect.top + @tile_height
     end
 
@@ -209,7 +221,9 @@ module Game::Core
       return start
     end
 
-
+    def world_dimensions?
+        return [@world_width * @tile_width,@world_height * @tile_height]
+    end
   end
 
 end

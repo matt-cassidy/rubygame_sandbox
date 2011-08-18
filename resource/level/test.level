@@ -1,0 +1,16 @@
+{
+"level_image" => "./resource/img/create_bmp.png",
+"tiles" => {
+        "image" => "tiles",
+        "width" => 64,
+        "height" => 64
+},
+"colour_def" => {
+                "000000" => 0,
+                 "7F7F7F" => 1,
+                 "880015" => 2,
+                 "FF7F27" => 3,
+                 "22B14C" => 4,
+                 "FFFFFF" => 5
+                }
+}
