@@ -15,6 +15,10 @@ module Game::Views
 
       Game::Core::EntityManager.setup
 
+      player = Game::Entities::CameraTarget.new self, [300,300]
+      add_entity player
+      camera.follow player
+
       @framerate_text = Game::Entities::TextBox.new self, [10, 450], 14
       add_entity @framerate_text
 
@@ -22,9 +26,7 @@ module Game::Views
       layers = level_manager.create_level "level_1.level"
       layers.each{|layer|
         world.add_layer layer
-        puts layer.to_config_file
       }
-
     end
 
     def updating

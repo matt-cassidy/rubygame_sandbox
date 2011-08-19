@@ -29,7 +29,8 @@ module Game::Core
       @tile_width = tile_width
       @tile_height = tile_height
 
-      @tiles = Rubygame::Surface.load "./resource/img/#{tiles}.png"
+      @tiles = Rubygame::Surface.load tiles
+
       @rect_tile = Rubygame::Rect.new 0, 0, @tile_width, @tile_height
 
       if (!area.nil?) then
@@ -53,7 +54,6 @@ module Game::Core
 
       @config = nil
 
-      puts "name:#{@name} repeat_y:#{@repeat_y} pos:#{@pos} speed:#{@speed} layer_no:#{@layer_no}"
     end
 
     def setup_background(background)
@@ -173,7 +173,8 @@ module Game::Core
 
        begin
         #you swap them otherwise the map is flipped 90 degrees counter clockwise
-        tile_no = @area[map_pos[1]][map_pos[0]]
+
+         tile_no = @area[map_pos[1]][map_pos[0]]
       rescue
         puts "get_tile - rescued xy #{map_pos[1]},#{map_pos[0]}"
         tile_no = 0
@@ -212,14 +213,9 @@ module Game::Core
       return start
     end
 
-    def world_dimensions?
-        return [@world_width * @tile_width,@world_height * @tile_height]
-    end
-
     def whole_layer_to_bmp
 
     end
-
 
     def to_config_file
 
@@ -241,7 +237,7 @@ module Game::Core
                "visible" => @visible
             },
             "tiles" =>{
-                "image" => "./resource/img/#{@name}.png",
+                "image" => @name,
                 "width" => @tile_width,
                 "height" => @tile_height
             }
@@ -287,7 +283,7 @@ module Game::Core
               tile_no = get_tile [x,y]
 
               if tile_no.kind_of?(Array)
-                hex = colour_def.key(tile_no)
+                hex = colour_def.key([tile_no[1],tile_no[0]])
                 colour = hex_to_rgb(hex)
 
                 surface.set_at [x,y],colour

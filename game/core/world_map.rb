@@ -86,15 +86,27 @@ module Game::Core
         @layers << new_group
       end
 
+      @layers.sort! { |a,b| a.layer_no? <=> b.layer_no? }
 
     end
 
 
     def to_config_file
       puts "making world config file"
-      filename = "./resource/level/level_#{@entity_id}.level"
-
-
+      filename = "./resource/level/level_#{Time.new.inspect.gsub(/[ \-:]/,"_")}_#{@entity_id}.level"
+      master_config = Array.new
+      @layers.each { |group|
+          group.layers.each {|id,layer|
+             config =  layer.to_config_file
+             master_config << config
+          }
+      }
+      File.open(filename,'w'){|file|
+        file.puts "[ "
+        file.puts master_config
+        file.puts " ]"
+      }
+      puts "saved config file to #{filename}"
     end
    end
 end

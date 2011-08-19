@@ -27,29 +27,23 @@ module Game::Views
       #adding layers to map
 
       layer0 = Game::Core::ParallaxLayer.new "test","tiles",64,64
-
       #@world.add_layer layer0
 
-      layer1 = Game::Core::ParallaxLayer.new nil,"parallax_1",800,200,{"repeat_y"=> false,"pos" => [0,0],"speed" => [10,0],"layer_no" => 1}
-      puts "name:#{layer1.name} layer_no:#{layer1.layer_no}"
+      layer1 = Game::Core::ParallaxLayer.new nil,"./resource/img/parallax_1.png",800,200,{"repeat_y"=> false,"pos" => [0,0],"speed" => [10,0],"layer_no" => 0}
+
+      layer2 = Game::Core::ParallaxLayer.new nil,"./resource/img/parallax_2.png",800,120,{"repeat_y" => false,"pos" => [0,120],"speed" => [50,0],"layer_no" => 1}
+
+      layer3 = Game::Core::ParallaxLayer.new nil,"./resource/img/parallax_3.png",800,200,{"repeat_y" => false,"pos" => [0,120],"speed" => [90,0],"layer_no" => 2}
+
+      layer4 = Game::Core::ParallaxLayer.new nil,"./resource/img/parallax_4.png",800,200,{"repeat_y" => false,"pos" => [0,90],"speed" => [100,0],"layer_no" =>3}
+
+      layer5 = Game::Core::ParallaxLayer.new nil,"./resource/img/parallax_5.png",1600,400,{"repeat_y" => false,"pos" => [0,0],"speed" => [150,0],"layer_no" => 4}
 
       @world.add_layer layer1
-
-      layer2 = Game::Core::ParallaxLayer.new nil,"parallax_2",800,120,{"repeat_y" => false,"pos" => [0,120],"speed" => [50,0],"layer_no" => 2}
-      puts "name:#{layer2.name} layer_no:#{layer2.layer_no}"
-      @world.add_layer layer2
-
-      layer3 = Game::Core::ParallaxLayer.new nil,"parallax_3",800,200,{"repeat_y" => false,"pos" => [0,0],"speed" => [90,0],"layer_no" => 3}
-      puts "name:#{layer3.name} layer_no:#{layer3.layer_no}"
-      @world.add_layer layer3
-
-      layer4 = Game::Core::ParallaxLayer.new nil,"parallax_4",800,200,{"repeat_y" => false,"pos" => [0,90],"speed" => [100,0],"layer_no" => 4}
-      puts "name:#{layer4.name} layer_no:#{layer4.layer_no}"
       @world.add_layer layer4
-
-      layer5 = Game::Core::ParallaxLayer.new nil,"parallax_5",1600,400,{"repeat_y" => false,"pos" => [0,0],"speed" => [150,0],"layer_no" => 5}
-      puts "name:#{layer5.name} layer_no:#{layer5.layer_no}"
+      @world.add_layer layer3
       @world.add_layer layer5
+      @world.add_layer layer2
 
     end
 

@@ -50,8 +50,7 @@ module Game::Core
           for x in (0..(surface.width - 1))
 
             hex = rgb_to_hex(surface.get_at [x,y])
-
-            if level_config["colour_def"][hex].nil? == false then
+            if level_config["colour_def"].has_key? hex then
               hex_def = level_config["colour_def"][hex]
 
               if hex_def.kind_of?(String) #is it an entity
@@ -68,7 +67,12 @@ module Game::Core
                 row << nil  #TODO:somehow create a tile behind it
 
               else #background
-                row << hex_def
+                if hex_def.kind_of?(Array)
+                  row << [hex_def[1],hex_def[0]]
+                else
+                  row << hex_def
+                end
+
               end
 
             else
