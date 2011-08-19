@@ -1,16 +1,40 @@
 {
-"level_image" => "./resource/img/level_1.png",
-"tiles" => {
-        "image" => "tiles",
-        "width" => 64,
-        "height" => 64
-},
-"colour_def" => {
-                 "000000" => [0,0],
-                 "7F7F7F" => [1,0],
-                 "880015" => [2,0],
-                 "FF7F27" => [3,0],
-                 "22B14C" => [4,0],
-                 "FFFFFF" => [5,0]
-                }
+  0 =>  {
+        "name" => "background",
+        "image" =>  "./resource/img/level_1.png",
+        "properties" => {
+                 "layer_no" => 0,
+                 "repeat_x" => 1,
+                 "repeat_y" => 1,
+                 "pos" => [0,0],
+                 "visible" => true
+        },
+        "tiles" => {
+                "image" => "tiles",
+                "width" => 64,
+                "height" => 64
+        },
+        "colour_def" => {
+                         "000000" => 0,
+                         "7F7F7F" => 1,
+                         "880015" => 2,
+                         "FF7F27" => 3,
+                         "22B14C" => 4,
+                         "FFFFFF" => 5
+        }
+  },
+  1 =>  {
+        "name" => "sprites",
+        "image" =>  "./resource/img/level_1-sprites.png",
+        "tiles" => {
+                "width" => 64,
+                "height" => 64
+        },
+        "colour_def" => {
+                 "59FFD0" => "Fox",
+                 "FF0000" => "PLAYER_START"
+        },
+        "player" => "CameraTarget"
+    }
 }
+

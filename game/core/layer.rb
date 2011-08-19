@@ -12,7 +12,7 @@ module Game::Core
     attr_accessor :visible
     attr_accessor :pos
 
-    def initialize (area,tiles,tile_width,tile_height,layer_no = 0)
+    def initialize (area,tiles,tile_width,tile_height,properties = {})
       @name = tiles
       @entity_id = GOID.next
 
@@ -20,6 +20,13 @@ module Game::Core
       @tile_height = tile_height
 
       @visible = true
+
+      @layer_no = 0
+
+      @speed = [150,150]
+
+      @pos = [0,0]
+
       @tiles = Rubygame::Surface.load "./resource/img/#{tiles}.png"
       @rect_tile = Rubygame::Rect.new 0, 0, @tile_width, @tile_height
 
@@ -29,16 +36,11 @@ module Game::Core
         else
           @area = eval File.open("./resource/area/#{area}.area").read
         end
-
        else
          @area = [[0]]
        end
 
-      @layer_no = layer_no
 
-      @speed = [150,150]
-
-      @pos = [0,0]
 
       @last_camera = [0,0]
 
@@ -54,6 +56,14 @@ module Game::Core
 
       @repeat_x = true
       @repeat_y = true
+
+
+      @layer_no = properties["layer_no"]  if properties["layer_no"]
+      @repeat_x = false  if properties["repeat_x"] == 0
+      @repeat_y = false if properties["repeat_y"] == 0
+      @pos = properties["pos"]  if properties["pos"]
+      @speed = properties["speed"]  if properties["speed"]
+
     end
 
     def setup_layer (tiles_width_amount,tiles_height_amount,speed, pos = nil)
@@ -81,17 +91,31 @@ module Game::Core
       temp_width_amount = amount_of_tiles @tile_width,background.width
       temp_height_amount = amount_of_tiles @tile_height, background.height
 
-      if @desired_tiles_amount__width.nil? == true || @desired_tiles_amount__width > temp_width_amount
+
+      if @repeat_x
         @screen_tiles_width = temp_width_amount
       else
-        @screen_tiles_width = @desired_tiles_amount__width
+        @screen_tiles_width = 1
       end
 
-      if @desired_tiles_amount__height.nil? == true || @desired_tiles_amount__height > temp_height_amount
-        @screen_tiles_height =  temp_height_amount
+      if @repeat_y
+         @screen_tiles_height =  temp_height_amount
       else
-        @screen_tiles_height = @desired_tiles_amount__height
+         @screen_tiles_height = 1
       end
+
+      #
+      #if @desired_tiles_amount__width.nil? == true || @desired_tiles_amount__width > temp_width_amount
+      #  @screen_tiles_width = temp_width_amount
+      #else
+      #  @screen_tiles_width = @desired_tiles_amount__width
+      #end
+
+      #if @desired_tiles_amount__height.nil? == true || @desired_tiles_amount__height > temp_height_amount
+      #  @screen_tiles_height =  temp_height_amount
+      #else
+      #  @screen_tiles_height = @desired_tiles_amount__height
+      #end
 
     end
 

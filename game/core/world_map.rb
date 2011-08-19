@@ -40,7 +40,6 @@ module Game::Core
           @background.fill([0,0,0])
           @layers.each { |group|
             if group.visible?
-                #TODO:Use vector
                 group.update clock,camera_top_left
             end
           }
@@ -53,7 +52,6 @@ module Game::Core
     def handle_layers
       changed = false
       keys = [:number_1, :number_2,:number_3,:number_4,:number_5,:number_6,:number_7,:number_8,:number_9,:number_0]
-
 
       @layers.each{ | group |
         if @input.up?(keys[group.layer_no?]) then

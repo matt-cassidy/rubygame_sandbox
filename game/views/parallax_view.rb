@@ -26,12 +26,12 @@ module Game::Views
       @world = Game::Core::WorldMap.new
       #adding layers to map
 
-      layer0 = Game::Core::ParallaxLayer.new "test","tiles",64,64
+      layer0 = Game::Core::ParallaxLayer.new "test","tiles",64,64,0
       #layer0.make_parallax nil,1,[10,10],[0,0]
 
       #@world.add_layer layer0
 
-      layer1 = Game::Core::ParallaxLayer.new nil,"parallax_1",800,200
+      layer1 = Game::Core::ParallaxLayer.new nil,"parallax_1",800,200,0
       layer1.setup_layer nil,1,[10,0],[0,0]
 
       @world.add_layer layer1

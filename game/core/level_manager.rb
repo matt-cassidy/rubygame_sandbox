@@ -11,19 +11,27 @@ module Game::Core
         @view = view
       end
 
-      def create_layer (level_no)
+      def create_level (level_no)
         puts "create #{level_no}"
         level_hash = eval File.open("./resource/level/#{level_no}").read
 
-        level = Rubygame::Surface.load level_hash["level_image"]
+        layers = []
+        level_hash.each { |id,layer |
+           level = Rubygame::Surface.load layer["image"]
 
-        level_objects = surface_to_objects level,level_hash
+           level_objects = surface_to_objects level,layer
 
-        level_objects["entities"].each{ |e|
-          @view.add_entity e
+           level_objects["entities"].each{ |e|
+            @view.add_entity e
+           }
+           if layer["name"] != "sprites" then
+            layers << Game::Core::Layer.new(level_objects["area"], layer["tiles"]["image"],layer["tiles"]["width"],layer["tiles"]["height"],layer["properties"])
+           end
         }
 
-        return Game::Core::Layer.new level_objects["area"], level_hash["tiles"]["image"],level_hash["tiles"]["width"],level_hash["tiles"]["height"]
+        return layers
+
+
       end
 
 
@@ -33,10 +41,14 @@ module Game::Core
 
         for y in (0..(surface.height - 1))
           row = Array.new
+
           for x in (0..(surface.width - 1))
+
             hex = rgb_to_hex(surface.get_at [x,y])
+
             if level_hash["colour_def"][hex].nil? == false then
               hex_def = level_hash["colour_def"][hex]
+
               if hex_def.kind_of?(String) #is it an entity
                 map_x = x * level_hash["tiles"]["width"]
                 map_y = y * level_hash["tiles"]["height"]
@@ -53,11 +65,12 @@ module Game::Core
               end
 
             else
-              Log.warn "HEX value for #{hex} not found setting to 0"
               row << 0
             end
+
           end
           area << row
+
         end
         return Hash["area" => area, "entities" => entities]
       end

@@ -4,8 +4,9 @@ module Game::Core
 
   class ParallaxLayer < Game::Core::Layer
 
-    def initialize (area,tiles,tile_width,tile_height,layer_no =0)
-      super area,tiles,tile_width,tile_height,layer_no
+    def initialize (area,tiles,tile_width,tile_height,layer_no,properties = {})
+      super area,tiles,tile_width,tile_height,properties
+      @layer_no = 0
     end
 
     def blit_layer(camera_pos,background)
