@@ -3,8 +3,9 @@ require "game/core/layer.rb"
 module Game::Core
 
   class ParallaxLayer < Game::Core::Layer
-    def initialize (area,tiles,tile_width,tile_height)
-      super area,tiles,tile_width,tile_height
+
+    def initialize (area,tiles,tile_width,tile_height,layer_no =0)
+      super area,tiles,tile_width,tile_height,layer_no
     end
 
     def blit_layer(camera_pos,background)

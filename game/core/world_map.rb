@@ -22,19 +22,6 @@ module Game::Core
       @input = Game::Core::PlayerInput
     end
 
-
-    def blit_layers (clock, camera_pos)
-      @background.fill([0,0,0])
-      @layers.each { |group|
-        if group.visible?
-            group.update clock,camera_pos
-        end
-      }
-
-      @last_camera_pos = [camera_pos[0],camera_pos[1]]
-    end
-
-
     def camera_moved?(camera_pos)
       if @last_camera_pos[0] != camera_pos[0] or @last_camera_pos[1] != camera_pos[1] then
         return true
@@ -50,7 +37,15 @@ module Game::Core
 
       #dont re-blit if the camera hasnt moved... blit_tiles is expensive
       if camera_moved?(camera_top_left) or changed == true then
-        blit_layers clock, camera_top_left
+          @background.fill([0,0,0])
+          @layers.each { |group|
+            if group.visible?
+                #TODO:Use vector
+                group.update clock,camera_top_left
+            end
+          }
+
+          @last_camera_pos = [camera_top_left[0],camera_top_left[1]]
       end
 
     end

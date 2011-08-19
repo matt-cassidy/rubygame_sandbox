@@ -1,49 +1,65 @@
 require "game/core/layer.rb"
 require "game/core/parallax_layer.rb"
+
+
 module Game::Core
 
   class LevelManager
 
-      def initialize()
-        puts "init - LevelLoader"
+
+      def initialize(view)
+        @view = view
       end
 
-      def create_layer (level_no,background)
+      def create_layer (level_no)
         puts "create #{level_no}"
         level_hash = eval File.open("./resource/level/#{level_no}").read
 
         level = Rubygame::Surface.load level_hash["level_image"]
 
+        level_objects = surface_to_objects level,level_hash
+
+        level_objects["entities"].each{ |e|
+          @view.add_entity e
+        }
+
+        return Game::Core::Layer.new level_objects["area"], level_hash["tiles"]["image"],level_hash["tiles"]["width"],level_hash["tiles"]["height"]
+      end
+
+
+     def surface_to_objects(surface,level_hash)
         area = Array.new
-        #colours_in_level = Hash.new
-        for y in (0..(level.height - 1))
+        entities = Array.new
+
+        for y in (0..(surface.height - 1))
           row = Array.new
-          for x in (0..(level.width - 1))
-            hex = rgb_to_hex(level.get_at [x,y])
-            row << level_hash["colour_def"][hex]
+          for x in (0..(surface.width - 1))
+            hex = rgb_to_hex(surface.get_at [x,y])
+            if level_hash["colour_def"][hex].nil? == false then
+              hex_def = level_hash["colour_def"][hex]
+              if hex_def.kind_of?(String) #is it an entity
+                map_x = x * level_hash["tiles"]["width"]
+                map_y = y * level_hash["tiles"]["height"]
+
+                if hex_def == "PLAYER_START"
+                  entities << player = create_entities(level_hash["player"],[map_x,  map_y])
+                  @view.camera.follow player
+                else
+                  entities << create_entities(hex_def,[map_x,  map_y])
+                end
+                row << nil  #TODO:somehow create a tile behind it
+              else #background
+                row << hex_def
+              end
+
+            else
+              Log.warn "HEX value for #{hex} not found setting to 0"
+              row << 0
+            end
           end
           area << row
         end
-
-        return Game::Core::Layer.new area, level_hash["tiles"]["image"],level_hash["tiles"]["width"],level_hash["tiles"]["height"]
-      end
-
-      def hex_to_rgb (hex)
-        red = hex[0..1]
-        green=  hex[2..3]
-        blue  = hex[4..5]
-        return [red.to_i(16),green.to_i(16),blue.to_i(16)]
-      end
-
-      def rgb_to_hex(colour)
-        #converts the color to the familiar HTML Hex format #FFFFFF
-        #ignoring alpha channel for now
-        return "%02x%02x%02x".upcase! % [colour[0],colour[1],colour[2]]
-      end
-
-      def surface_to_area(surface,object_hash)
-
-
+        return Hash["area" => area, "entities" => entities]
       end
 
       def area_to_surface(area,object_hash)
@@ -67,6 +83,7 @@ module Game::Core
             width = level[y].length
           end
         end
+
         surface = Rubygame::Surface.new [width,height]
 
         #retrieve the max width of the area
@@ -96,6 +113,27 @@ module Game::Core
         return surface
 
       end
+
+      def create_entities (entity_name,pos)
+          entity = Game::Entities.const_get(entity_name)
+          return entity.new @view,pos
+      end
+
+      def hex_to_rgb (hex)
+        red = hex[0..1]
+        green=  hex[2..3]
+        blue  = hex[4..5]
+        return [red.to_i(16),green.to_i(16),blue.to_i(16)]
+      end
+
+      def rgb_to_hex(colour)
+        #converts the color to the familiar HTML Hex format #FFFFFF
+        #ignoring alpha channel for now
+        return "%02x%02x%02x".upcase! % [colour[0],colour[1],colour[2]]
+      end
+
+
+
 
     end
 

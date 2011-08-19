@@ -3,10 +3,10 @@ module Game::Core
 
   class LayerGroup
 
-    attr_reader :collection
+    attr_reader :layers
 
     def initialize(layer_no,surface)
-      @collection = Hash.new
+      @layers = Hash.new
       @layer_no = layer_no
       @visible = true
       @surface = surface
@@ -14,13 +14,13 @@ module Game::Core
 
     def add_layer (layer)
       #sets up how many tiles fit the width and height
-      layer.setup_blit @surface
+      layer.setup_background @surface
 
-      @collection[layer.entity_id] = layer
+      @layers[layer.entity_id] = layer
     end
 
     def remove_layer(entity_id)
-       @collection.delete(entity_id)
+       @layers.delete(entity_id)
     end
 
     def visible?
@@ -29,6 +29,10 @@ module Game::Core
 
     def layer_no?
       return @layer_no
+    end
+
+    def layers_amount
+      return @layers.length
     end
 
     def flip
@@ -42,24 +46,24 @@ module Game::Core
 
     def show_all
       @visible = true
-      @collection.each { |id,e| show_layer id  }
+      @layers.each { |id,e| show_layer id  }
     end
 
     def show_layer(entity_id)
-      @collection[entity_id].visible = true
+      @layers[entity_id].visible = true
     end
 
     def hide_all
       @visible = false
-      @collection.each { |id,e| hide_layer id  }
+      @layers.each { |id,e| hide_layer id  }
     end
 
     def hide_layer(entity_id)
-      @collection[entity_id].visible = false
+      @layers[entity_id].visible = false
     end
 
     def update clock,camera_pos
-       @collection.each { |id,e|
+       @layers.each { |id,e|
          if e.visible == true
            e.update clock,camera_pos,@surface
          end

@@ -3,7 +3,6 @@ module Game::Core
 
   class Layer
 
-
     attr_reader :tile_width
     attr_reader :tile_height
     attr_reader :name
@@ -13,7 +12,7 @@ module Game::Core
     attr_accessor :visible
     attr_accessor :pos
 
-    def initialize (area,tiles,tile_width,tile_height)
+    def initialize (area,tiles,tile_width,tile_height,layer_no = 0)
       @name = tiles
       @entity_id = GOID.next
 
@@ -35,7 +34,7 @@ module Game::Core
          @area = [[0]]
        end
 
-      @layer_no = 0
+      @layer_no = layer_no
 
       @speed = [150,150]
 
@@ -52,20 +51,33 @@ module Game::Core
 
       @desired_tiles_amount_width = nil
       @desired_tiles_amount__height = nil
+
+      @repeat_x = true
+      @repeat_y = true
     end
 
-    def make_parallax (tiles_width_amount,tiles_height_amount,speed, pos = nil)
+    def setup_layer (tiles_width_amount,tiles_height_amount,speed, pos = nil)
+      if tiles_width_amount != nil
+         if tiles_width_amount == 1
+           @repeat_x = false
+         end
+       end
+
+       if tiles_height_amount != nil
+         if tiles_height_amount == 1
+           @repeat_y = false
+         end
+       end
+
        @desired_tiles_amount__width = tiles_width_amount
        @desired_tiles_amount__height = tiles_height_amount
        
        @speed = speed
-       @manual_set = true
-       if pos.nil? == false
-         @pos = pos
-       end
+
+       @pos = pos if pos.nil? == false
     end
 
-    def setup_blit(background)
+    def setup_background(background)
       temp_width_amount = amount_of_tiles @tile_width,background.width
       temp_height_amount = amount_of_tiles @tile_height, background.height
 
@@ -83,6 +95,7 @@ module Game::Core
 
     end
 
+
     def amount_of_tiles (increase_by,till)
       #calculates the amount of times a value
       a = 0 - increase_by/4
@@ -98,9 +111,12 @@ module Game::Core
     def update(clock,camera_pos,background)
       handle_displacement clock,camera_pos
 
+      if @repeat_x == true
+        @pos[0] = start_blit_pos @pos[0],@tile_width
+      end
 
-      @pos[0] = start_blit_pos @pos[0],@tile_width
-      if @manual_set.nil? == true
+
+      if @repeat_y == true
          @pos[1] = start_blit_pos @pos[1],@tile_height
       end
 
@@ -108,7 +124,6 @@ module Game::Core
 
       @last_camera = [camera_pos[0],camera_pos[1]]
     end
-
 
     def handle_displacement clock,camera_pos
       @displacement_x = 0
@@ -129,7 +144,6 @@ module Game::Core
       @pos[1] -= @displacement_y
 
     end
-
 
     def blit_layer(camera_pos,background)
       #Algorithmn at  http://www.cpp-home.com/tutorials/292_1.htm
@@ -184,12 +198,12 @@ module Game::Core
         #you swap them otherwise the map is flipped 90 degrees counter clockwise
         tile_no = @area[map_pos[1]][map_pos[0]]
       rescue
-        #puts "get_tile - rescued xy #{map_pos[1]},#{map_pos[0]}"
+        puts "get_tile - rescued xy #{map_pos[1]},#{map_pos[0]}"
         tile_no = 0
       end
 
       if tile_no.nil? then
-        #puts "get_tile - tile_no nill xy #{map_pos[1]},#{map_pos[0]}"
+        puts "get_tile - tile_no nill xy #{map_pos[1]},#{map_pos[0]}"
         return 0
       end
 

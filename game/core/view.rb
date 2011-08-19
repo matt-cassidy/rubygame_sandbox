@@ -20,6 +20,7 @@ module Game::Core
     attr_reader :surface
     attr_reader :size
     attr_reader :pos
+    attr_reader :level_manager
     
     def initialize(parent_view, pos=[0,0], size=[640,480])
       @parent = parent_view
@@ -44,6 +45,8 @@ module Game::Core
       @surface = Rubygame::Surface.new size
       @collision_tree = Game::Core::CollisionTree.make size, 5
       add_entity @camera.viewport
+
+      @level_manager = Game::Core::LevelManager.new self
       @loaded = true
       loading
     end
@@ -54,6 +57,7 @@ module Game::Core
     
     def update
       check_return_to_menu #hack
+      check_get_screen_shot
       @collision_tree.update
       updating
       @entities.each { |id,e| e.update }
@@ -181,6 +185,15 @@ module Game::Core
       end
     end
 
+    def check_get_screen_shot
+      if input.up? :print_screen
+        timestamp = Time.new.inspect.gsub(/[ \-\:]/,"_")
+        filename = "./resource/screenshots/#{timestamp}.png"
+        puts "screenshot taken at: #{timestamp} saved at #{filename} "
+
+        @surface.savebmp filename
+      end
+    end
   end
 
 end
