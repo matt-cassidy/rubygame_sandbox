@@ -22,9 +22,8 @@ module Game::Views
       add_entity @framerate_text
 
       layer = Game::Core::Layer.new "test","tiles",64,64
-      @world = Game::Core::WorldMap.new
-      @world.add_layer layer
-      
+      world.add_layer layer
+
       @input = Game::Core::PlayerInput    
       
       player = Game::Entities::Hero.new self, [320,240]
@@ -42,13 +41,13 @@ module Game::Views
       marker = Game::Entities::TextBox.new self, [300, 300], 14
       add_entity marker
       
-      @camera.follow player
+      camera.follow player
       
     end
     
     def updating
       @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
-      @world.update clock, @camera.pos
+      world.update clock, @camera.pos
     end
 
     def drawing
@@ -56,7 +55,7 @@ module Game::Views
       #retrieve the center point where the camera would be over on the map
 
 
-      @world.draw surface
+      world.draw surface
       
     end
     

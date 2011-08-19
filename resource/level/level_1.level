@@ -1,11 +1,11 @@
-{
-  0 =>  {
+[
+  {
         "name" => "background",
         "image" =>  "./resource/img/level_1.png",
         "properties" => {
                  "layer_no" => 0,
-                 "repeat_x" => 1,
-                 "repeat_y" => 1,
+                 "repeat_x" => true,
+                 "repeat_y" => true,
                  "pos" => [0,0],
                  "visible" => true
         },
@@ -23,7 +23,8 @@
                          "FFFFFF" => 5
         }
   },
-  1 =>  {
+
+  {
         "name" => "sprites",
         "image" =>  "./resource/img/level_1-sprites.png",
         "tiles" => {
@@ -36,5 +37,5 @@
         },
         "player" => "CameraTarget"
     }
-}
+]
 

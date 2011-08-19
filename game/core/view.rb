@@ -21,6 +21,7 @@ module Game::Core
     attr_reader :size
     attr_reader :pos
     attr_reader :level_manager
+    attr_reader :world
     
     def initialize(parent_view, pos=[0,0], size=[640,480])
       @parent = parent_view
@@ -34,6 +35,7 @@ module Game::Core
       @transparent = false
       @pos = pos
       @input = PlayerInput
+      @world = Game::Core::WorldMap.new size
     end
     
     def view_manager=(view_manager)
@@ -186,8 +188,8 @@ module Game::Core
     end
 
     def check_get_screen_shot
-      if input.up? :print_screen
-        timestamp = Time.new.inspect.gsub(/[ \-\:]/,"_")
+      if input.up?(:f2) && input.up?(:f2)
+        timestamp = Time.new.inspect.gsub(/[ \-:]/,"_")
         filename = "./resource/screenshots/#{timestamp}.png"
         puts "screenshot taken at: #{timestamp} saved at #{filename} "
 

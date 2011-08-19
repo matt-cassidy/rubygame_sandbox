@@ -1,5 +1,4 @@
 require "rubygame"
-require "game/core/layer.rb"
 require "game/core/layer_group.rb"
 
 module Game::Core
@@ -8,14 +7,14 @@ module Game::Core
     
     attr_reader :area
     
-    def initialize(screen_width = 640,screen_height = 480)
+    def initialize(size = [640,480])
+      @entity_id = GOID.next
       #where is the world camera at
       @last_camera_pos = [-1,-1]
 
-      @screen_width = screen_width
-      @screen_height = screen_height
+      @size = size
 
-      @background = Rubygame::Surface.new [@screen_width, @screen_height]
+      @background = Rubygame::Surface.new [@size[0], @size[1]]
 
       @layers = [Game::Core::LayerGroup.new(0,@background)]
 
@@ -31,7 +30,7 @@ module Game::Core
 
     def update(clock,camera_pos)
       #convert camera position to use top left instead of centre position
-      camera_top_left = [camera_pos[0] - (@screen_width / 2),camera_pos[1] - (@screen_height / 2)]
+      camera_top_left = [camera_pos[0] - (@size[0] / 2),camera_pos[1] - (@size[1] / 2)]
 
       changed = handle_layers
 
@@ -71,7 +70,6 @@ module Game::Core
 
     def add_layer(layer)
 
-
       inserted = false
       for layer_group in (@layers) do
           if layer_group.layer_no? == layer.layer_no then
@@ -91,5 +89,12 @@ module Game::Core
 
     end
 
+
+    def to_config_file
+      puts "making world config file"
+      filename = "./resource/level/level_#{@entity_id}.level"
+
+
+    end
    end
 end

@@ -4,12 +4,7 @@ module Game::Core
 
   class ParallaxLayer < Game::Core::Layer
 
-    def initialize (area,tiles,tile_width,tile_height,layer_no,properties = {})
-      super area,tiles,tile_width,tile_height,properties
-      @layer_no = 0
-    end
-
-    def blit_layer(camera_pos,background)
+   def blit_layer(camera_pos,background)
 
 
         #Create the Screen from left to right, top to bottom
@@ -33,7 +28,7 @@ module Game::Core
           x= 0
           y += 1
         end
-    end
+   end
 
 
   end

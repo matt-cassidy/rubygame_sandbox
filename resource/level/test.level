@@ -3,8 +3,8 @@
         "image" =>  "./resource/img/test.png",
         "properties" => {
                  "layer_no" => 0,
-                 "repeat_x" => 1,
-                 "repeat_y" => 1,
+                 "repeat_x" => true,
+                 "repeat_y" => true,
                  "pos" => [0,0],
                  "visible" => true
         },
@@ -34,6 +34,6 @@
                      "FF0000" => "PLAYER_START"
             },
             "player" => "Hero"
-        }
+    }
 }
 
