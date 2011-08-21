@@ -46,7 +46,7 @@ module Game::Views
       next_frame if @input.down? :right
       prev_frame if @input.down? :left
       prev_sheet if @input.down? :up
-      next_sheet if @input.down? :up
+      next_sheet if @input.down? :down
     end
     
     def update_surface

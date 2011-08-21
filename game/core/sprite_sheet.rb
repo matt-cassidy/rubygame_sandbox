@@ -46,7 +46,6 @@ module Game::Core
       
       if flip
         src_rect.x = (@image.w - (frame["x"] * scale)) - (src_rect.w)
-        puts  src_rect.x
         return @image_flip
       else
         src_rect.x = frame["x"] * scale

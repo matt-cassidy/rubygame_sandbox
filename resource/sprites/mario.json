@@ -1,0 +1,100 @@
+{
+
+"meta": 
+{
+"name": "mario",
+"image": "mario.png",
+"scale": 4
+},
+
+"frames": 
+{
+
+"0":
+{
+	"name": "stand.left",
+	"frame": {"x":0,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"1":
+{
+	"name": "stand.right",
+	"frame": {"x":0,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"2":
+{
+	"name": "walk.right.1",
+	"frame": {"x":16,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"3":
+{
+	"name": "walk.right.2",
+	"frame": {"x":32,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"4":
+{
+	"name": "walk.right.3",
+	"frame": {"x":48,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"5":
+{
+	"name": "walk.left.1",
+	"frame": {"x":16,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"6":
+{
+	"name": "walk.left.2",
+	"frame": {"x":32,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"7":
+{
+	"name": "walk.left.3",
+	"frame": {"x":48,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"8":
+{
+	"name": "slide.left",
+	"frame": {"x":64,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"9":
+{
+	"name": "slide.right",
+	"frame": {"x":64,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"10":
+{
+	"name": "jump.right",
+	"frame": {"x":80,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"11":
+{
+	"name": "jump.left",
+	"frame": {"x":80,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"12":
+{
+	"name": "duck.right",
+	"frame": {"x":96,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"13":
+{
+	"name": "duck.left",
+	"frame": {"x":96,"y":0,"w":16,"h":32},
+	"flip": true
+}
+
+}
+
+}
