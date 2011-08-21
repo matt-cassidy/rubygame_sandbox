@@ -36,7 +36,7 @@ module Game::Views
       planet2 = Game::Entities::Fox.new self, [2000,200]
       add_entity planet2
       
-      planet3 = Game::Entities::Fox.new self, [100,100], false
+      planet3 = Game::Entities::Fox.new self, [100,100]
       add_entity planet3
       
       marker = Game::Entities::TextBox.new self, [300, 300], 14

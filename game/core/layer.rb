@@ -96,7 +96,7 @@ module Game::Core
       @pos[0] = start_blit_pos @pos[0],@tile_width
       if @manual_set.nil? == true
          @pos[1] = start_blit_pos @pos[1],@tile_height
-         puts "name:#{@name} pos y #{@pos[1]}"
+         #puts "name:#{@name} pos y #{@pos[1]}"
       end
 
       blit_layer camera_pos,background

@@ -6,16 +6,14 @@ module Game::Entities
 
   class Fox < Entity
     
-    def initialize(view, pos, animate = true)
+    def initialize(view, pos)
       super view, pos
       load_script "fox"
       @angle = 2*Math::PI * rand
     end
     
     def updating
-      if @animate == true then
-        handle_movement
-      end
+      handle_movement
     end
    
     def handle_movement

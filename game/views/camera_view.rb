@@ -18,10 +18,10 @@ module Game::Views
       player = Game::Entities::CameraTarget.new self, [300,300]
       add_entity player
       
-      fox1 = Game::Entities::Fox.new self, [100,100], false
+      fox1 = Game::Entities::Fox.new self, [100,100]
       add_entity fox1
       
-      fox2 = Game::Entities::Fox.new self, [200,200], true
+      fox2 = Game::Entities::Fox.new self, [200,200]
       add_entity fox2
       
       marker = Game::Entities::TextBox.new self, [350,350], 10, false

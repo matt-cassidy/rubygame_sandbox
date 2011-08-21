@@ -1,17 +1,13 @@
 require "./game/core/player_input.rb"
 require "./game/core/entity.rb"
-require "./game/entities/text_box.rb"
 
 module Game::Entities
 
   class CameraTarget < Game::Core::Entity
     
-    MOVE_SPEED = 2
-    
     def initialize(view, pos)
       super view, pos
       @input = Game::Core::PlayerInput
-      @hitbox.make_visible
       @image = Rubygame::Surface.new [10,10]
       @image.fill :white
       @debugtxt = Game::Core::Font.new "pirulen", 10
@@ -19,11 +15,10 @@ module Game::Entities
   
     def updating
       handle_movement
-      @debugtxt.text = "x=#{pos[0]},y=#{pos[1]}"
+      @debugtxt.text = "x=#{pos.x},y=#{pos.y}"
     end
 
     def drawing
-      cblit @hitbox
       cblit @image
       blit @debugtxt, spos, [5,-5]
     end
@@ -35,7 +30,8 @@ module Game::Entities
       y -= MOVE_SPEED if @input.key_pressed?( :up ) # up is down in screen coordinates
       y += MOVE_SPEED if @input.key_pressed?( :down )
       if(x != 0 || y != 0)
-        shift [x, y]
+        @pos.x += x
+        @pos.y += y
       end
     end
 

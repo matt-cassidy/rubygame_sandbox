@@ -69,10 +69,6 @@ module Game::Core
       @pos.y = y
     end
     
-    def shift(vector)
-      @pos << vector
-    end
-    
     def cool_down_events
       @events.each { |e| e.cool_down @view.clock.seconds } 
       @events.delete_if {|e| e.is_finished}

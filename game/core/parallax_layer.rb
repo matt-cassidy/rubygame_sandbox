@@ -22,12 +22,12 @@ module Game::Core
             get_blit_rect tile_num,@rect_tile  #works
 
 
-            puts "name:#{@name} camera pos x #{camera_pos[0]} pos x #{@pos[0]} camera pos y #{camera_pos[1]} pos y #{@pos[1]} "
+            #puts "name:#{@name} camera pos x #{camera_pos[0]} pos x #{@pos[0]} camera pos y #{camera_pos[1]} pos y #{@pos[1]} "
             offset_x = ((x * @tile_width) +  @pos[0] ) # - (camera_pos[0] & @tile_width - 1)
             offset_y = ((y * @tile_height) + @pos[1] ) # - (camera_pos[1] & @tile_height - 1)
 
             @tiles.blit background,[offset_x,offset_y],@rect_tile #works
-            puts
+            #puts
             x += 1
           end
           x= 0
