@@ -1,6 +1,7 @@
 require "./game/core/goid.rb"
 require "./game/core/collision_hitbox.rb"
 require "./game/core/script_manager.rb"
+require "./game/core/vector2.rb"
 
 module Game::Core
 

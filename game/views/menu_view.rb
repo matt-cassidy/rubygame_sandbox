@@ -14,6 +14,7 @@ module Game::Views
       @menu.add_item "Tile System", method(:menu_game_logic_selected)
       @menu.add_item "Parallax System", method(:menu_parallax_logic_selected)
       @menu.add_item "Vectors", method(:menu_vectors_selected)
+      @menu.add_item "Pong!", method(:menu_pong_selected)
       @menu.add_item "Test Camera", method(:menu_test_camera_selected)
       @menu.add_item "Sprites", method(:menu_sprites_selected)
       @menu.add_item "Input", method(:menu_input_selected)
@@ -57,6 +58,11 @@ module Game::Views
     def menu_sprites_selected
       require "game/views/sprites_view.rb"
       show_view SpritesView.new parent
+    end
+    
+    def menu_pong_selected
+      require "game/views/pong_view.rb"
+      show_view PongView.new parent
     end
     
     def menu_exit_selected

@@ -246,7 +246,7 @@ module Game::Core
     end
     
     def subtract!(other)
-      Vector2.subtract self, other
+      Vector2.subtract! self, other
     end
     
     def -(other)
@@ -260,7 +260,7 @@ module Game::Core
     end
     
     def multiply!(num)
-      Vector2.multiply self, num
+      Vector2.multiply! self, num
     end
     
     def *(num)
@@ -350,6 +350,11 @@ module Game::Core
     
     def unit?
       Vector2.unit? self
+    end
+    
+    def to_zero!
+      self.x = 0
+      self.y = 0
     end
     
     #========================================================
