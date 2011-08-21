@@ -61,7 +61,7 @@ module Game::Entities
     
     def update_debug_messages
       air = "%0.2f" % @airtime
-      direction = "%0.2f" %  (@vel.direction - 360)
+      direction = "%0.2f" %  (360 - @vel.direction)
       speed = "%0.2f" %  @vel.length
       @debug1.text = "airtime   [#{air}]"
       @debug2.text = "position  #{@vpos.to_s_formated}"

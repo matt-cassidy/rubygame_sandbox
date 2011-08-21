@@ -29,7 +29,9 @@ module Game::Core
       PlayerInput.setup
       
       ScriptManager.load_scripts_from "./resource/actor"
-
+      
+      Game::Core::SpriteSheetManager.setup
+      
       Rubygame::TTF.setup
 
       resource_dir = "./../Resource"

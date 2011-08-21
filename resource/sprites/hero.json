@@ -4,8 +4,7 @@
 {
 "name": "hero",
 "image": "hero.png",
-"size": { "w":128, "h":128 },
-"scale": "1"
+"scale": 2
 },
 
 "frames": {
@@ -70,37 +69,37 @@
 	"frame": {"x":48,"y":144,"w":48,"h":72},
 	"flip": false
 },
-"8":
+"A":
 {
 	"name": "walk.down.3",
 	"frame": {"x":96,"y":144,"w":48,"h":72},
 	"flip": false
 },
-"A":
+"B":
 {
 	"name": "walk.down.4",
 	"frame": {"x":144,"y":144,"w":48,"h":72},
 	"flip": false
 },
-"B":
+"C":
 {
 	"name": "walk.left.1",
 	"frame": {"x":0,"y":216,"w":48,"h":72},
 	"flip": false
 },
-"C":
+"D":
 {
 	"name": "walk.left.2",
 	"frame": {"x":48,"y":216,"w":48,"h":72},
 	"flip": false
 },
-"D":
+"E":
 {
 	"name": "walk.left.3",
 	"frame": {"x":96,"y":216,"w":48,"h":72},
 	"flip": false
 },
-"E":
+"F":
 {
 	"name": "walk.left.4",
 	"frame": {"x":144,"y":216,"w":48,"h":72},
