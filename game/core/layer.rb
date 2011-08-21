@@ -140,8 +140,8 @@ module Game::Core
 
              #Use Bitwise AND to get finer offset
              #If you remove the -1 you get tile by tile moving as the offset is always 0,0
-             offset_x = (x * @tile_width) -  (camera_pos[0] & (@tile_width - 1) )
-             offset_y = (y * @tile_height) - (camera_pos[1] & (@tile_height - 1))
+             offset_x = (x * @tile_width) -  (camera_pos[0].to_i & (@tile_width - 1) )
+             offset_y = (y * @tile_height) - (camera_pos[1].to_i & (@tile_height - 1))
 
              tile_num = get_tile map_pos
              get_blit_rect tile_num,@rect_tile
