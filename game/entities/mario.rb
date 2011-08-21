@@ -1,4 +1,5 @@
 require "game/core/vector2"
+require "game/core/sprite"
 
 module Game::Entities
 
@@ -25,7 +26,7 @@ module Game::Entities
       super view, pos, [64,128]
       
       @actor = load_script "mario"
-      @animation = Game::Core::Animation.make @actor
+      @animation = Game::Core::Sprite.new @actor[:sprite]
       
       @controls = Game::Core::Font.new "pirulen", 10
       @controls.text = "Shift=Run, Space=Jump, Arrows=Move"
