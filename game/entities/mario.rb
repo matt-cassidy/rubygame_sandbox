@@ -274,7 +274,10 @@ module Game::Entities
           
       end
       
-      @animation.animate
+      
+      speed = (@vel.length / 5)
+      @animation.animate speed
+      
     end
 
     

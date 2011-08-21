@@ -10,8 +10,8 @@ def_actor mario:
 		{
 			stand_left: { frames: ["0"] },
 			stand_right: { frames: ["1"] },
-			walk_left: { frames: ["5","6","7"], time: [5,5,5] },
-			walk_right: { frames: ["2","3", "4"], time: [5,5,5] },
+			walk_left: { frames: ["5","6","7"], time: [8,8,8] },
+			walk_right: { frames: ["2","3", "4"], time: [8,8,8] },
 			slide_left: { frames: ["8"] },
 			slide_right: { frames: ["9"] },
 			jump_right: { frames: ["10"] },

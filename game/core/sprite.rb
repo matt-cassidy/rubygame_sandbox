@@ -25,9 +25,9 @@ module Game::Core
     
     def animate(speed=100)
       frame_time = current_frame_time
-      return if frame_time == nil
-      @frame_time_counter += 100
-      if @frame_time_counter >= frame_time * speed
+      return if frame_time == 0
+      @frame_time_counter += 1 * speed
+      if @frame_time_counter >= frame_time
         move_next_frame
         @frame_time_counter = 0
       end
