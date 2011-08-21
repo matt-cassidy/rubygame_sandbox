@@ -33,8 +33,8 @@ module Game::Core
 
 
     def update
-      x = pos[0] - @center[0]
-      y = pos[1] - @center[1]
+      x = pos.x - @center[0]
+      y = pos.y - @center[1]
       @offset = [x,y]
     end
     
@@ -42,15 +42,15 @@ module Game::Core
       return @center if entity == @viewport
 
       if @follow_x ==  true
-        x = entity.pos[0] - @offset[0]
+        x = entity.pos.x - @offset[0]
       else
-         x = entity.pos[0]
+         x = entity.pos.x
       end
 
       if @follow_y == true
-        y = entity.pos[1] - @offset[1]
+        y = entity.pos.y - @offset[1]
       else
-        y = entity.pos[1]
+        y = entity.pos.y
       end
 
 

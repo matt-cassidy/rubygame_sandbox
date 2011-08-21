@@ -7,7 +7,7 @@ module Game::Entities
     MOVE_SPEED = 5.0
     
     def initialize(view, pos)
-      super view, pos, [20,150]
+      super view, pos
       @image = Rubygame::Surface.new [20,150]
       @image.fill :white
       @hitbox.make_visible

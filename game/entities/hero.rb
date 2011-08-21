@@ -1,17 +1,17 @@
 require "./game/core/player_input.rb"
 require "./game/core/entity.rb"
-require "./game/core/animation.rb"
 
 module Game::Entities
 
   class Hero < Game::Core::Entity
     
     def initialize(view, pos)
-      @actor = load_script "hero"
-      super view, pos, @actor[:hitbox]
+      super view, pos
+      load_script "hero"
       @input = Game::Core::PlayerInput
-      @animation = Game::Core::Animation.make @actor
-      @hitbox.make_visible
+      @facing = :right
+      @acc = Game::Core::Vector2.zero
+      @vel = Game::Core::Vector2.zero
     end
     
     def updating
@@ -20,41 +20,58 @@ module Game::Entities
       handle_collisions
     end
 
-    def drawing
-      cblit @hitbox 
-      cblit @animation
-    end
-
     def handle_movement
+      @moving = false
       x, y = 0,0
-      x -= 5 if @input.key_pressed?( :left )
-      x += 5 if @input.key_pressed?( :right )
-      y -= 5 if @input.key_pressed?( :up ) # up is down in screen coordinates
-      y += 5 if @input.key_pressed?( :down )
+      if @input.key_pressed? :left
+        x -= 5
+        @facing = :left
+        @moving = true
+      end
+      if @input.key_pressed? :right
+        x += 5
+        @facing = :right
+        @moving = true
+      end
+      if @input.key_pressed? :up
+        y -= 5
+        @facing = :up
+        @moving = true
+      end 
+      if @input.key_pressed? :down
+        y += 5
+        @facing = :down
+        @moving = true
+      end   
       if(x != 0 || y != 0)
-        shift [x, y]
+        @pos.x += x
+        @pos.y += y
       end
     end
 
     def handle_animation
-      #this needs to be streamlined somehow... animations should be implicit via state
-      moving = false
-      if @input.key_pressed?( :down )
-        moving = true
-        @animation.change :walk_down
-      elsif @input.key_pressed?( :up )
-        moving = true
-        @animation.change :walk_up
-      elsif @input.key_pressed?( :right )
-        moving = true
-        @animation.change :walk_right
-      elsif @input.key_pressed?( :left )
-        moving = true
-        @animation.change :walk_left
+      if @moving 
+        if @facing == :down
+          change_animation :walk_down
+        elsif @facing == :up
+          change_animation :walk_up
+        elsif @facing == :right
+          change_animation :walk_right
+        elsif @facing == :left
+          change_animation :walk_left
+        end
+      else
+        if @facing == :down
+          change_animation :stand_down
+        elsif @facing == :up
+          change_animation :stand_up
+        elsif @facing == :right
+          change_animation :stand_right
+        elsif @facing == :left
+          change_animation :stand_left
+        end  
       end
-      if moving == true then
-        @animation.animate
-      end
+      
     end
     
     def handle_collisions

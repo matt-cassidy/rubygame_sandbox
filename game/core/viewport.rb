@@ -7,14 +7,15 @@ module Game::Core
     attr_reader :target
     
     def initialize(view, pos, size)
-      super view, pos, size
+      super view, pos
       @hitbox.disable_collision
     end
     
     def updating
       if following_target? then
         @target.update
-        move @target.pos
+        @pos.y = @target.pos.y
+        @pos.x = @target.pos.x
         @view.camera.update
       end
     end

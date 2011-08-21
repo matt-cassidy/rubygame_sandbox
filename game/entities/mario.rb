@@ -23,10 +23,9 @@ module Game::Entities
     KEY_RUN = :left_shift
     
     def initialize(view,pos)
-      super view, pos, [64,128]
+      super view, pos
       
-      @actor = load_script "mario"
-      @animation = Game::Core::Sprite.new @actor[:sprite]
+      load_script "mario"
       
       @controls = Game::Core::Font.new "pirulen", 10
       @controls.text = "Shift=Run, Space=Jump, Arrows=Move"
@@ -44,14 +43,14 @@ module Game::Entities
       
       @acc = Game::Core::Vector2.zero
       @vel = Game::Core::Vector2.zero
-      @vpos = Game::Core::Vector2.new pos[0], pos[1]
+      @pos = Game::Core::Vector2.new pos[0], pos[1]
       
       @airtime = 0.0
       @facing = 1
       @ducking = false
       @sliding = false
       
-      @animation.change :stand_right
+      change_animation :stand_right
     end
      
     def updating
@@ -65,7 +64,7 @@ module Game::Entities
       direction = "%0.2f" %  (360 - @vel.direction)
       speed = "%0.2f" %  @vel.length
       @debug1.text = "airtime   [#{air}]"
-      @debug2.text = "position  #{@vpos.to_s_formated}"
+      @debug2.text = "position  #{@pos.to_s_formated}"
       @debug3.text = "direction [#{direction}]"
       @debug4.text = "velocity  #{@vel}"
       @debug5.text = "accel  #{@acc}"
@@ -73,8 +72,7 @@ module Game::Entities
     end
     
     def drawing
-      cblit @hitbox
-      cblit @animation
+      
       blit @controls, [10,470]
       blit @debug1, [10,10]
       blit @debug2, [10,25]
@@ -97,11 +95,11 @@ module Game::Entities
     end
     
     def on_ground?
-      @vpos.y >= GROUND_Y
+      @pos.y >= GROUND_Y
     end
     
     def above_ground?
-      @vpos.y < GROUND_Y
+      @pos.y < GROUND_Y
     end
     
     def moving_right
@@ -209,11 +207,11 @@ module Game::Entities
       end
       
       
-      @vpos << @vel 
+      @pos << @vel 
       
       #touching ground logic   
       if on_ground?
-        @vpos.y = GROUND_Y
+        @pos.y = GROUND_Y
         @acc.y = ZERO
         @vel.y = ZERO
         @airtime = ZERO
@@ -221,7 +219,6 @@ module Game::Entities
         @airtime += seconds
       end
       
-      move @vpos.to_a
     end
     
     def handle_animation
@@ -229,55 +226,52 @@ module Game::Entities
       if moving_vert?
         
         if @facing == 1
-          @animation.change :jump_right
+          change_animation :jump_right
         elsif @facing == 2
-          @animation.change :jump_left
+          change_animation :jump_left
         end
       
       elsif @sliding
         
         if @facing == 1
-          @animation.change :slide_right
+          change_animation :slide_right
         elsif @facing == 2
-          @animation.change :slide_left
+          change_animation :slide_left
         else
-          @animation.change :slide_right
+          change_animation :slide_right
         end
       
       elsif moving_hort? and not @ducking
         
         if @facing == 1
-          @animation.change :walk_right
+          change_animation :walk_right
         elsif @facing == 2
-          @animation.change :walk_left
+          change_animation :walk_left
         else
-          @animation.change :walk_right
+          change_animation :walk_right
         end
       
       elsif @ducking and not moving_vert?
         
         if @facing == 1
-          @animation.change :duck_right
+          change_animation :duck_right
         elsif @facing == 2
-          @animation.change :duck_left
+          change_animation :duck_left
         else
-          @animation.change :duck_right
+          change_animation :duck_right
         end
         
       else
         
         if @facing == 1
-          @animation.change :stand_right
+          change_animation :stand_right
         else
-          @animation.change :stand_left
+          change_animation :stand_left
         end
           
       end
       
-      
-      speed = (@vel.length / 5)
-      @animation.animate speed
-      
+      @animation_speed = (@vel.length / 5)
     end
 
     

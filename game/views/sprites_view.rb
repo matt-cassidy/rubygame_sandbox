@@ -13,7 +13,6 @@ module Game::Views
       @sheet_info1 = Game::Core::Font.new "inconsolata", 20
       @sheet_info2 = Game::Core::Font.new "inconsolata", 20
       @frame_info1 = Game::Core::Font.new "inconsolata", 20
-      @frame_info2 = Game::Core::Font.new "inconsolata", 20
       @frame_info3 = Game::Core::Font.new "inconsolata", 20
       @frame_info4 = Game::Core::Font.new "inconsolata", 20
       @controls = Game::Core::Font.new "inconsolata", 16
@@ -36,9 +35,8 @@ module Game::Views
       @surf.blit surface, [280, 240], @rect
       @sheet_info1.blit surface, [10,10]
       @frame_info1.blit surface, [30,40]
-      @frame_info2.blit surface, [30,60]
-      @frame_info3.blit surface, [30,80]
-      @frame_info4.blit surface, [30,100]
+      @frame_info3.blit surface, [30,60]
+      @frame_info4.blit surface, [30,80]
       @controls.blit surface, [10,450]
     end
     
@@ -59,7 +57,6 @@ module Game::Views
       @frame = @sheet.frames[@frames[@findex]]
       @sheet_info1.text = "#{@sheet.name}    ( #{@sheet.image} )"
       @frame_info1.text = "ID:    #{@frames[@findex]}"
-      @frame_info2.text = "NAME:  #{@frame["name"]}"
       @frame_info3.text = "FRAME: #{@frame["frame"]}"
       @frame_info4.text = "FLIP:  #{@frame["flip"]}"
     end

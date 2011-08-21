@@ -9,12 +9,14 @@ module Game::Core
     attr_reader :current_animation
     attr_reader :frame_time_counter
     attr_reader :rect
+    attr_reader :loaded
     
-    def initialize(sprite_info)
-      @sprite_info = sprite_info
+    def load(script)
+      @sprite_info = script[:sprite]
       @frame_time_counter = 0
       @rect = Rubygame::Rect.new 0,0,1,1
       change sprite_info[:animations].keys[0]
+      @loaded = true
     end
     
     def change(animation_name)
@@ -23,9 +25,10 @@ module Game::Core
       @frame_index = 0
     end
     
-    def animate(speed=100)
+    def animate(speed=1)
+      return if @current_animation_name.nil?
+      return if num_of_frames == 1
       frame_time = current_frame_time
-      return if frame_time == 0
       @frame_time_counter += 1 * speed
       if @frame_time_counter >= frame_time
         move_next_frame
@@ -58,8 +61,12 @@ module Game::Core
       current_animation[:frames][@frame_index]  
     end
     
+    def num_of_frames
+      current_animation[:frames].size
+    end
+    
     def current_frame_time
-      return 0 if not current_animation.has_key? :time
+      return 5 if not current_animation.has_key? :time
       current_animation[:time][@frame_index]
     end
     

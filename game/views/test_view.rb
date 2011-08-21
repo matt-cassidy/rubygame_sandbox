@@ -48,7 +48,7 @@ module Game::Views
     
     def updating
       @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
-      @world.update clock, @camera.pos
+      @world.update clock, @camera.pos.to_a
     end
 
     def drawing

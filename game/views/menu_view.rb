@@ -16,10 +16,10 @@ module Game::Views
       @menu.add_item "Vectors", method(:menu_vectors_selected)
       @menu.add_item "Test Camera", method(:menu_test_camera_selected)
       @menu.add_item "Sprites", method(:menu_sprites_selected)
-      @menu.add_item "Collision Detection", method(:menu_collision_selected)
       @menu.add_item "Input", method(:menu_input_selected)
       @menu.add_item "View Management", method(:menu_view_mgmt_selected)
       @menu.add_item "Exit", method(:menu_exit_selected)
+      
       @menu.select_by_index 0
       add_entity @menu
     end
@@ -48,11 +48,6 @@ module Game::Views
       require "game/views/camera_view.rb"
       show_view CameraView.new parent
     end
-    
-    def menu_collision_selected
-      require "game/views/hitbox_view.rb"
-      show_view HitboxView.new parent
-    end  
     
     def menu_vectors_selected
       require "game/views/vectors_view.rb"

@@ -1,23 +1,71 @@
 def_actor mario: 
 {
-	hitbox: [16,32],
-
 	sprite: 
 	{
 		sheet: "mario",
+		
 		size: [64,128],
+		
 		animations:
 		{
-			stand_left: { frames: ["0"] },
-			stand_right: { frames: ["1"] },
-			walk_left: { frames: ["5","6","7"], time: [8,8,8] },
-			walk_right: { frames: ["2","3", "4"], time: [8,8,8] },
-			slide_left: { frames: ["8"] },
-			slide_right: { frames: ["9"] },
-			jump_right: { frames: ["10"] },
-			jump_left: { frames: ["11"] },
-			duck_right: { frames: ["12"] },
-			duck_left: { frames: ["13"] },
+			stand_left: 
+			{ 
+				frames: ["stand.left"], 
+				hitbox: :stand, 
+			},
+			stand_right: 
+			{ 
+				frames: ["stand.right"], 
+				hitbox: :stand, 
+			},
+			walk_left: 
+			{ 
+				frames: ["walk.left.1","walk.left.2","walk.left.3"], 
+				time: [8,5,8], 
+				hitbox: :stand,
+			},
+			walk_right: 
+			{ 
+				frames: ["walk.right.1","walk.right.2","walk.right.3"], 
+				time: [8,5,8],
+				hitbox: :stand 
+			},
+			slide_left: 
+			{ 
+				frames: ["slide.left"], 
+				hitbox: :stand 
+			},
+			slide_right: 
+			{ 
+				frames: ["slide.right"], 
+				hitbox: :stand 
+			},
+			jump_right: 
+			{ 
+				frames: ["jump.right"], 
+				hitbox: :stand 
+			},
+			jump_left: 
+			{ 
+				frames: ["jump.left"], 
+				hitbox: :stand,
+			},
+			duck_right: 
+			{ 
+				frames: ["duck.right"], 
+				hitbox: :duck,
+			},
+			duck_left: 
+			{ 
+				frames: ["duck.left"], 
+				hitbox: :duck,
+			},
+		},
+		
+		hitbox:
+		{
+			stand: [64,128],
+			duck: [64,64],
 		}
     
   	}

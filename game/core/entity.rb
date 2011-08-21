@@ -12,20 +12,21 @@ module Game::Core
     attr_reader :events
     attr_reader :pos
     attr_reader :spos
-    attr_reader :size
     attr_reader :entity_id
     attr_reader :hitbox
+    attr_reader :animation_speed
     
-    def initialize(view, pos, size)
+    def initialize(view, pos)
       @view = view
-      @pos = pos
-      @size = size
+      @pos = Game::Core::Vector2.new pos[0],pos[1]
       @entity_id = GOID.next
       @events = []
-      @hitbox = CollisionHitbox.new pos, size
+      @sprite = Sprite.new
+      @hitbox = CollisionHitbox.new
       @updated = false
       @visible = true
       @spos =  [0,0]
+      @animation_speed = 1
     end
     
     def updating
@@ -43,10 +44,15 @@ module Game::Core
       @spos =  @view.camera.get_screen_pos self
       @hitbox.update @spos
       @updated = true
+      @sprite.animate @animation_speed
     end
     
     def draw
-      drawing if @visible == true
+      if @visible
+        cblit @hitbox
+        cblit @sprite if @sprite.loaded
+        drawing
+      end
       @updated = false
     end
     
@@ -58,14 +64,13 @@ module Game::Core
       surf.blit surface, [xy[0] + offset[0], xy[1] + offset[1]]
     end
     
-    def move(pos)
-      @pos = pos
+    def move(x,y)
+      @pos.x = x
+      @pos.y = y
     end
     
-    def shift(pos)
-      x = @pos[0] + pos[0]
-      y = @pos[1] + pos[1]
-      move [x,y]
+    def shift(vector)
+      @pos << vector
     end
     
     def cool_down_events
@@ -82,10 +87,14 @@ module Game::Core
       if script.nil? then 
         Log.error "Script '#{script_name}' does not exist"
       end
-      return script
+      @sprite.load script
+      @hitbox.load script
     end
 
-
+    def change_animation(name)
+      @sprite.change name
+    end
+    
   end
 
 end

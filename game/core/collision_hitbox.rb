@@ -8,13 +8,19 @@ module Game::Core
     attr_reader :rect
     attr_reader :regions
     
-    def initialize(pos, size)
-      @rect = nil
+    def initialize
+      @rect = Rubygame::Rect.new(0,0, 0, 0)
       @colliding_with = []
       @collidable = true
-      @rect = Rubygame::Rect.new(pos[0], pos[1], size[0], size[1])
       @regions = Hash.new
       @region_collisions = []
+    end
+    
+    def load(script)
+      hitbox_script = script[:sprite][:hitbox]
+      size = hitbox_script.values[0]
+      @rect.w = size[0]
+      @rect.h = size[1]  
     end
     
     def w
