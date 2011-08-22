@@ -8,7 +8,6 @@ module Game::Core
     
     def initialize(view, pos, size)
       super view, pos
-      @hitbox.disable_collision
     end
     
     def updating

@@ -30,7 +30,8 @@ module Game::Entities
       @input = Game::Core::PlayerInput
     end
     
-    def updating
+    def update
+      super
       @timer.cool_down @view.clock.seconds
       if(@input.down?( :return )) 
         trigger
@@ -79,7 +80,8 @@ module Game::Entities
       @timer.wait_for MENU_TRIGGER_SPEED
     end
     
-    def drawing
+    def draw
+      super
       @items.each do |item| 
         index = @items.index item
         y = index * @item_size[1] + pos.y

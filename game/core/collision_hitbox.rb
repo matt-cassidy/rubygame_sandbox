@@ -7,6 +7,8 @@ module Game::Core
     attr_reader :collidable
     attr_reader :rect
     attr_reader :regions
+    attr_reader :sizes
+    attr_reader :current_size
     
     def initialize
       @rect = Rubygame::Rect.new(0,0, 0, 0)
@@ -17,10 +19,16 @@ module Game::Core
     end
     
     def load(script)
-      hitbox_script = script[:sprite][:hitbox]
-      size = hitbox_script.values[0]
-      @rect.w = size[0]
-      @rect.h = size[1]  
+      @sizes = script[:sprite][:hitbox]
+      change_size @sizes.keys[0]
+    end
+    
+    def change_size(key)
+      return if key.to_s == @current_size 
+      @rect.w = @sizes[key][0]
+      @rect.h = @sizes[key][1]
+      @current_size = key.to_s
+      make_visible
     end
     
     def w

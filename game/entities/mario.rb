@@ -3,7 +3,7 @@ require "game/core/sprite"
 
 module Game::Entities
 
-  class Mario < Game::Core::Entity
+  class Mario < Game::Core::Sprite
     
     ZERO = 0.0
     GROUND_Y = 400
@@ -37,7 +37,7 @@ module Game::Entities
       @debug5 = Game::Core::Font.new "pirulen", 10
       @debug6 = Game::Core::Font.new "pirulen", 10
       
-      #@hitbox.make_visible
+      @hitbox.make_visible
       
       @input = Game::Core::PlayerInput
       
@@ -53,7 +53,8 @@ module Game::Entities
       change_animation :stand_right
     end
      
-    def updating
+    def update
+      super
       handle_movement
       handle_animation
       update_debug_messages
@@ -71,7 +72,8 @@ module Game::Entities
       @debug6.text = "speed [#{speed} px/s]"
     end
     
-    def drawing
+    def draw
+      super
       
       blit @controls, [10,470]
       blit @debug1, [10,10]
