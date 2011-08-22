@@ -1,4 +1,4 @@
-require "game/entities/fox"
+require "game/entities/rotator"
 
 module Game::Views
 
@@ -11,11 +11,11 @@ module Game::Views
     def loading
       enable_transparency
       
-      fox1 = Game::Entities::Fox.new self, [200, 200]
-      add_entity fox1
+      rotator1 = Game::Entities::Rotator.new self, [200, 200]
+      add_entity rotator1
       
-      fox2 = Game::Entities::Fox.new self, [400, 400]
-      add_entity fox2
+      rotator2 = Game::Entities::Rotator.new self, [400, 400]
+      add_entity rotator2
       
     end
     

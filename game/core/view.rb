@@ -52,6 +52,14 @@ module Game::Core
       #implement in sub class
     end
     
+    def updating
+      #implement in sub class
+    end
+    
+    def drawing
+      #implement in sub class
+    end    
+    
     def update
       check_return_to_menu #hack
       @collision_tree.update
@@ -62,14 +70,6 @@ module Game::Core
       end  
     end
     
-    def updating
-      #implement in sub class
-    end
-    
-    def drawing
-      #implement in sub class
-    end    
-
     def draw
       drawing
       @entities.each { |id,e| e.draw }

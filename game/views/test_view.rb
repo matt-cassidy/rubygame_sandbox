@@ -6,7 +6,7 @@ require "game/core/layer.rb"
 require "game/core/world_map.rb"
 require "game/core/log.rb"
 require "game/entities/hero.rb"
-require "game/entities/fox.rb"
+require "game/entities/rotator.rb"
 
 module Game::Views
 
@@ -30,14 +30,14 @@ module Game::Views
       player = Game::Entities::Hero.new self, [320,240]
       add_entity player
       
-      planet1 = Game::Entities::Fox.new self, [100,100]
-      add_entity planet1
+      r1 = Game::Entities::Rotator.new self, [100,100]
+      add_entity r1
       
-      planet2 = Game::Entities::Fox.new self, [2000,200]
-      add_entity planet2
+      r2 = Game::Entities::Rotator.new self, [2000,200]
+      add_entity r2
       
-      planet3 = Game::Entities::Fox.new self, [100,100]
-      add_entity planet3
+      r3 = Game::Entities::Rotator.new self, [100,100]
+      add_entity r3
       
       marker = Game::Entities::TextBox.new self, [300, 300], 14
       add_entity marker

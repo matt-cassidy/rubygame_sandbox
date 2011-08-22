@@ -4,11 +4,11 @@ include Game::Core
 
 module Game::Entities
 
-  class Fox < Game::Core::Sprite
+  class Rotator < Game::Core::Sprite
     
     def initialize(view, pos)
       super view, pos
-      load_script "fox"
+      load_script "rotator"
       @angle = 2*Math::PI * rand
     end
     

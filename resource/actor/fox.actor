@@ -1,4 +1,4 @@
-def_actor fox: 
+def_actor rotator: 
 {
 	sprite: 
 	{
