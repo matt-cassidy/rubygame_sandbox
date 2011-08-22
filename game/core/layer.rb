@@ -1,10 +1,8 @@
-require "game/core/hex_rgb.rb"
-
-include Game::Core::Hex_Convert
 
 module Game::Core
 
   class Layer
+
 
     attr_reader :tile_width
     attr_reader :tile_height
@@ -13,6 +11,7 @@ module Game::Core
     attr_reader :layer_no
     attr_reader :pos
 
+    attr_accessor :layer_no
     attr_accessor :visible
     attr_accessor :config
 
@@ -53,10 +52,9 @@ module Game::Core
       @screen_tiles_width = 0
 
       @config = nil
-
     end
 
-    def setup_background(background)
+   def setup_background(background)
 
       if @repeat_x == true
         @screen_tiles_width = amount_of_tiles_needed @tile_width,background.width
@@ -95,6 +93,7 @@ module Game::Core
 
       if @repeat_y == true
          @pos[1] = start_blit_pos @pos[1],@tile_height
+         #puts "name:#{@name} pos y #{@pos[1]}"
       end
 
       blit_layer camera_pos,background
@@ -136,8 +135,8 @@ module Game::Core
 
              #Use Bitwise AND to get finer offset
              #If you remove the -1 you get tile by tile moving as the offset is always 0,0
-             offset_x = (x * @tile_width) -  (camera_pos[0].to_int & (@tile_width - 1) )
-             offset_y = (y * @tile_height) - (camera_pos[1].to_int & (@tile_height - 1))
+             offset_x = (x * @tile_width) -  (camera_pos[0].to_i & (@tile_width - 1) )
+             offset_y = (y * @tile_height) - (camera_pos[1].to_i & (@tile_height - 1))
 
              tile_num = get_tile map_pos
              get_blit_rect tile_num,@rect_tile
@@ -173,8 +172,7 @@ module Game::Core
 
        begin
         #you swap them otherwise the map is flipped 90 degrees counter clockwise
-
-         tile_no = @area[map_pos[1]][map_pos[0]]
+        tile_no = @area[map_pos[1]][map_pos[0]]
       rescue
         puts "get_tile - rescued xy #{map_pos[1]},#{map_pos[0]}"
         tile_no = 0

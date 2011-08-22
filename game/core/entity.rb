@@ -1,71 +1,49 @@
 require "./game/core/goid.rb"
-require "./game/core/collision_hitbox.rb"
-require "./game/core/script_manager.rb"
+require "./game/core/vector2.rb"
 
 module Game::Core
 
   class Entity
-    attr_accessor:visible
-
+    
+    attr_reader :id
     attr_reader :view
-    attr_reader :updated
     attr_reader :events
     attr_reader :pos
     attr_reader :spos
-    attr_reader :size
-    attr_reader :entity_id
-    attr_reader :hitbox
     
-    def initialize(view, pos, size)
+    def initialize(view, pos)
+      @id = GOID.next
       @view = view
-      @pos = pos
-      @size = size
-      @entity_id = GOID.next
+      @pos = Game::Core::Vector2.new pos[0],pos[1]
+      @spos = Game::Core::Vector2.zero
       @events = []
-      @hitbox = CollisionHitbox.new pos, size
-      @updated = false
-      @visible = true
-      @spos =  [0,0]
-    end
-    
-    def updating
-      #implement in sub class  
-    end
-    
-    def drawing
-      #implement in sub class
     end
     
     def update
-      return if @updated == true
       cool_down_events
-      updating
-      @spos =  @view.camera.get_screen_pos self
-      @hitbox.update @spos
-      @updated = true
+    end
+    
+    def adjust
+      xy =  @view.camera.get_screen_pos self
+      @spos.x = xy[0]
+      @spos.y = xy[1]
     end
     
     def draw
-      drawing if @visible == true
-      @updated = false
+      #implement in sub class
     end
     
     def cblit(surf)#center blit
-      surf.blit surface, [spos[0]-surf.w/2, spos[1]-surf.h/2]
+      surf.blit surface, [spos.x - surf.w/2, spos.y - surf.h/2]
     end
     
-    def blit(surf, xy=spos, offset=[0,0])
+    def blit(surf, xy=spos.to_a, offset=[0,0])
       surf.blit surface, [xy[0] + offset[0], xy[1] + offset[1]]
     end
     
-    def move(pos)
-      @pos = pos
-    end
-    
-    def shift(pos)
-      x = @pos[0] + pos[0]
-      y = @pos[1] + pos[1]
-      move [x,y]
+    def move(x,y)
+      @pos.x = x
+      @pos.y = y
     end
     
     def cool_down_events
@@ -77,15 +55,6 @@ module Game::Core
       return @view.surface
     end
     
-    def load_script(script_name)
-      script = ScriptManager.actors[script_name]
-      if script.nil? then 
-        Log.error "Script '#{script_name}' does not exist"
-      end
-      return script
-    end
-
-
   end
 
 end

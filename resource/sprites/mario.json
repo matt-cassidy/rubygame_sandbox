@@ -1,0 +1,86 @@
+{
+
+"meta": 
+{
+"name": "mario",
+"image": "mario.png",
+"scale": 4
+},
+
+"frames": 
+{
+
+"stand.left":
+{
+	"frame": {"x":0,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"stand.right":
+{
+	"frame": {"x":0,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"walk.right.2":
+{
+	"frame": {"x":16,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"walk.right.1":
+{
+	"frame": {"x":32,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"walk.right.3":
+{
+	"frame": {"x":48,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"walk.left.2":
+{
+	"frame": {"x":16,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"walk.left.1":
+{
+	"frame": {"x":32,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"walk.left.3":
+{
+	"frame": {"x":48,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"slide.left":
+{
+	"frame": {"x":64,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"slide.right":
+{
+	"frame": {"x":64,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"jump.right":
+{
+	"frame": {"x":80,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"jump.left":
+{
+	"frame": {"x":80,"y":0,"w":16,"h":32},
+	"flip": true
+},
+"duck.right":
+{
+	"frame": {"x":96,"y":0,"w":16,"h":32},
+	"flip": false
+},
+"duck.left":
+{
+	"frame": {"x":96,"y":0,"w":16,"h":32},
+	"flip": true
+}
+
+}
+
+}

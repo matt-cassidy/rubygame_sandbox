@@ -1,17 +1,58 @@
 def_actor hero: 
 {
-	hitbox: [38,55],
-
 	sprite: 
 	{
-		path: "./resource/img/pic_walk.png",
+		sheet: "hero",
+		
 		size: [48,72],
+		
 		animations:
 		{
-    		walk_up: { index: 1, frames: 4, time: [5, 10, 5, 10] },
-    		walk_right: { index: 2, frames: 4, time: [5, 10, 5, 10] },
-    		walk_down: { index: 3, frames: 4, time: [5, 10, 5, 10] },
-    		walk_left: { index: 4, frames: 4, time: [5, 10, 5, 10] },
+			stand_up: 
+			{ 
+				frames: ["walk.up.1"], 
+				hitbox: :default, 
+			},
+			stand_left: 
+			{ 
+				frames: ["walk.left.1"], 
+				hitbox: :default, 
+			},
+			stand_right: 
+			{ 
+				frames: ["walk.right.1"], 
+				hitbox: :default, 
+			},
+			stand_down: 
+			{ 
+				frames: ["walk.down.1"], 
+				hitbox: :default, 
+			},
+			walk_up: 
+			{ 
+				frames: ["walk.up.1","walk.up.2","walk.up.3","walk.up.4"], 
+				hitbox: :default, 
+			},
+			walk_right: 
+			{ 
+				frames: ["walk.right.1","walk.right.2","walk.right.3","walk.right.4"],
+				hitbox: :default, 
+			},
+			walk_left: 
+			{ 
+				frames: ["walk.left.1","walk.left.2","walk.left.3","walk.left.4"], 
+				hitbox: :default, 
+			},
+			walk_down: 
+			{ 
+				frames: ["walk.down.1","walk.down.2","walk.down.3","walk.down.4"],
+				hitbox: :default, 
+			},
+		},
+		
+		hitbox:
+		{
+			default: [38,55],
 		}
     
   	}

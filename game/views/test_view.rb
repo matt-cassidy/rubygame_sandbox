@@ -6,7 +6,7 @@ require "game/core/layer.rb"
 require "game/core/world_map.rb"
 require "game/core/log.rb"
 require "game/entities/hero.rb"
-require "game/entities/fox.rb"
+require "game/entities/rotator.rb"
 
 module Game::Views
 
@@ -29,25 +29,25 @@ module Game::Views
       player = Game::Entities::Hero.new self, [320,240]
       add_entity player
       
-      planet1 = Game::Entities::Fox.new self, [100,100]
-      add_entity planet1
+      r1 = Game::Entities::Rotator.new self, [100,100]
+      add_entity r1
       
-      planet2 = Game::Entities::Fox.new self, [2000,200]
-      add_entity planet2
+      r2 = Game::Entities::Rotator.new self, [2000,200]
+      add_entity r2
       
-      planet3 = Game::Entities::Fox.new self, [100,100], false
-      add_entity planet3
+      r3 = Game::Entities::Rotator.new self, [100,100]
+      add_entity r3
       
       marker = Game::Entities::TextBox.new self, [300, 300], 14
       add_entity marker
       
-      camera.follow player
-
+      @camera.follow player
+      
     end
     
     def updating
       @framerate_text.text = "frame rate: #{clock.framerate.to_int}"
-      world.update clock, @camera.pos
+      @world.update clock, @camera.pos.to_a
     end
 
     def drawing
@@ -55,7 +55,7 @@ module Game::Views
       #retrieve the center point where the camera would be over on the map
 
 
-      world.draw surface
+      @world.draw surface
       
     end
     

@@ -15,23 +15,20 @@ module Game::Views
 
       Game::Core::EntityManager.setup
 
-      player = Game::Entities::CameraTarget.new self, [300,300]
-      add_entity player
-      camera.follow player
 
       @framerate_text = Game::Entities::TextBox.new self, [10, 450], 14
       add_entity @framerate_text
 
       #convert_area_to_surface = level_manager.area_to_surface "test.area","test.level"
-      layers = level_manager.create_level "level_1.level"
+      layers = @level_manager.create_level "level_1.level"
       layers.each{|layer|
-        world.add_layer layer
+        @world.add_layer layer
       }
     end
 
     def updating
       @framerate_text.text = "Parallax frame rate: #{clock.framerate.to_int}"
-      world.update clock, camera.pos
+      @world.update clock, @camera.pos.to_a
     end
 
     def drawing

@@ -1,5 +1,0 @@
-def_actor paddle: 
-{
-  hitbox: [32,32],
-
-} 

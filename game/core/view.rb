@@ -59,7 +59,6 @@ module Game::Core
     
     def update
       check_return_to_menu #hack
-      check_get_screen_shot
       @collision_tree.update
       updating
       @entities.each { |id,e| e.update }
@@ -72,7 +71,18 @@ module Game::Core
     def drawing
       #implement in sub class
     end    
-
+    
+    def update
+      check_return_to_menu #hack
+      check_get_screen_shot
+      @collision_tree.update
+      updating
+      @entities.each do |id,e| 
+        e.update if e != @camera.viewport.target
+        e.adjust
+      end  
+    end
+    
     def draw
       drawing
       @entities.each { |id,e| e.draw }
@@ -144,8 +154,8 @@ module Game::Core
     end
     
     def add_entity(entity)
-      @collision_tree.objects << entity
-      @entities[entity.entity_id] = entity
+      @collision_tree.objects << entity if entity.is_a? Sprite
+      @entities[entity.id] = entity
     end
     
     def remove_entity(entity_id)

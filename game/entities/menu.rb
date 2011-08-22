@@ -17,7 +17,7 @@ module Game::Entities
     attr_reader :disabled
     
     def initialize(view, pos, menu_size, item_height, font_color, font_size)
-      super view, pos, menu_size
+      super view, pos
       @timer = Game::Core::Timer.new
       @font_color = font_color
       @font_size = font_size
@@ -30,7 +30,8 @@ module Game::Entities
       @input = Game::Core::PlayerInput
     end
     
-    def updating
+    def update
+      super
       @timer.cool_down @view.clock.seconds
       if(@input.down?( :return )) 
         trigger
@@ -79,11 +80,12 @@ module Game::Entities
       @timer.wait_for MENU_TRIGGER_SPEED
     end
     
-    def drawing
+    def draw
+      super
       @items.each do |item| 
         index = @items.index item
-        y = index * @item_size[1] + pos[1]
-        blit item, [pos[0], y]
+        y = index * @item_size[1] + pos.y
+        blit item, [pos.x, y]
       end
     end
     

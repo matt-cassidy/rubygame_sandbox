@@ -26,7 +26,7 @@ module Game::Views
 
       #adding layers to map
 
-      layer0 = Game::Core::ParallaxLayer.new "test","tiles",64,64
+      layer0 = Game::Core::ParallaxLayer.new "test","./resource/img/tiles.png",64,64
       #@world.add_layer layer0
 
       layer1 = Game::Core::ParallaxLayer.new nil,"./resource/img/parallax_1.png",800,200,{"repeat_y"=> false,"pos" => [0,0],"speed" => [10,0],"layer_no" => 0}
@@ -49,7 +49,7 @@ module Game::Views
 
     def updating
        @framerate_text.text = "Parallax frame rate: #{clock.framerate.to_int}"
-       @world.update clock, @camera.pos
+       @world.update clock, @camera.pos.to_a
     end
 
     def drawing

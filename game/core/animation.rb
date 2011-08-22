@@ -1,72 +1,90 @@
-require "rubygame"
-require "./game/core/animation_reel.rb"
-
 module Game::Core
-
+  
   class Animation
     
-    attr_reader :sprite_sheet
-    attr_reader :reels
-    attr_reader :current_reel
-    attr_reader :sprite
-    attr_reader :sprite_rect
+    attr_reader :sprite_info
+    attr_reader :frame_index
+    attr_reader :current_animation
     attr_reader :frame_time_counter
+    attr_reader :rect
+    attr_reader :loaded
     
-    def self.make(actor)
-      animation = Animation.new actor[:sprite][:path], 
-                                actor[:sprite][:size],
-                                actor[:sprite][:animations]
-      return animation
-    end
-    
-    def initialize(sprite_path, sprite_size, animations)
-      create_reels animations, sprite_size
+    def load(script)
+      @sprite_info = script[:sprite]
       @frame_time_counter = 0
-      @sprite_sheet = Rubygame::Surface.load(sprite_path)
-      @sprite = Rubygame::Surface.new(sprite_size)
-      @sprite_rect = Rubygame::Rect.new(@current_reel.position, sprite_size)
-      @sprite_rect.center = @current_reel.position
+      @rect = Rubygame::Rect.new 0,0,1,1
+      change sprite_info[:animations].keys[0]
+      @loaded = true
     end
     
-    def create_reels(animations, sprite_size)
-      @reels = Hash.new
-      animations.each do |name,anim|
-        reel = AnimationReel.new name, sprite_size, anim[:frames], anim[:index], anim[:time]
-        @reels[name] = reel
-      end
-      @current_reel = @reels[@reels.keys[0]]
+    def change(animation_name)
+      return if animation_name == @current_animation_name
+      @current_animation_name = animation_name
+      @frame_index = 0
     end
     
-    def change(reel_name)
-      return if reel_name == @current_reel.name
-      @current_reel = @reels[reel_name]
-      @current_reel.reset
-      @sprite_rect.center = @current_reel.position
-    end
-    
-    def animate
-      @frame_time_counter += 1
-      if @frame_time_counter >= @current_reel.current_frame_time
-        @current_reel.move_next
-        @sprite_rect.center = @current_reel.position
+    def animate(speed=1)
+      return if @current_animation_name.nil?
+      return if num_of_frames == 1
+      frame_time = current_frame_time
+      @frame_time_counter += 1 * speed
+      if @frame_time_counter >= frame_time
+        move_next_frame
         @frame_time_counter = 0
       end
-      @sprite_sheet.blit(@sprite, [0, 0], @sprite_rect)
     end
     
-    def blit(screen, pos)
-      #@sprite_sheet.blit(screen, [pos[0]-@sprite.w/2, pos[1]-@sprite.h/2], @sprite_rect)
-      @sprite_sheet.blit(screen, pos, @sprite_rect)
+    def blit(surface, pos)
+      surf = Game::Core::SpriteSheetManager.load sheet_name, current_frame, @rect
+      surf.blit surface, pos, @rect
     end
     
     def w
-      @sprite.w
+      @sprite_info[:size][0]
     end
     
     def h
-      @sprite.h
+      @sprite_info[:size][1]
     end
     
+    def sheet_name
+      @sprite_info[:sheet]
+    end
+    
+    def current_frame_key
+      @sprite_info[@frame_index]  
+    end
+    
+    def current_frame
+      current_animation[:frames][@frame_index]  
+    end
+    
+    def num_of_frames
+      current_animation[:frames].size
+    end
+    
+    def current_frame_time
+      return 5 if not current_animation.has_key? :time
+      current_animation[:time][@frame_index]
+    end
+    
+    def current_animation
+      @sprite_info[:animations][@current_animation_name]
+    end
+    
+    def current_hitbox
+      current_animation[:hitbox]
+    end
+    
+    def move_next_frame
+      num_of_frames = current_animation[:frames].size
+      return if num_of_frames <= 1
+      if @frame_index == num_of_frames - 1 
+        @frame_index = 0
+      else
+        @frame_index += 1
+      end
+    end
   end
-
+  
 end

@@ -10,11 +10,21 @@ module Game::Views
     end
     
     def loading
-      Game::Core::SpriteSheetManager.setup
+      @sheet_info1 = Game::Core::Font.new "inconsolata", 20
+      @sheet_info2 = Game::Core::Font.new "inconsolata", 20
+      @frame_info1 = Game::Core::Font.new "inconsolata", 20
+      @frame_info3 = Game::Core::Font.new "inconsolata", 20
+      @frame_info4 = Game::Core::Font.new "inconsolata", 20
+      @controls = Game::Core::Font.new "inconsolata", 16
+      @controls.text = "Left/Right = Change Frame,  Up/Down = Change Sheet"
       @rect = Rubygame::Rect.new 10,10,10,10
       @input = Game::Core::PlayerInput
-      @sheet = nil
-      @sheet = Game::Core::SpriteSheetManager.load "hero", "0", @rect
+      @sheets = Game::Core::SpriteSheetManager.sheets.keys
+      @sindex = 0
+      @frames = nil
+      @findex = 0
+      reset_frames
+      update_surface
     end
     
     def updating
@@ -22,29 +32,80 @@ module Game::Views
     end
     
     def drawing
-      @sheet.blit surface, [100, 100], @rect
+      @surf.blit surface, [280, 240], @rect
+      @sheet_info1.blit surface, [10,10]
+      @frame_info1.blit surface, [30,40]
+      @frame_info3.blit surface, [30,60]
+      @frame_info4.blit surface, [30,80]
+      @controls.blit surface, [10,450]
     end
     
     def handle_sprite_viewer_input
-      key = nil
-      key = "0" if @input.down? :number_0
-      key = "1" if @input.down? :number_1
-      key = "2" if @input.down? :number_2
-      key = "3" if @input.down? :number_3
-      key = "4" if @input.down? :number_4
-      key = "5" if @input.down? :number_5
-      key = "6" if @input.down? :number_6
-      key = "7" if @input.down? :number_7
-      key = "8" if @input.down? :number_8
-      key = "9" if @input.down? :number_9
-      key = "A" if @input.down? :a
-      key = "B" if @input.down? :b
-      key = "C" if @input.down? :c
-      key = "D" if @input.down? :d
-      key = "E" if @input.down? :e
-      if not key.nil?
-        @sheet = Game::Core::SpriteSheetManager.load "hero", key, @rect
-      end     
+      next_frame if @input.down? :right
+      prev_frame if @input.down? :left
+      prev_sheet if @input.down? :up
+      next_sheet if @input.down? :down
+    end
+    
+    def update_surface
+      update_info
+      @surf = Game::Core::SpriteSheetManager.load @sheets[@sindex], @frames[@findex], @rect
+    end
+    
+    def update_info
+      @sheet = Game::Core::SpriteSheetManager.sheets[@sheets[@sindex]] 
+      @frame = @sheet.frames[@frames[@findex]]
+      @sheet_info1.text = "#{@sheet.name}    ( #{@sheet.image} )"
+      @frame_info1.text = "ID:    #{@frames[@findex]}"
+      @frame_info3.text = "FRAME: #{@frame["frame"]}"
+      @frame_info4.text = "FLIP:  #{@frame["flip"]}"
+    end
+    
+    def next_frame
+      return if @frames.size <= 1
+      if @findex == @frames.size - 1
+        @findex = 0
+      else
+        @findex += 1
+      end
+      update_surface
+    end
+    
+    def prev_frame
+      return if @frames.size <= 1
+      if @findex == 0
+        @findex = @frames.size - 1
+      else
+        @findex -= 1
+      end
+      update_surface
+    end
+    
+    def next_sheet
+      return if @sheets.size <= 1
+      if @sindex == @sheets.size - 1
+        @sindex = 0
+      else
+        @sindex += 1
+      end
+      reset_frames
+      update_surface
+    end
+    
+    def prev_sheet
+      return if @sheets.size <= 1
+      if @sindex == 0
+        @sindex = @sheets.size - 1
+      else
+        @sindex -= 1
+      end
+      reset_frames
+      update_surface
+    end
+    
+    def reset_frames
+      @findex = 0
+      @frames = Game::Core::SpriteSheetManager.sheets[@sheets[@sindex]].frames.keys
     end
     
    end
