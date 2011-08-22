@@ -4,7 +4,7 @@ include Game::Core
 
 module Game::Entities
 
-  class Fox < Entity
+  class Fox < Game::Core::Sprite
     
     def initialize(view, pos)
       super view, pos

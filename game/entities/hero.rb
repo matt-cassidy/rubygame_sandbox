@@ -3,7 +3,7 @@ require "./game/core/entity.rb"
 
 module Game::Entities
 
-  class Hero < Game::Core::Entity
+  class Hero < Game::Core::Sprite
     
     def initialize(view, pos)
       super view, pos
@@ -14,7 +14,8 @@ module Game::Entities
       @vel = Game::Core::Vector2.zero
     end
     
-    def updating
+    def update
+      super
       handle_movement
       handle_animation
       handle_collisions
@@ -23,22 +24,22 @@ module Game::Entities
     def handle_movement
       @moving = false
       x, y = 0,0
-      if @input.key_pressed? :left
+      if @input.press? :left
         x -= 5
         @facing = :left
         @moving = true
       end
-      if @input.key_pressed? :right
+      if @input.press? :right
         x += 5
         @facing = :right
         @moving = true
       end
-      if @input.key_pressed? :up
+      if @input.press? :up
         y -= 5
         @facing = :up
         @moving = true
       end 
-      if @input.key_pressed? :down
+      if @input.press? :down
         y += 5
         @facing = :down
         @moving = true

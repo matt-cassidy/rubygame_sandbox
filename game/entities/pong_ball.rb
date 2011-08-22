@@ -3,7 +3,7 @@ require "./game/core/vector2.rb"
 
 module Game::Entities
 
-  class PongBall < Game::Core::Entity
+  class PongBall < Game::Core::Sprite
     
     def initialize(view, pos)
       super view, pos
@@ -13,7 +13,8 @@ module Game::Entities
       reset
     end
 
-    def updating
+    def update
+      super
       handle_movement
     end
     

@@ -13,12 +13,14 @@ module Game::Entities
       @debugtxt = Game::Core::Font.new "pirulen", 10
     end
   
-    def updating
+    def update
+      super
       handle_movement
       @debugtxt.text = "x=#{pos.x},y=#{pos.y}"
     end
 
-    def drawing
+    def draw
+      super
       cblit @image
       blit @debugtxt, spos, [5,-5]
     end

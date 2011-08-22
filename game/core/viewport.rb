@@ -10,7 +10,7 @@ module Game::Core
       super view, pos
     end
     
-    def updating
+    def update
       if following_target? then
         @target.update
         @pos.y = @target.pos.y

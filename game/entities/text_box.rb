@@ -17,7 +17,8 @@ module Game::Entities
       @font.text = text
     end
     
-    def drawing
+    def draw
+      super
       if not @absolute then
         blit @font
       else
