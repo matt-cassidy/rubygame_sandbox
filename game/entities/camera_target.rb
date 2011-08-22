@@ -5,6 +5,8 @@ module Game::Entities
 
   class CameraTarget < Game::Core::Entity
     
+    MOVE_SPEED = 5
+    
     def initialize(view, pos)
       super view, pos
       @input = Game::Core::PlayerInput
@@ -22,15 +24,16 @@ module Game::Entities
     def draw
       super
       cblit @image
-      blit @debugtxt, spos, [5,-5]
+      puts spos
+      blit @debugtxt, spos.to_a, [5,-5]
     end
 
     def handle_movement
       x, y = 0,0
-      x -= MOVE_SPEED if @input.key_pressed?( :left )
-      x += MOVE_SPEED if @input.key_pressed?( :right )
-      y -= MOVE_SPEED if @input.key_pressed?( :up ) # up is down in screen coordinates
-      y += MOVE_SPEED if @input.key_pressed?( :down )
+      x -= MOVE_SPEED if @input.press?( :left )
+      x += MOVE_SPEED if @input.press?( :right )
+      y -= MOVE_SPEED if @input.press?( :up ) # up is down in screen coordinates
+      y += MOVE_SPEED if @input.press?( :down )
       if(x != 0 || y != 0)
         @pos.x += x
         @pos.y += y

@@ -37,7 +37,7 @@ module Game::Core
       surf.blit surface, [spos.x - surf.w/2, spos.y - surf.h/2]
     end
     
-    def blit(surf, xy, offset=[0,0])
+    def blit(surf, xy=spos.to_a, offset=[0,0])
       surf.blit surface, [xy[0] + offset[0], xy[1] + offset[1]]
     end
     

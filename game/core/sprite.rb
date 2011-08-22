@@ -2,7 +2,6 @@ require "./game/core/entity.rb"
 require "./game/core/collision_hitbox.rb"
 require "./game/core/script_manager.rb"
 require "./game/core/animation.rb"
-require "./game/core/collision_hitbox.rb"
 
 module Game::Core
 

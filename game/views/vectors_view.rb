@@ -1,5 +1,4 @@
 require "game/entities/mario"
-require "game/entities/fox"
 
 module Game::Views
 

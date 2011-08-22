@@ -1,7 +1,7 @@
 require "game/core/view"
 require "game/entities/text_box.rb"
 require "game/entities/camera_target.rb"
-require "game/entities/fox.rb"
+require "game/entities/rotator.rb"
 
 module Game::Views
 
@@ -18,11 +18,11 @@ module Game::Views
       player = Game::Entities::CameraTarget.new self, [300,300]
       add_entity player
       
-      fox1 = Game::Entities::Fox.new self, [100,100]
-      add_entity fox1
+      r1 = Game::Entities::Rotator.new self, [100,100]
+      add_entity r1
       
-      fox2 = Game::Entities::Fox.new self, [200,200]
-      add_entity fox2
+      r2 = Game::Entities::Rotator.new self, [200,200]
+      add_entity r2
       
       marker = Game::Entities::TextBox.new self, [350,350], 10, false
       marker.text = "350,350"
